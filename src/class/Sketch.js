@@ -4,7 +4,8 @@ import { CONSTANT } from '@/util/constant'
 
 let fadeFlag = false
 export default class Sketch {
-	constructor () {
+	constructor (renderer = 'P2D') {
+		this.renderer = renderer
 		this.sketch
 		this.s
 		this.w = window.innerWidth
@@ -16,7 +17,8 @@ export default class Sketch {
 	}
 
 	setup (s) {
-		this.s.createCanvas(this.w, this.h)
+		const renderer = this.renderer === 'WEBGL' ? this.s.WEBGL : this.s.P2D
+		this.s.createCanvas(this.w, this.h, renderer)
 		this.graphic = this.s.createGraphics(this.w, this.h)
 		this.graphic.show()
 		window.addEventListener('fade', this.startFade, false)

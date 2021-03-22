@@ -1,12 +1,19 @@
 'use strict'
 import { CONSTANT } from '@/util/constant'
 
-const files = [
+// 実行するSketch
+const files = Object.freeze([
 	'sketch-particle',
 	'sketch-letter',
 	'sketch-draw',
-]
+	'sketch-tunnel',
+])
 
+const SKETCH_MAX = files.length
+let sketch_count = 0
+let rnd_array = []
+
+// タイマー
 const timerWorker = new Worker('./worker/timer-worker.js')
 timerWorker.addEventListener('message', e => {
 	if (e.data > CONSTANT.TIME_MAX) {
@@ -16,11 +23,8 @@ timerWorker.addEventListener('message', e => {
 	}
 })
 
-let rnd = Math.floor(Math.random() * files.length)
-let sketch = null
-
 async function start (file) {
-	sketch = await import(`./sketch/${file}`)
+	const sketch = await import(`./sketch/${file}`)
 	sketch.default()
 	window.addEventListener('finish', removeCanvas, false)
 }
@@ -28,9 +32,29 @@ async function start (file) {
 function removeCanvas() {
 	timerWorker.postMessage('init')
 	window.removeEventListener('finish', removeCanvas, false)
-	sketch = null
-	rnd = Math.floor(Math.random() * files.length)
-	start(files[rnd])
+	sketch_count++
+	if (sketch_count >= SKETCH_MAX) {
+		sketch_count = 0
+		rnd_array = randomizing(SKETCH_MAX)
+	}
+	start(files[rnd_array[sketch_count]])
 }
 
-start(files[rnd])
+function randomizing (max) {
+	const arr = []
+	const numArr = []
+	for (let i = 0; i < max; i++) {
+		arr[i] = i
+	}
+
+	for (let j = 0, len = arr.length; j < max; j++, len--) {
+		const rndNum = Math.floor(Math.random() * len)
+		numArr.push(arr[rndNum])
+		arr[rndNum] = arr[len - 1]
+	}
+
+	return numArr
+}
+
+rnd_array = randomizing(SKETCH_MAX)
+start(files[rnd_array[sketch_count]])

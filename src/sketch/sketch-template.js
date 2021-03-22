@@ -14,5 +14,5 @@ class SketchTest extends Sketch {
 
 export default function () {
 	const sketch = new SketchTest()
-	sketch.start()
+	sketch.init()
 }
