@@ -1,6 +1,5 @@
 'use strict'
 import Sketch from '@/class/Sketch.js'
-import { CONSTANT } from '@/util/constant'
 
 const numFigures = 100
 let figureRadius

@@ -7,6 +7,8 @@ const files = Object.freeze([
 	'sketch-letter',
 	'sketch-draw',
 	'sketch-tunnel',
+	// 'sketch-face',
+	// 'sketch-movie',
 ])
 
 const SKETCH_MAX = files.length
@@ -17,9 +19,7 @@ let rnd_array = []
 const timerWorker = new Worker('./worker/timer-worker.js')
 timerWorker.addEventListener('message', e => {
 	if (e.data > CONSTANT.TIME_MAX) {
-		timerWorker.postMessage('stop')
-		const event = new Event('fade')
-		window.dispatchEvent(event)
+		stop()
 	}
 })
 
@@ -27,6 +27,12 @@ async function start (file) {
 	const sketch = await import(`./sketch/${file}`)
 	sketch.default()
 	window.addEventListener('finish', removeCanvas, false)
+}
+
+function stop() {
+	timerWorker.postMessage('stop')
+	const event = new Event('fade')
+	window.dispatchEvent(event)
 }
 
 function removeCanvas() {
@@ -56,5 +62,6 @@ function randomizing (max) {
 	return numArr
 }
 
+// start
 rnd_array = randomizing(SKETCH_MAX)
 start(files[rnd_array[sketch_count]])

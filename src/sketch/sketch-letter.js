@@ -1,6 +1,5 @@
 'use strict'
 import Sketch from '@/class/Sketch.js'
-import { CONSTANT } from '@/util/constant'
 
 let x = 0,
 	y = 0,
@@ -72,8 +71,8 @@ class SketchTest extends Sketch {
 	}
 
 	keyTyped (s) {
-		super.keyTyped()
-		if (key == 's' || key == 'S') s.save('P_2_3_3_01.png')
+		super.keyTyped(s)
+		if (s.key == 's' || s.key == 'S') s.save('P_2_3_3_01.png')
 	}
 
 	keyPressed (s) {

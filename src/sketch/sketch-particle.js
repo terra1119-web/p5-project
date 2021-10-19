@@ -1,6 +1,5 @@
 import P5 from 'p5'
 import Sketch from '@/class/Sketch.js'
-import { CONSTANT } from '@/util/constant'
 // import Mic from '../class/Mic'
 
 // const mic = new Mic()

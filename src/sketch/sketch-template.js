@@ -1,14 +1,34 @@
 'use strict'
 import Sketch from '@/class/Sketch.js'
-import { CONSTANT } from '@/util/constant'
 
+// variables
 class SketchTest extends Sketch {
+	preload (s) {
+		super.preload(s)
+	}
+
 	setup (s) {
-		super.setup()
+		super.setup(s)
 	}
 
 	draw (s) {
-		super.draw()
+		super.draw(s)
+	}
+
+	mousePressed (s) {
+		super.mousePressed(s)
+	}
+
+	keyTyped (s) {
+		super.keyTyped(s)
+	}
+
+	keyPressed (s) {
+		super.keyPressed(s)
+	}
+
+	doubleClicked (s) {
+		super.doubleClicked(s)
 	}
 }
 

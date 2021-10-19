@@ -1,6 +1,5 @@
 'use strict'
 import Sketch from '@/class/Sketch.js'
-import { CONSTANT } from '@/util/constant'
 
 const colors = "e6e1c5-d4cb92-395c6b-80a4ed-bcd3f2-f24-fff-52489c-4062bb-59c3c3-ebebeb-f45b69-0c090d-e01a4f-f15946-f9c22e-53b3cb".split("-").map(a => "#" + a)
 let overAllTexture
@@ -58,7 +57,6 @@ class Particle {
 }
 
 let particles = []
-let textureGraphics
 let mainGraphics
 
 class SketchTest extends Sketch {

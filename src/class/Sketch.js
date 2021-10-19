@@ -2,7 +2,7 @@
 import P5 from 'p5'
 import { CONSTANT } from '@/util/constant'
 
-let fadeFlag = false
+// let fadeFlag = false
 export default class Sketch {
 	constructor (renderer = 'P2D') {
 		this.renderer = renderer
@@ -11,21 +11,23 @@ export default class Sketch {
 		this.w = window.innerWidth
 		this.h = window.innerHeight
 		this.alpha = 0
-		this.graphic
+		this.graphic = null
 		this.canvas
-		fadeFlag = false
+		this.fadeFlag = false
+		this.startFade = this.startFade.bind(this)
+		this.dispose = this.dispose.bind(this)
 	}
 
-	setup (s) {
+	setup () {
 		const renderer = this.renderer === 'WEBGL' ? this.s.WEBGL : this.s.P2D
 		this.s.createCanvas(this.w, this.h, renderer)
 		this.graphic = this.s.createGraphics(this.w, this.h)
-		this.graphic.show()
+		this.graphic.hide()
 		window.addEventListener('fade', this.startFade, false)
 	}
 
-	draw (s) {
-		if (fadeFlag) {
+	draw () {
+		if (this.fadeFlag) {
 			this.graphic.clear()
 			this.graphic.fill(0, this.alpha)
 			this.graphic.rect(0, 0, this.graphic.width, this.graphic.height)
@@ -36,21 +38,28 @@ export default class Sketch {
 		}
 	}
 
-	mousePressed(s) {
+	preload () {
 	}
 
-	keyTyped(s) {
+	mousePressed () {
 	}
 
-	keyPressed(s) {
+	keyTyped (s) {
+		if (s.keyCode === 32 && !this.fadeFlag) {
+			this.startFade()
+		}
 	}
 
-	doubleClicked(s) {
+	keyPressed () {
+	}
+
+	doubleClicked () {
 	}
 
 	init () {
 		this.sketch = s => {
 			this.s = s
+			this.s.preload = () => this.preload(this.s)
 			this.s.setup = () => this.setup(this.s)
 			this.s.draw = () => this.draw(this.s)
 			this.s.mousePressed = () => this.mousePressed(this.s)
@@ -63,7 +72,8 @@ export default class Sketch {
 	}
 
 	startFade () {
-		fadeFlag = true
+		this.graphic.show()
+		this.fadeFlag = true
 	}
 
 	dispose () {
