@@ -2,57 +2,8 @@
 import Sketch from '@/class/Sketch.js'
 
 // variables
-class SketchTest extends Sketch {
-	preload(s) {
-		super.preload(s)
-	}
-
-	setup(s) {
-		super.setup(s)
-	}
-
-	draw(s) {
-		super.draw(s)
-	}
-
-	mousePressed(s) {
-		super.mousePressed(s)
-	}
-
-	keyTyped(s) {
-		super.keyTyped(s)
-	}
-
-	keyPressed(s) {
-		super.keyPressed(s)
-	}
-
-	doubleClicked(s) {
-		super.doubleClicked(s)
-	}
-}
-
-export default function () {
-	const sketch = new SketchTest()
-	sketch.init()
-}
-
-/*
-import deadpixel.keystone.*;
-import processing.video.*;
-
-Keystone ks;
-CornerPinSurface surface;
-PGraphics offscreen;
-
-Movie movie;
-
-ArrayList < PImage > imgs;
-
-String[] movie_name_array = {
-	//"a.mp4",
+const movie_name_array = [
 	"Animals - 6572.mp4",
-	//"b.mov",
 	"Bottle - 754.mp4",
 	"c.mp4",
 	"g.mp4",
@@ -74,216 +25,129 @@ String[] movie_name_array = {
 	"Video Of Jellyfishes Inside Of Aquarium.mp4",
 	"Pexels Videos 3563.mp4",
 	"Pexels Videos 1526909.mp4"
-  //"buri01.mp4",
-  //"buri02.mp4",
-  //"buri03.mp4",
-  //"buri04.mp4",
-  //"buri04.mp5",
-  //"Running Sushi - 3625.mp4"
-};
+]
 
-String[] rand_arr;
-String[] temp_arr;
+const play_max = movie_name_array.length
+const time_max = 5400
+const split_time_max = 900
 
-int play_max;
-int play_count = 0;
+let movie
+let rand_arr = []
+let play_count = 0
+let time_count = 0
+let split_time_count = 0
+let col_count = 0
+let col = 1
+let col_max = 3
+let movie_width
+let movie_height
 
-int time_count = 0;
-int time_max = 5400;
+let rgb_array = [
+	[ 0, 0, 0 ]
+]
+class SketchTest extends Sketch {
+	setup(s) {
+		super.setup(s)
 
-int split_time_count = 0;
-int split_time_max = 900;
-
-int col_count = 0;
-int col = 1;
-int col_max = 3;
-
-int movie_width;
-int movie_height;
-
-float[][] rgb_array = {
-  { 0, 0, 0 }
-};
-
-void setup() {
-	background(0);
-	fullScreen(P3D, 2);
-	frameRate(30);
-
-	ks = new Keystone(this);
-	surface = ks.createCornerPinSurface(width, height, 20);
-	offscreen = createGraphics(width, height, P3D);
-
-	imgs = new ArrayList < PImage > ();
-	play_max = movie_name_array.length;
-
-	initArray();
-
-	init();
-
-	try {
-		ks.load();
-	} catch (NullPointerException e) { }
-
-}
-
-void init(){
-	String movie_name = rand_arr[play_count];
-	movie = new Movie(this, movie_name);
-	movie.loop();
-
-	col = 1;
-	col_count = 0;
-	split_time_count = 0;
-
-	movie_width = offscreen.width / col;
-	movie_height = offscreen.height / col;
-
-	rgb_array[0] = new float[3];
-	for (int i = 0; i < col; i++) {
-		rgb_array[i][0] = round(random(255));
-		rgb_array[i][1] = round(random(255));
-		rgb_array[i][2] = round(random(255));
+		s.background(0)
+		this.initArray()
+		this.initMovie(s)
 	}
 
-};
+	draw(s) {
+		super.draw(s)
 
-void initArray(){
-	String[] clone = movie_name_array.clone();
-	rand_arr = new String[clone.length];
-	temp_arr = null;
-	int rand_num = 0;
-	for (int i = 0; i < rand_arr.length; i++) {
-		temp_arr = new String[1];
-		rand_num = int(random(clone.length));
-
-		temp_arr = subset(clone, rand_num, 1);
-		rand_arr[i] = temp_arr[0];
-
-		temp_arr = new String[clone.length - 1];
-
-		int count = 0;
-
-		for (int j = 0; j < clone.length; j++) {
-
-			if (j != rand_num) {
-				temp_arr[count] = clone[j];
-				count += 1;
+		s.background(0)
+		let nn = 0
+		for (let i = 0; i < col; i++) {
+			for (let j = 0; j < col; j++) {
+				s.tint(rgb_array[nn][0], rgb_array[nn][1], rgb_array[nn][2])
+				s.image(movie, movie_width * i - s.width / 2, movie_height * j - s.height / 2, s.width / col, s.height / col)
+				nn++
 			}
 		}
-		clone = temp_arr;
-	}
-}
 
-void initSplit(){
-	col *= 2;
-	col_count++;
-	if (col_count >= col_max) {
-		col = 1;
-		col_count = 0;
-	}
-
-	movie_width = offscreen.width / col;
-	movie_height = offscreen.height / col;
-
-	int num = col * col;
-	rgb_array = new float[num][3];
-	for (int i = 0; i < num; i++) {
-		rgb_array[i][0] = round(random(255));
-		rgb_array[i][1] = round(random(255));
-		rgb_array[i][2] = round(random(255));
-	}
-
-}
-
-void draw() {
-	background(0);
-
-	if (imgs.size() > 10) {
-		for (int n = 0; n < imgs.size(); n++) {
-			g.removeCache(imgs.get(n));
+		split_time_count++
+		if (split_time_max < split_time_count) {
+			split_time_count = 0
+			this.initSplit(s)
 		}
-		imgs.clear();
-		System.gc();
-	}
-	PImage tmp = movie.get();
-	imgs.add(tmp);
-	g.removeCache(tmp);
 
-	split_time_count++;
-	if (split_time_max < split_time_count) {
-		split_time_count = 0;
-		initSplit();
-	}
+		time_count++
+		if (time_max < time_count) {
+			play_count++
+			if (play_max <= play_count) {
+				play_count = 0
+				this.initArray()
+			}
+			time_count = 0
 
-	time_count++;
-	if (time_max < time_count) {
-		play_count++;
-		if (play_max <= play_count) {
-			play_count = 0;
-			initArray();
-		}
-		time_count = 0;
+			movie.stop()
+			movie.remove()
+			movie = null
 
-		movie.stop();
-		movie.dispose();
-		movie = null;
-
-		init();
-	}
-
-	offscreen.beginDraw();
-	offscreen.background(0);
-
-	int nn = 0;
-	for (int i = 0; i < col; i++) {
-		for (int j = 0; j < col; j++) {
-			offscreen.tint(rgb_array[nn][0], rgb_array[nn][1], rgb_array[nn][2]);
-			offscreen.image(movie, movie_width * i, movie_height * j, offscreen.width / col, offscreen.height / col);
-			nn++;
+			this.initMovie(s)
 		}
 	}
-	g.removeCache(movie);
-	offscreen.endDraw();
 
-	surface.render(offscreen);
+	// private method
+	shuffle(array) {
+		for (let i = array.length - 1; i >= 0; i--) {
+			const j = Math.floor(Math.random() * (i + 1));
+			[array[i], array[j]] = [array[j], array[i]]
+		}
+		return array
+	}
 
-}
+	initArray() {
+		rand_arr = this.shuffle(movie_name_array)
+	}
 
-void keyPressed() {
-	switch (key) {
-		case 'c':
-			// enter/leave calibration mode, where surfaces can be warped
-			// and moved
-			ks.toggleCalibration();
-			break;
+	initMovie(s) {
+		const movie_name = rand_arr[play_count]
+		movie = s.createVideo(`movies/${movie_name}`)
+		movie.volume(0)
+		movie.hide()
+		movie.loop()
 
-		case 'l':
-			// loads the saved layout
-			ks.load();
-			break;
+		col = 1
+		col_count = 0
+		split_time_count = 0
 
-		case 's':
-			// saves the layout
-			ks.save();
-			break;
+		movie_width = s.width / col
+		movie_height = s.height / col
+
+		rgb_array = []
+		rgb_array[0] = new Array(3)
+		for (let i = 0; i < col; i++) {
+			rgb_array[i][0] = s.round(s.random(255))
+			rgb_array[i][1] = s.round(s.random(255))
+			rgb_array[i][2] = s.round(s.random(255))
+		}
+	}
+
+	initSplit(s) {
+		col *= 2
+		col_count++
+		if (col_count >= col_max) {
+			col = 1
+			col_count = 0
+		}
+
+		movie_width = s.width / col
+		movie_height = s.height / col
+
+		const num = col * col
+		for (let i = 0; i < num; i++) {
+			rgb_array[i] = new Array(3)
+			rgb_array[i][0] = s.round(s.random(255))
+			rgb_array[i][1] = s.round(s.random(255))
+			rgb_array[i][2] = s.round(s.random(255))
+		}
 	}
 }
 
-void movieEvent(Movie m) {
-	m.read();
+export default function () {
+	const sketch = new SketchTest('WEBGL')
+	sketch.init()
 }
-
-void stop() {
-	for (int n = 0; n < imgs.size(); n++) {
-		g.removeCache(imgs.get(n));
-	}
-	imgs.clear();
-
-	movie.stop();
-	movie.dispose();
-	movie = null;
-	System.gc();
-	super.stop();
-}
-*/

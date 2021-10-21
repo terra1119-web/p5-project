@@ -3,12 +3,12 @@ import { CONSTANT } from '@/util/constant'
 
 // 実行するSketch
 const files = Object.freeze([
-	'sketch-particle',
-	'sketch-letter',
-	'sketch-draw',
-	'sketch-tunnel',
+	// 'sketch-particle',
+	// 'sketch-letter',
+	// 'sketch-draw',
+	// 'sketch-tunnel',
 	// 'sketch-face',
-	// 'sketch-movie',
+	'sketch-movie',
 ])
 
 const SKETCH_MAX = files.length
