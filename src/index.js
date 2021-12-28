@@ -7,12 +7,13 @@ const files = Object.freeze([
 	'sketch-letter',
 	'sketch-draw',
 	'sketch-tunnel',
-	// 'sketch-face',
 	'sketch-movie',
-	// 'sketch-tree',
 	'sketch-wave',
-	// 'sketch-flocks',
-	'sketch-particleFlow'
+	'sketch-particleFlow',
+	'sketch-flocks',
+	// not yet
+	// 'sketch-face',
+	// 'sketch-tree',
 ])
 
 const SKETCH_MAX = files.length

@@ -4,8 +4,9 @@ import { CONSTANT } from '@/util/constant'
 
 // let fadeFlag = false
 export default class Sketch {
-	constructor (renderer = 'P2D') {
+	constructor (renderer = 'P2D', use2D = true) {
 		this.renderer = renderer
+		this.use2D = use2D
 		this.sketch
 		this.s
 		this.w = window.innerWidth
@@ -27,6 +28,10 @@ export default class Sketch {
 	}
 
 	draw () {
+		if (this.renderer === 'WEBGL' && this.use2D) {
+			this.s.translate(-this.s.width / 2, -this.s.height / 2, 0)
+		}
+
 		if (this.fadeFlag) {
 			this.graphic.clear()
 			this.graphic.fill(0, this.alpha)

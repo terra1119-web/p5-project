@@ -62,7 +62,7 @@ class SketchTest extends Sketch {
 		for (let i = 0; i < col; i++) {
 			for (let j = 0; j < col; j++) {
 				s.tint(rgb_array[nn][0], rgb_array[nn][1], rgb_array[nn][2])
-				s.image(movie, movie_width * i - s.width / 2, movie_height * j - s.height / 2, s.width / col, s.height / col)
+				s.image(movie, movie_width * i, movie_height * j, s.width / col, s.height / col)
 				nn++
 			}
 		}

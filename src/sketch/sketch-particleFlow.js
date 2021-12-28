@@ -10,17 +10,13 @@ var particles_c = []
 var fade = 200
 var radius = 3
 
-let w = 300
-let h = 300
+let w
+let h
 
 let noiseScale = 300
 let noiseStrength = 1.2
 
 class SketchTest extends Sketch {
-	preload (s) {
-		super.preload(s)
-	}
-
 	setup (s) {
 		super.setup(s)
 
@@ -72,22 +68,6 @@ class SketchTest extends Sketch {
 			particles_c[i].checkEdges()
 		}
 	}
-
-	mousePressed (s) {
-		super.mousePressed(s)
-	}
-
-	keyTyped (s) {
-		super.keyTyped(s)
-	}
-
-	keyPressed (s) {
-		super.keyPressed(s)
-	}
-
-	doubleClicked (s) {
-		super.doubleClicked(s)
-	}
 }
 
 class Particle {
@@ -117,16 +97,16 @@ class Particle {
 	}
 
 	move () {
-		this.angle = this.s.noise(this.loc.x / noiseScale, this.loc.y / noiseScale, this.s.frameCount / noiseScale) * this.s.TWO_PI * noiseStrength;
-		this.dir.x = this.s.cos(this.angle) + this.s.sin(this.angle) - this.s.sin(this.angle);
-		this.dir.y = this.s.sin(this.angle) - this.s.cos(this.angle) * this.s.sin(this.angle);
-		this.vel = this.dir.copy();
-		this.vel.mult(this.speed * this.d);
-		this.loc.add(this.vel);
+		this.angle = this.s.noise(this.loc.x / noiseScale, this.loc.y / noiseScale, this.s.frameCount / noiseScale) * this.s.TWO_PI * noiseStrength
+		this.dir.x = this.s.cos(this.angle) + this.s.sin(this.angle) - this.s.sin(this.angle)
+		this.dir.y = this.s.sin(this.angle) - this.s.cos(this.angle) * this.s.sin(this.angle)
+		this.vel = this.dir.copy()
+		this.vel.mult(this.speed * this.d)
+		this.loc.add(this.vel)
 	}
 }
 
 export default function () {
-	const sketch = new SketchTest()
+	const sketch = new SketchTest('WEBGL')
 	sketch.init()
 }

@@ -62,7 +62,6 @@ let mainGraphics
 class SketchTest extends Sketch {
 	setup (s) {
 		super.setup()
-
 		overAllTexture = s.createGraphics(s.width, s.height)
 		mainGraphics = s.createGraphics(s.width, s.height)
 		// mainGraphics.blendMode(s.ADD)
@@ -93,7 +92,6 @@ class SketchTest extends Sketch {
 
 	draw (s) {
 		super.draw()
-
 		particles.forEach(p => p.draw())
 		particles.forEach(p => p.update())
 		s.image(mainGraphics, 0, 0)
@@ -106,6 +104,6 @@ class SketchTest extends Sketch {
 }
 
 export default function () {
-	const sketch = new SketchTest()
+	const sketch = new SketchTest('WEBGL')
 	sketch.init()
 }
