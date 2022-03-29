@@ -11,6 +11,8 @@ const files = Object.freeze([
 	'sketch-wave',
 	'sketch-particleFlow',
 	'sketch-flocks',
+	'sketch-3d',
+	'sketch-images',
 	// not yet
 	// 'sketch-face',
 	// 'sketch-tree',
