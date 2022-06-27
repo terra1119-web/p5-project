@@ -2,7 +2,7 @@
 import Sketch from '@/class/Sketch.js'
 
 // variables
-let count = 1000
+let count = 200
 
 var particles_a = []
 var particles_b = []

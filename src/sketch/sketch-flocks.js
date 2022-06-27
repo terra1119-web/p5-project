@@ -5,7 +5,7 @@ import Sketch from '@/class/Sketch.js'
 // variables
 const boids = []
 const preds = []
-const boidNum = 180
+const boidNum = 130
 const predNum = 1
 const obstRad = 60
 
@@ -90,7 +90,7 @@ class SketchTest extends Sketch {
 }
 
 export default function () {
-	const sketch = new SketchTest('WEBGL')
+	const sketch = new SketchTest()
 	sketch.init()
 }
 

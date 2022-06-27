@@ -104,6 +104,6 @@ class SketchTest extends Sketch {
 }
 
 export default function () {
-	const sketch = new SketchTest('WEBGL')
+	const sketch = new SketchTest()
 	sketch.init()
 }

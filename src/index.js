@@ -3,7 +3,7 @@ import { CONSTANT } from '@/util/constant'
 
 // 実行するSketch
 const files = Object.freeze([
-	'sketch-particle',
+	// 'sketch-particle',
 	'sketch-letter',
 	'sketch-draw',
 	'sketch-tunnel',
@@ -13,8 +13,10 @@ const files = Object.freeze([
 	'sketch-flocks',
 	'sketch-3d',
 	'sketch-images',
+	'sketch-conchoid',
 	// not yet
 	// 'sketch-face',
+	// 'sketch-face-emoji',
 	// 'sketch-tree',
 ])
 

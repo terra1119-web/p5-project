@@ -194,12 +194,12 @@ class SketchTest extends Sketch {
 }
 
 export default function () {
-	const sketch = new SketchTest('WEBGL')
+	const sketch = new SketchTest()
 	sketch.init()
 }
 
 class TextManager {
-	constructor (s, wInput = 'Wander Music for Sublimation ') {
+	constructor (s, wInput = 'Wander ') {
 		this.w = wInput
 		this.s = s
 		this.SPLIT_TOKENS = ' ?,;:[]<>()"'
