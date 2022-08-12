@@ -32,6 +32,7 @@ class SketchTest extends Sketch {
 
 	draw () {
 		super.draw()
+		if (!this.p) return
 
 		this.p.background(0)
 		this.p.fill(0, 64)

@@ -34,6 +34,7 @@ class SketchTest extends Sketch {
 
 	draw () {
 		super.draw()
+		if (!this.p) return
 
 		this.p.background(0)
 		this.p.rotate(-this.t / this.dt * this.rotSpeed)

@@ -22,7 +22,6 @@ class SketchTest extends Sketch {
 
 		this.p.background(0)
 		this.p.smooth()
-		this.p.cursor(this.p.CROSS)
 
 		this.x = this.p.random(this.p.width)
 		this.y = this.p.random(this.p.height)
@@ -36,6 +35,7 @@ class SketchTest extends Sketch {
 
 	draw () {
 		super.draw()
+		if (!this.p) return
 
 		this.pointCount++
 		if (this.pointCount > 10) {

@@ -108,6 +108,7 @@ class SketchTest extends Sketch {
 
 	draw () {
 		super.draw()
+		if (!this.p) return
 
 		this.p.clear()
 		this.p.background(0)

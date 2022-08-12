@@ -53,6 +53,7 @@ class SketchTest extends Sketch {
 		}
 
 		this.detections = result
+		if (!this.p) return
 
 		this.p.background(0)
 		this.p.push()

@@ -98,8 +98,10 @@ class SketchTest extends Sketch {
 
 	draw () {
 		super.draw()
-		this.particles.forEach(p => p.draw())
-		this.particles.forEach(p => p.update())
+		if (!this.p) return
+
+		this.particles.forEach(particle => particle.draw())
+		this.particles.forEach(particle => particle.update())
 		this.p.image(this.mainGraphics, 0, 0)
 
 		this.p.push()

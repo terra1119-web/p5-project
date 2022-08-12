@@ -69,8 +69,7 @@ class SketchTest extends Sketch {
 
 	draw () {
 		super.draw()
-
-		// s.background(0)
+		if (!this.p) return
 
 		this.time_count ++
 		if (this.time_max < this.time_count) {

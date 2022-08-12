@@ -60,6 +60,7 @@ class SketchTest extends Sketch {
 
 	draw () {
 		super.draw()
+		if (!this.p) return
 
 		this.p.background(0)
 		let nn = 0

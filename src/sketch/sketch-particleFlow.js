@@ -39,6 +39,7 @@ class SketchTest extends Sketch {
 
 	draw () {
 		super.draw()
+		if (!this.p) return
 
 		this.p.fill(0,7)
 		this.p.noStroke()
