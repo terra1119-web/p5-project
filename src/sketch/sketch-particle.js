@@ -1,40 +1,35 @@
 import P5 from 'p5'
 import Sketch from '@/class/Sketch.js'
-// import Mic from '../class/Mic'
-
-// const mic = new Mic()
-
-let g, friction
-let n = 100
-let particles = []
 
 class Particle {
-	constructor(s, vx, vy) {
+	constructor(p, vx, vy) {
+		this.p = p
 		this.mass = 1.0
-		this.location = s.createVector(s.random(s.width), s.random(s.height))
-		this.velocity = s.createVector(0.0, 0.0)
-		this.accelaration = s.createVector(vx, vy)
+		this.friction = 0.01
+		this.g = 10
+		this.location = this.p.createVector(this.p.random(this.p.width), this.p.random(this.p.height))
+		this.velocity = this.p.createVector(0.0, 0.0)
+		this.accelaration = this.p.createVector(vx, vy)
 		this.img
-		this.s = s
 	}
 
 	update () {
 		this.velocity.add(this.accelaration)
-		this.velocity.mult(1.0 - friction)
+		this.velocity.mult(1.0 - this.friction)
 		this.location.add(this.velocity)
 		this.accelaration.set(0.0, 0.0)
 	}
 
-	display (s) {
-		s.image(this.img, this.location.x, this.location.y)
+	display () {
+		this.p.image(this.img, this.location.x, this.location.y)
 	}
 
-	attract (particle, s) {
+	attract (particle) {
 		const force = new P5.Vector.sub(particle.location, this.location)
 		let distance = force.mag()
-		distance = s.constrain(distance, 4.0, 1000.0)
+		distance = this.p.constrain(distance, 4.0, 1000.0)
 		force.normalize()
-		const strength = (g * this.mass * particle.mass) / s.pow(distance, 2.0)
+		const strength = (this.g * this.mass * particle.mass) / this.p.pow(distance, 2.0)
 		force.mult(strength)
 		return force
 	}
@@ -44,32 +39,32 @@ class Particle {
 		this.accelaration.add(f)
 	}
 
-	wallThrough (s) {
-		if (this.location.x > s.width) {
+	wallThrough () {
+		if (this.location.x > this.p.width) {
 			this.location.x = 0
 		}
 		if (this.location.x < 0) {
-			this.location.x = s.width
+			this.location.x = this.p.width
 		}
-		if (this.location.y > s.height) {
+		if (this.location.y > this.p.height) {
 			this.location.y = 0
 		}
 		if (this.location.y < 0) {
-			this.location.y = s.height
+			this.location.y = this.p.height
 		}
 	}
 
-	createParticleImage (s) {
+	createParticleImage () {
 		const side = 400
 		const center = 200
 
-		this.img = s.createImage(side, side)
+		this.img = this.p.createImage(side, side)
 
-		const num = s.pow(10, 1.9)
+		const num = this.p.pow(10, 1.9)
 
-		const Cr = s.random(100, 255)
-		const Cg = s.random(100, 255)
-		const Cb = s.random(100, 255)
+		const Cr = this.p.random(100, 255)
+		const Cg = this.p.random(100, 255)
+		const Cb = this.p.random(100, 255)
 
 		//while ((Cr/Cg > 0.8 && Cr/Cg < 1.2) && (Cr/Cb > 0.8 && Cr/Cb < 1.2)) {
 		//  var Cr =random(50, 255);
@@ -80,8 +75,8 @@ class Particle {
 		this.img.loadPixels()
 		for (let y = 0; y < side; y++) {
 			for (let x = 0; x < side; x++) {
-				const d = (s.sq(center - x) + s.sq(center - y)) / num
-				const col = s.color(Cr / d, Cg / d, Cb / d)
+				const d = (this.p.sq(center - x) + this.p.sq(center - y)) / num
+				const col = this.p.color(Cr / d, Cg / d, Cb / d)
 				this.img.set(x, y, col)
 			}
 		}
@@ -91,48 +86,55 @@ class Particle {
 }
 
 class SketchTest extends Sketch {
-	setup (s) {
-		super.setup()
-
-		s.blendMode(s.ADD)
-		s.imageMode(s.CENTER)
-		s.frameRate(60)
-		s.background(0)
-		for (let i = 0; i < n; i++) {
-			particles[i] = new Particle(s)
-			particles[i].createParticleImage(s)
-		}
-
-		g = 10
-		friction = 0.01
+	constructor () {
+		super()
+		// variables
+		this.count = 100
+		this.particles = []
 	}
 
-	draw (s) {
+	setup () {
+		super.setup()
+
+		this.p.blendMode(this.p.ADD)
+		this.p.imageMode(this.p.CENTER)
+		this.p.frameRate(30)
+		this.p.background(0)
+		for (let i = 0; i < this.count; i++) {
+			this.particles[i] = new Particle(this.p, 0, 0)
+			this.particles[i].createParticleImage()
+		}
+	}
+
+	draw () {
 		super.draw()
 
-		s.clear()
-		s.background(0)
-		s.noStroke()
+		this.p.clear()
+		this.p.background(0)
+		this.p.noStroke()
 		// s.translate(-w / 2, -h / 2, 0);
-		for (let i = 0; i < n; i++) {
-			for (let j = 0; j < n; j++) {
+		for (let i = 0; i < this.count; i++) {
+			for (let j = 0; j < this.count; j++) {
 				if (i != j) {
-					var force = particles[i].attract(particles[j], s)
-					particles[i].applyForce(force)
+					const force = this.particles[i].attract(this.particles[j], this.p)
+					this.particles[i].applyForce(force)
 				}
 			}
 		}
-		for (let i = 0; i < n; i++) {
-			particles[i].update()
-			particles[i].wallThrough(s)
-			particles[i].display(s)
+		for (let i = 0; i < this.count; i++) {
+			this.particles[i].update()
+			this.particles[i].wallThrough()
+			this.particles[i].display()
 		}
 	}
 
-	mouseClicked (s) {
-		particles.push(new Particle(s.mouseX, s.mouseY, 0, 0))
-		particles[n].createParticleImage(s)
-		n++
+	mousePressed () {
+		super.mousePressed()
+
+		this.particles.push(new Particle(this.p, 0, 0))
+		this.particles[this.count].createParticleImage()
+		this.count++
+		console.log(this.particles.length)
 	}
 }
 

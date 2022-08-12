@@ -1,97 +1,101 @@
 'use strict'
 import Sketch from '@/class/Sketch.js'
 
-// variables
-const movie_name_array = [
-	"Animals - 6572.mp4",
-	"Bottle - 754.mp4",
-	"c.mp4",
-	"g.mp4",
-	"h.mp4",
-	"Milk - 4315.mp4",
-	"Mountains - 6872.mp4",
-	"Natural Landscapes - 1613.mp4",
-	"Rose - 3654.mp4",
-	"Running Sushi - 3625.mp4",
-	"Shoes - 3627.mp4",
-	"Synthesizer - 3239.mp4",
-	"Synthesizer - 6488.mp4",
-	"Vegetables - 4572.mp4",
-	"Water Dragon - 3779.mp4",
-	"Massage - 701.mp4",
-	"Parrot - 9219.mp4",
-	"Woodhouse'S Toad - 397.mp4",
-	"A Wet Hawk.mp4",
-	"Video Of Jellyfishes Inside Of Aquarium.mp4",
-	"Pexels Videos 3563.mp4",
-	"Pexels Videos 1526909.mp4"
-]
-
-const play_max = movie_name_array.length
-const time_max = 5400
-const split_time_max = 900
-
-let movie
-let rand_arr = []
-let play_count = 0
-let time_count = 0
-let split_time_count = 0
-let col_count = 0
-let col = 1
-let col_max = 3
-let movie_width
-let movie_height
-
-let rgb_array = [
-	[ 0, 0, 0 ]
-]
 class SketchTest extends Sketch {
-	setup(s) {
-		super.setup(s)
+	constructor () {
+		super('WEBGL')
+		// variables
+		this.movie_name_array = [
+			"Animals - 6572.mp4",
+			"Bottle - 754.mp4",
+			"c.mp4",
+			"g.mp4",
+			"h.mp4",
+			"Milk - 4315.mp4",
+			"Mountains - 6872.mp4",
+			"Natural Landscapes - 1613.mp4",
+			"Rose - 3654.mp4",
+			"Running Sushi - 3625.mp4",
+			"Shoes - 3627.mp4",
+			"Synthesizer - 3239.mp4",
+			"Synthesizer - 6488.mp4",
+			"Vegetables - 4572.mp4",
+			"Water Dragon - 3779.mp4",
+			"Massage - 701.mp4",
+			"Parrot - 9219.mp4",
+			"Woodhouse'S Toad - 397.mp4",
+			"A Wet Hawk.mp4",
+			"Video Of Jellyfishes Inside Of Aquarium.mp4",
+			"Pexels Videos 3563.mp4",
+			"Pexels Videos 1526909.mp4"
+		]
 
-		s.background(0)
-		this.initArray()
-		this.initMovie(s)
+		this.play_max = this.movie_name_array.length
+		this.time_max = 5400
+		this.split_time_max = 900
+
+		this.movie
+		this.rand_arr = []
+		this.play_count = 0
+		this.time_count = 0
+		this.split_time_count = 0
+		this.col_count = 0
+		this.col = 1
+		this.col_max = 3
+		this.movie_width
+		this.movie_height
+
+		this.rgb_array = [
+			[ 0, 0, 0 ]
+		]
 	}
 
-	draw(s) {
-		super.draw(s)
+	setup () {
+		super.setup()
 
-		s.background(0)
+		this.p.background(0)
+		this.initArray()
+		this.initMovie()
+	}
+
+	draw () {
+		super.draw()
+
+		this.p.background(0)
 		let nn = 0
-		for (let i = 0; i < col; i++) {
-			for (let j = 0; j < col; j++) {
-				s.tint(rgb_array[nn][0], rgb_array[nn][1], rgb_array[nn][2])
-				s.image(movie, movie_width * i, movie_height * j, s.width / col, s.height / col)
+		for (let i = 0; i < this.col; i++) {
+			for (let j = 0; j < this.col; j++) {
+				this.p.tint(this.rgb_array[nn][0], this.rgb_array[nn][1], this.rgb_array[nn][2])
+				this.p.image(this.movie, this.movie_width * i, this.movie_height * j, this.p.width / this.col, this.p.height / this.col)
 				nn++
 			}
 		}
 
-		split_time_count++
-		if (split_time_max < split_time_count) {
-			split_time_count = 0
-			this.initSplit(s)
+		this.split_time_count++
+		if (this.split_time_max < this.split_time_count) {
+			this.split_time_count = 0
+			this.initSplit()
 		}
 
-		time_count++
-		if (time_max < time_count) {
-			play_count++
-			if (play_max <= play_count) {
-				play_count = 0
+		this.time_count++
+		if (this.time_max < this.time_count) {
+			this.play_count++
+			if (this.play_max <= this.play_count) {
+				this.play_count = 0
 				this.initArray()
 			}
-			time_count = 0
+			this.time_count = 0
 
-			movie.stop()
-			movie.remove()
-			movie = null
+			this.movie.stop()
+			this.movie.remove()
+			this.movie = null
 
-			this.initMovie(s)
+			this.initMovie()
 		}
 	}
 
 	// private method
-	shuffle(array) {
+	shuffle (array) {
 		for (let i = array.length - 1; i >= 0; i--) {
 			const j = Math.floor(Math.random() * (i + 1));
 			[array[i], array[j]] = [array[j], array[i]]
@@ -99,55 +103,55 @@ class SketchTest extends Sketch {
 		return array
 	}
 
-	initArray() {
-		rand_arr = this.shuffle(movie_name_array)
+	initArray () {
+		this.rand_arr = this.shuffle(this.movie_name_array)
 	}
 
-	initMovie(s) {
-		const movie_name = rand_arr[play_count]
-		movie = s.createVideo(`movies/${movie_name}`)
-		movie.volume(0)
-		movie.hide()
-		movie.loop()
+	initMovie () {
+		const movie_name = this.rand_arr[this.play_count]
+		this.movie = this.p.createVideo(`movies/${movie_name}`)
+		this.movie.volume(0)
+		this.movie.hide()
+		this.movie.loop()
 
-		col = 1
-		col_count = 0
-		split_time_count = 0
+		this.col = 1
+		this.col_count = 0
+		this.split_time_count = 0
 
-		movie_width = s.width / col
-		movie_height = s.height / col
+		this.movie_width = this.p.width / this.col
+		this.movie_height = this.p.height / this.col
 
-		rgb_array = []
-		rgb_array[0] = new Array(3)
-		for (let i = 0; i < col; i++) {
-			rgb_array[i][0] = s.round(s.random(255))
-			rgb_array[i][1] = s.round(s.random(255))
-			rgb_array[i][2] = s.round(s.random(255))
+		this.rgb_array = []
+		this.rgb_array[0] = new Array(3)
+		for (let i = 0; i < this.col; i++) {
+			this.rgb_array[i][0] = this.p.round(this.p.random(255))
+			this.rgb_array[i][1] = this.p.round(this.p.random(255))
+			this.rgb_array[i][2] = this.p.round(this.p.random(255))
 		}
 	}
 
-	initSplit(s) {
-		col *= 2
-		col_count++
-		if (col_count >= col_max) {
-			col = 1
-			col_count = 0
+	initSplit () {
+		this.col *= 2
+		this.col_count++
+		if (this.col_count >= this.col_max) {
+			this.col = 1
+			this.col_count = 0
 		}
 
-		movie_width = s.width / col
-		movie_height = s.height / col
+		this.movie_width = this.p.width / this.col
+		this.movie_height = this.p.height / this.col
 
-		const num = col * col
+		const num = this.col * this.col
 		for (let i = 0; i < num; i++) {
-			rgb_array[i] = new Array(3)
-			rgb_array[i][0] = s.round(s.random(255))
-			rgb_array[i][1] = s.round(s.random(255))
-			rgb_array[i][2] = s.round(s.random(255))
+			this.rgb_array[i] = new Array(3)
+			this.rgb_array[i][0] = this.p.round(this.p.random(255))
+			this.rgb_array[i][1] = this.p.round(this.p.random(255))
+			this.rgb_array[i][2] = this.p.round(this.p.random(255))
 		}
 	}
 }
 
 export default function () {
-	const sketch = new SketchTest('WEBGL')
+	const sketch = new SketchTest()
 	sketch.init()
 }

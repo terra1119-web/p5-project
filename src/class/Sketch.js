@@ -8,7 +8,7 @@ export default class Sketch {
 		this.renderer = renderer
 		this.use2D = use2D
 		this.sketch
-		this.s
+		this.p
 		this.w = window.innerWidth
 		this.h = window.innerHeight
 		this.alpha = 0
@@ -20,16 +20,16 @@ export default class Sketch {
 	}
 
 	setup () {
-		const renderer = this.renderer === 'WEBGL' ? this.s.WEBGL : this.s.P2D
-		this.s.createCanvas(this.w, this.h, renderer)
-		this.graphic = this.s.createGraphics(this.w, this.h)
+		const renderer = this.renderer === 'WEBGL' ? this.p.WEBGL : this.p.P2D
+		this.p.createCanvas(this.w, this.h, renderer)
+		this.graphic = this.p.createGraphics(this.w, this.h)
 		this.graphic.hide()
 		window.addEventListener('fade', this.startFade, false)
 	}
 
 	draw () {
 		if (this.renderer === 'WEBGL' && this.use2D) {
-			this.s.translate(-this.s.width / 2, -this.s.height / 2, 0)
+			this.p.translate(-this.p.width / 2, -this.p.height / 2, 0)
 		}
 
 		if (this.fadeFlag) {
@@ -49,8 +49,8 @@ export default class Sketch {
 	mousePressed () {
 	}
 
-	keyTyped (s) {
-		if (s.keyCode === 32 && !this.fadeFlag) {
+	keyTyped () {
+		if (this.p.keyCode === 32 && !this.fadeFlag) {
 			this.startFade()
 		}
 	}
@@ -62,15 +62,15 @@ export default class Sketch {
 	}
 
 	init () {
-		this.sketch = s => {
-			this.s = s
-			this.s.preload = () => this.preload(this.s)
-			this.s.setup = () => this.setup(this.s)
-			this.s.draw = () => this.draw(this.s)
-			this.s.mousePressed = () => this.mousePressed(this.s)
-			this.s.keyTyped = () => this.keyTyped(this.s)
-			this.s.keyPressed = () => this.keyPressed(this.s)
-			this.s.doubleClicked = () => this.doubleClicked(this.s)
+		this.sketch = p => {
+			this.p = p
+			this.p.preload = () => this.preload()
+			this.p.setup = () => this.setup()
+			this.p.draw = () => this.draw()
+			this.p.mousePressed = () => this.mousePressed()
+			this.p.keyTyped = () => this.keyTyped()
+			this.p.keyPressed = () => this.keyPressed()
+			this.p.doubleClicked = () => this.doubleClicked()
 		}
 
 		this.canvas = new P5(this.sketch, 'canvas')
@@ -84,8 +84,8 @@ export default class Sketch {
 	dispose () {
 		this.graphic.remove()
 		this.graphic = null
-		this.s.remove()
-		this.s = null
+		this.p.remove()
+		this.p = null
 		this.sketch = null
 		this.canvas = null
 		const event = new Event('finish')
@@ -94,6 +94,6 @@ export default class Sketch {
 	}
 
 	get getSketch() {
-		return this.s
+		return this.p
 	}
 }

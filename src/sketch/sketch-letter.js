@@ -1,96 +1,82 @@
 'use strict'
 import Sketch from '@/class/Sketch.js'
 
-let x = 0,
-	y = 0,
-	toX = 0,
-	toY = 0
-let stepSize = 5.0
-const letters = 'The center is not always in the middle.'
-const fontSizeMin = 3
-let angleDistortion = 0.0
-let counter = 0
-let pointCount = 0
-
 class SketchTest extends Sketch {
-	setup (s) {
+	constructor () {
+		super()
+		// variables
+		this.x = 0
+		this.y = 0
+		this.toX = 0
+		this.toY = 0
+		this.stepSize = 5.0
+		this.letters = 'The center is not always in the middle.'
+		this.fontSizeMin = 3
+		this.angleDistortion = 0.0
+		this.counter = 0
+		this.pointCount = 0
+	}
+
+	setup () {
 		super.setup()
 
-		s.background(0)
-		s.smooth()
-		s.cursor(s.CROSS)
+		this.p.background(0)
+		this.p.smooth()
+		this.p.cursor(this.p.CROSS)
 
-		x = s.random(s.width)
-		y = s.random(s.height)
+		this.x = this.p.random(this.p.width)
+		this.y = this.p.random(this.p.height)
 
-		s.textAlign(s.LEFT)
-		s.fill(255)
+		this.p.textAlign(this.p.LEFT)
+		this.p.fill(255)
 
-		toX = s.random(s.width)
-		toY = s.random(s.height)
+		this.toX = this.p.random(this.p.width)
+		this.toY = this.p.random(this.p.height)
 	}
 
-	draw (s) {
+	draw () {
 		super.draw()
 
-		pointCount++
-		if (pointCount > 10) {
-			this.initPoint(s)
-			pointCount = 0
+		this.pointCount++
+		if (this.pointCount > 10) {
+			this.initPoint()
+			this.pointCount = 0
 		}
-		s.fill(s.random(255))
+		this.p.fill(this.p.random(255))
 
-		let d = s.dist(x, y, toX, toY)
+		let d = this.p.dist(this.x, this.y, this.toX, this.toY)
 
-		s.textFont('Georgia')
-		s.textSize(fontSizeMin + d / 2)
-		const newLetter = letters.charAt(counter)
-		stepSize = s.textWidth(newLetter)
+		this.p.textFont('Georgia')
+		this.p.textSize(this.fontSizeMin + d / 2)
+		const newLetter = this.letters.charAt(this.counter)
+		this.stepSize = this.p.textWidth(newLetter)
 
-		if (d > stepSize) {
-			const angle = s.atan2(toY - y, toX - x)
+		if (d > this.stepSize) {
+			const angle = this.p.atan2(this.toY - this.y, this.toX - this.x)
 
-			s.push()
-			s.translate(x, y)
-			s.rotate(angle + s.random(angleDistortion))
-			s.text(newLetter, 0, 0)
-			s.pop()
+			this.p.push()
+			this.p.translate(this.x, this.y)
+			this.p.rotate(angle + this.p.random(this.angleDistortion))
+			this.p.text(newLetter, 0, 0)
+			this.p.pop()
 
-			counter++
-			if (counter > letters.length - 1) counter = 0
+			this.counter++
+			if (this.counter > this.letters.length - 1) this.counter = 0
 
-			x = x + s.cos(angle) * stepSize
-			y = y + s.sin(angle) * stepSize
+			this.x = this.x + this.p.cos(angle) * this.stepSize
+			this.y = this.y + this.p.sin(angle) * this.stepSize
 		}
 	}
 
-	mousePressed (s) {
+	mousePressed () {
 		super.mousePressed()
-		x = s.mouseX
-		y = s.mouseY
+		this.x = this.p.mouseX
+		this.y = this.p.mouseY
 	}
 
-	keyTyped (s) {
-		super.keyTyped(s)
-		if (s.key == 's' || s.key == 'S') s.save('P_2_3_3_01.png')
-	}
-
-	keyPressed (s) {
-		super.keyPressed()
-		// angleDistortion ctrls arrowkeys up/down
-		if (s.keyCode == s.DELETE || s.keyCode == s.BACKSPACE) s.background(255)
-		if (s.keyCode == s.UP_ARROW) angleDistortion += 0.1
-		if (s.keyCode == s.DOWN_ARROW) angleDistortion -= 0.1
-	}
-
-	doubleClicked (s) {
-		super.doubleClicked()
-		s.remove()
-	}
-
-	initPoint(s) {
-		toX = s.random(s.width)
-		toY = s.random(s.height)
+	initPoint() {
+		this.toX = this.p.random(this.p.width)
+		this.toY = this.p.random(this.p.height)
 	}
 }
 

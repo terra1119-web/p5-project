@@ -1,69 +1,69 @@
 'use strict'
 import Sketch from '@/class/Sketch.js'
 
-const numFigures = 100
-let figureRadius
-let figureSeparation
-
-const nVertex = 3
-
-let t = 0
-const dt = 5
-
-const rotSpeed = 0.002
-
-let direction = 1 // 1 or -1
-const pctToFade = 0.6
-
 class SketchTest extends Sketch {
-	setup(s) {
+	constructor () {
+		super('WEBGL', false)
+		// variables
+		this.numFigures = 100
+		this.figureRadius
+		this.figureSeparation
+		this.nVertex = 3
+		this.t = 0
+		this.dt = 5
+		this.rotSpeed = 0.002
+		this.direction = 1 // 1 or -1
+		this.pctToFade = 0.6
+	}
+
+	setup () {
 		super.setup()
 
-		s.pixelDensity(s.displayDensity())
-		if (s.width < s.height) {
-			figureRadius = s.width * 0.25
-			figureSeparation = s.width * 0.089
+		this.p.pixelDensity(this.p.displayDensity())
+		if (this.p.width < this.p.height) {
+			this.figureRadius = this.p.width * 0.25
+			this.figureSeparation = this.p.width * 0.089
 		} else {
-			figureRadius = s.height * 0.25
-			figureSeparation = s.height * 0.089
+			this.figureRadius = this.p.height * 0.25
+			this.figureSeparation = this.p.height * 0.089
 		}
-		s.rectMode(s.CENTER)
-		s.noFill()
-		s.colorMode(s.HSB, 255, 255, 255, 255)
+		this.p.rectMode(this.p.CENTER)
+		this.p.noFill()
+		this.p.colorMode(this.p.HSB, 255, 255, 255, 255)
 	}
 
-	draw(s) {
+	draw () {
 		super.draw()
 
-		s.background(0)
-		s.rotate(-t / dt * rotSpeed)
-		for (let i = 0; i < numFigures; i++) {
-			s.stroke(255, s.map(i, numFigures * pctToFade, numFigures, 255, 0))
-			s.push()
-			s.translate(0, 0, -figureSeparation * i + t)
-			s.rotate(s.PI / 60 * i)
-			this.drawFigure(s)
-			s.pop()
+		this.p.background(0)
+		this.p.rotate(-this.t / this.dt * this.rotSpeed)
+		for (let i = 0; i < this.numFigures; i++) {
+			this.p.stroke(255, this.p.map(i, this.numFigures * this.pctToFade, this.numFigures, 255, 0))
+			this.p.push()
+			this.p.translate(0, 0, -this.figureSeparation * i + this.t)
+			this.p.rotate(this.p.PI / 60 * i)
+			this.drawFigure()
+			this.p.pop()
 		}
-		t += dt * direction
-		if (t > figureSeparation * numFigures)
-			direction = -1
-		else if (t < 0)
-			direction = 1
+		this.t += this.dt * this.direction
+		if (this.t > this.figureSeparation * this.numFigures)
+			this.direction = -1
+		else if (this.t < 0)
+			this.direction = 1
 	}
 
-	drawFigure (s) {
-		s.beginShape()
-		for (let i = 0; i < nVertex; i++) {
-			const x = figureRadius * s.cos(s.TWO_PI / nVertex * i)
-			const y = figureRadius * s.sin(s.TWO_PI / nVertex * i)
-			s.vertex(x, y)
+	drawFigure () {
+		this.p.beginShape()
+		for (let i = 0; i < this.nVertex; i++) {
+			const x = this.figureRadius * this.p.cos(this.p.TWO_PI / this.nVertex * i)
+			const y = this.figureRadius * this.p.sin(this.p.TWO_PI / this.nVertex * i)
+			this.p.vertex(x, y)
 		}
-		s.endShape(s.CLOSE)
+		this.p.endShape(this.p.CLOSE)
 	}
 }
 
 export default function () {
-	const sketch = new SketchTest('WEBGL', false)
+	const sketch = new SketchTest()
 	sketch.init()
 }

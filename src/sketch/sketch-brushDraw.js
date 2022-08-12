@@ -1,160 +1,147 @@
 'use strict'
 import Sketch from '@/class/Sketch.js'
 
-// variables
-const imgs = []
-const balls = []
-const time_max = 8000
-let img
-let rand_arr = []
-let temp_arr = []
-let play_max
-let play_count = 0
-let time_count = 0
-let alpha = 0
-
-const image_name_array = [
-	'001.jpg',
-	'002.jpg',
-	'003.jpg',
-	'004.jpg',
-	'005.jpg',
-	'006.jpg',
-	'007.jpg',
-	'008.jpg',
-	'009.jpg',
-	'010.jpg',
-	'011.jpg',
-	'012.jpg',
-]
-
 class SketchTest extends Sketch {
-	preload (s) {
-		super.preload(s)
+	constructor () {
+		super()
+		// variables
+		this.imgs = []
+		this.balls = []
+		this.time_max = 8000
+		this.img
+		this.rand_arr = []
+		this.temp_arr = []
+		this.play_max
+		this.play_count = 0
+		this.time_count = 0
+		this.alpha = 0
 
-		image_name_array.forEach(image => {
-			const img = s.loadImage(`images/brushDraw/${image}`)
-			imgs.push(img)
+		this.image_name_array = [
+			'001.jpg',
+			'002.jpg',
+			'003.jpg',
+			'004.jpg',
+			'005.jpg',
+			'006.jpg',
+			'007.jpg',
+			'008.jpg',
+			'009.jpg',
+			'010.jpg',
+			'011.jpg',
+			'012.jpg',
+		]
+	}
+
+	preload () {
+		super.preload()
+
+		this.image_name_array.forEach(image => {
+			const img = this.p.loadImage(`images/brushDraw/${image}`)
+			this.imgs.push(img)
 		})
 	}
 
-	setup (s) {
-		super.setup(s)
+	setup () {
+		super.setup()
 
-		s.background(0)
-		s.textAlign(s.CENTER)
+		this.p.background(0)
+		this.p.textAlign(this.p.CENTER)
 
-		play_max = image_name_array.length
+		this.play_max = this.image_name_array.length
 		this.initArray()
 		this.initImage()
 	}
 
-	draw (s) {
-		super.draw(s)
+	draw () {
+		super.draw()
 
-		time_count ++
-		if (time_max < time_count) {
-			s.fill(0, alpha)
-			s.rect(0, 0 , s.width, s.height);
-			alpha += 1;
-			if (alpha > 255) {
-				play_count ++
+		this.time_count ++
+		if (this.time_max < this.time_count) {
+			this.p.fill(0, this.alpha)
+			this.p.rect(0, 0 , this.p.width, this.p.height)
+			this.alpha += 1;
+			if (this.alpha > 255) {
+				this.play_count ++
 
-				if (play_max <= play_count) {
-					play_count = 0
+				if (this.play_max <= this.play_count) {
+					this.play_count = 0
 					this.initArray()
 				}
-				time_count = 0
+				this.time_count = 0
 
-				alpha = 0
+				this.alpha = 0
 				this.clearScreen()
 				this.initImage()
 			}
 		} else {
-			for (let i = 0; i < balls.length; i++) {
-				balls[i].draw()
-				balls[i].update()
-				balls[i].changeColour()
+			for (let i = 0; i < this.balls.length; i++) {
+				this.balls[i].draw()
+				this.balls[i].update()
+				this.balls[i].changeColour()
 			}
 
-			for (let i = 0; i < balls.length; i++) {
-				if (balls[i].radius < 0){
-					balls.splice(i, 1)
+			for (let i = 0; i < this.balls.length; i++) {
+				if (this.balls[i].radius < 0){
+					this.balls.splice(i, 1)
 				}
 			}
 
-			const rnd = s.random(100)
+			const rnd = this.p.random(100)
 			if(rnd > 30) return
 
 			for (let i = 0; i < 5; i++) {
-				const x = s.floor(s.random(s.width))
-				const y = s.floor(s.random(s.height))
-				balls.push(new Ball(x, y, s.color(img.get(x + s.random(2), y + s.random(2))), s, img))
+				const x = this.p.floor(this.p.random(this.p.width))
+				const y = this.p.floor(this.p.random(this.p.height))
+				this.balls.push(new Ball(x, y, this.p.color(this.img.get(x + this.p.random(2), y + this.p.random(2))), this.p, this.img))
 			}
 		}
 	}
 
-	mousePressed (s) {
-		super.mousePressed(s)
-	}
-
-	keyTyped (s) {
-		super.keyTyped(s)
-	}
-
-	keyPressed (s) {
-		super.keyPressed(s)
-	}
-
-	doubleClicked (s) {
-		super.doubleClicked(s)
-	}
-
 	initArray () {
-		let clone = [...imgs]
-		rand_arr = new Array(clone.length)
-		temp_arr = null
+		let clone = [...this.imgs]
+		this.rand_arr = new Array(clone.length)
+		this.temp_arr = null
 		let rand_num = 0
-		for (let i = 0; i < rand_arr.length; i++) {
-			temp_arr = new Array(1)
-			rand_num = Math.floor(this.s.random(clone.length))
+		for (let i = 0; i < this.rand_arr.length; i++) {
+			this.temp_arr = new Array(1)
+			rand_num = Math.floor(this.p.random(clone.length))
 
-			temp_arr = this.s.subset(clone, rand_num, 1)
-			rand_arr[i] = temp_arr[0]
+			this.temp_arr = this.p.subset(clone, rand_num, 1)
+			this.rand_arr[i] = this.temp_arr[0]
 
-			temp_arr = new Array(clone.length - 1)
+			this.temp_arr = new Array(clone.length - 1)
 
 			let count = 0
 			for (let j = 0; j < clone.length; j++) {
 				if (j != rand_num) {
-					temp_arr[count] = clone[j]
+					this.temp_arr[count] = clone[j]
 					count += 1
 				}
 			}
-			clone = temp_arr
+			clone = this.temp_arr
 		}
 	}
 
 	initImage () {
-		img = null
-		img = rand_arr[play_count]
-		img.resize(this.s.width, this.s.height)
+		this.img = null
+		this.img = this.rand_arr[this.play_count]
+		this.img.resize(this.p.width, this.p.height)
 	}
 
-	clearScreen() {
-		this.s.background(0)
+	clearScreen () {
+		this.p.background(0)
 	}
 }
 
 class Ball {
-	constructor (mX, mY, c, s, img) {
-		this.s = s
+	constructor (mX, mY, c, p, img) {
+		this.p = p
 		this.img = img
-		this.location = this.s.createVector(mX, mY)
-		this.radius = this.s.random(.01)
-		this.r = this.s.red(c)
-		this.g = this.s.green(c)
-		this.b = this.s.blue(c)
+		this.location = this.p.createVector(mX, mY)
+		this.radius = this.p.random(.01)
+		this.r = this.p.red(c)
+		this.g = this.p.green(c)
+		this.b = this.p.blue(c)
 
 		this.xOff = 0.0
 		this.yOff = 0.0
@@ -167,29 +154,29 @@ class Ball {
 	}
 
 	update () {
-		this.radius -= this.s.random(0.0001)
+		this.radius -= this.p.random(0.0001)
 
-		this.xOff = this.xOff + this.s.random(-0.5, 0.5)
-		this.nX = this.s.noise(this.location.x) * this.xOff
+		this.xOff = this.xOff + this.p.random(-0.5, 0.5)
+		this.nX = this.p.noise(this.location.x) * this.xOff
 
-		this.yOff = this.yOff + this.s.random(-0.5, 0.5)
-		this.nY = this.s.noise(this.location.y) * this.yOff
+		this.yOff = this.yOff + this.p.random(-0.5, 0.5)
+		this.nY = this.p.noise(this.location.y) * this.yOff
 
 		this.location.x += this.nX
 		this.location.y += this.nY
 	}
 
 	changeColour () {
-		this.c = this.s.color(this.img.get(this.location.x, this.location.y))
-		this.r = this.s.red(this.c)
-		this.g = this.s.green(this.c)
-		this.b = this.s.blue(this.c)
+		this.c = this.p.color(this.img.get(this.location.x, this.location.y))
+		this.r = this.p.red(this.c)
+		this.g = this.p.green(this.c)
+		this.b = this.p.blue(this.c)
 	}
 
 	draw () {
-		this.s.noStroke()
-		this.s.stroke(this.r, this.g, this.b)
-		this.s.ellipse(this.location.x, this.location.y, this.radius * 50, this.radius * 50)
+		this.p.noStroke()
+		this.p.stroke(this.r, this.g, this.b)
+		this.p.ellipse(this.location.x, this.location.y, this.radius * 50, this.radius * 50)
 	}
 }
 

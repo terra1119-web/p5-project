@@ -1,45 +1,45 @@
 'use strict'
 import Sketch from '@/class/Sketch.js'
 
-// variables
-let a = 0
-let r = 0
-const conchoid = (s, a) => {
-	s.beginShape()
-	for(let i = 0; i< 356; i++){
-		s.y = s.width / 60 * (1 / s.cos(i) + a * s.cos(i)) * s.cos(i)
-		s.x = s.width / 60 * (1 / s.cos(i) + a * s.cos(i)) * s.sin(i)
-		s.vertex(s.x, s.y)
-	}
-	s.endShape()
-	s.rotate(r)
-	r++
-}
-
 class SketchTest extends Sketch {
-	preload (s) {
-		super.preload(s)
+	constructor () {
+		super()
+		// variables
+		this.a = 0
+		this.r = 0
 	}
 
-	setup (s) {
-		super.setup(s)
+	setup () {
+		super.setup()
 
-		s.background(0)
-		s.stroke(255)
-		s.noFill()
-		s.strokeWeight(0.05)
+		this.p.background(0)
+		this.p.stroke(255)
+		this.p.noFill()
+		this.p.strokeWeight(0.05)
 	}
 
-	draw (s) {
-		super.draw(s)
+	draw () {
+		super.draw()
 
-		s.background(0)
-		s.translate(s.width * 0.5, s.height * 0.5)
+		this.p.background(0)
+		this.p.translate(this.p.width * 0.5, this.p.height * 0.5)
 		for(let i = -3; i <= 3; i++){
-			conchoid(s, a + i)
-			conchoid(s, a + i)
+			this.conchoid(this.a + i)
+			this.conchoid(this.a + i)
 		}
-		a = 100 * s.sin(s.frameCount / 360)
+		this.a = 100 * this.p.sin(this.p.frameCount / 360)
+	}
+
+	conchoid (a) {
+		this.p.beginShape()
+		for(let i = 0; i< 356; i++){
+			this.p.y = this.p.width / 60 * (1 / this.p.cos(i) + a * this.p.cos(i)) * this.p.cos(i)
+			this.p.x = this.p.width / 60 * (1 / this.p.cos(i) + a * this.p.cos(i)) * this.p.sin(i)
+			this.p.vertex(this.p.x, this.p.y)
+		}
+		this.p.endShape()
+		this.p.rotate(this.r)
+		this.r++
 	}
 }
 

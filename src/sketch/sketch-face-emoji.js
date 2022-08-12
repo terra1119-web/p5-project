@@ -2,43 +2,47 @@
 import Sketch from '@/class/Sketch.js'
 import ml5 from 'ml5'
 
-// variables
-let video
-let poseNet
-let poses = []
-let emojiCode
-
 class SketchTest extends Sketch {
-	setup (s) {
-		super.setup()
-
-		s.background(0)
-		video = s.createCapture(s.VIDEO)
-		video.size(s.width, s.height)
-
-		poseNet = ml5.poseNet(video, this.modelReady)
-		poseNet.on('pose', results => {
-			poses = results
-		})
-		video.hide()
-
-		s.textAlign(s.CENTER, s.CENTER)
-		// emojiCode = s.floor(s.random(128512, 128592))
-		emojiCode = 128049
+	constructor () {
+		super()
+		// variables
+		this.video
+		this.poseNet
+		this.poses = []
+		this.emojiCode
 	}
 
-	draw (s) {
+	setup () {
+		super.setup()
+
+		this.p.background(0)
+		this.video = this.p.createCapture(this.p.VIDEO)
+		this.video.size(this.p.width, this.p.height)
+
+		this.poseNet = ml5.poseNet(this.video, this.modelReady)
+		this.poseNet.on('pose', results => {
+			this.poses = results
+		})
+		this.video.hide()
+
+		this.p.textAlign(this.p.CENTER, this.p.CENTER)
+		// emojiCode = s.floor(s.random(128512, 128592))
+		this.emojiCode = 128049
+	}
+
+	draw () {
 		super.draw()
-		s.push()
-		s.translate(s.width, 0)
-		s.scale(-1, 1)
-		s.image(video, 0, 0, s.width, s.height)
-		s.blendMode(s.ADD)
-		s.image(video, 0, 0, s.width, s.height)
-		s.blendMode(s.BLEND)
+
+		this.p.push()
+		this.p.translate(this.p.width, 0)
+		this.p.scale(-1, 1)
+		this.p.image(this.video, 0, 0, this.p.width, this.p.height)
+		this.p.blendMode(this.p.ADD)
+		this.p.image(this.video, 0, 0, this.p.width, this.p.height)
+		this.p.blendMode(this.p.BLEND)
 
 		this.drawEmoji()
-		s.pop()
+		this.p.pop()
 	}
 
 	modelReady () {
@@ -50,10 +54,10 @@ class SketchTest extends Sketch {
 		// 	emojiCode = this.s.floor(this.s.random(128512, 128592))
 		// }
 
-		const emojiText = String.fromCodePoint(emojiCode)
+		const emojiText = String.fromCodePoint(this.emojiCode)
 
-		for (let i = 0; i < poses.length; i++) {
-			let pose = poses[i].pose
+		for (let i = 0; i < this.poses.length; i++) {
+			let pose = this.poses[i].pose
 
 			const nosePoint = pose.keypoints[0]
 			const leftEarPoint = pose.keypoints[3]
@@ -77,20 +81,21 @@ class SketchTest extends Sketch {
 			}
 
 			if (rightX && rightY && leftX && leftY && noseX && noseY) {
-				const dis = this.s.dist(rightX, rightY, leftX, leftY)
-				this.s.blendMode(this.s.MULTIPLY)
-				this.s.textSize(dis * 1.5)
-				this.s.text(emojiText, noseX, noseY-100)
-				this.s.text(emojiText, noseX, noseY-100)
-				this.s.blendMode(this.s.BLEND)
+				const dis = this.p.dist(rightX, rightY, leftX, leftY)
+				this.p.blendMode(this.p.MULTIPLY)
+				this.p.textSize(dis * 1.5)
+				this.p.text(emojiText, noseX, noseY-100)
+				this.p.text(emojiText, noseX, noseY-100)
+				this.p.blendMode(this.p.BLEND)
 			}
 		}
 	}
 
 	dispose () {
-		video.remove()
-		video = null
 		super.dispose()
+
+		this.video.remove()
+		this.video = null
 	}
 }
 

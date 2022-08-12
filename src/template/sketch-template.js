@@ -1,34 +1,38 @@
 'use strict'
 import Sketch from '@/class/Sketch.js'
 
-// variables
 class SketchTest extends Sketch {
-	preload (s) {
-		super.preload(s)
+	constructor () {
+		super('WEBGL', false)
+		// variables
 	}
 
-	setup (s) {
-		super.setup(s)
+	preload () {
+		super.preload()
 	}
 
-	draw (s) {
-		super.draw(s)
+	setup () {
+		super.setup()
 	}
 
-	mousePressed (s) {
-		super.mousePressed(s)
+	draw () {
+		super.draw()
 	}
 
-	keyTyped (s) {
-		super.keyTyped(s)
+	mousePressed () {
+		super.mousePressed()
 	}
 
-	keyPressed (s) {
-		super.keyPressed(s)
+	keyTyped () {
+		super.keyTyped()
 	}
 
-	doubleClicked (s) {
-		super.doubleClicked(s)
+	keyPressed () {
+		super.keyPressed()
+	}
+
+	doubleClicked () {
+		super.doubleClicked()
 	}
 }
 

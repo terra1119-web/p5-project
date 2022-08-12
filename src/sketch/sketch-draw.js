@@ -1,49 +1,50 @@
 'use strict'
 import Sketch from '@/class/Sketch.js'
 
-const colors = "e6e1c5-d4cb92-395c6b-80a4ed-bcd3f2-f24-fff-52489c-4062bb-59c3c3-ebebeb-f45b69-0c090d-e01a4f-f15946-f9c22e-53b3cb".split("-").map(a => "#" + a)
-let overAllTexture
-
 class Particle {
-	constructor (args, s) {
+	constructor (args, p, mainGraphics, overAllTexture) {
+		this.p = p
+		this.mainGraphics = mainGraphics
+		this.overAllTexture = overAllTexture
+		this.colors = "e6e1c5-d4cb92-395c6b-80a4ed-bcd3f2-f24-fff-52489c-4062bb-59c3c3-ebebeb-f45b69-0c090d-e01a4f-f15946-f9c22e-53b3cb".split("-").map(a => "#" + a)
 		const def = {
-			p: s.createVector(0, 0),
-			v: s.createVector(0, 0),
-			a: s.createVector(0, 0),
+			point: this.p.createVector(0, 0),
+			v: this.p.createVector(0, 0),
+			a: this.p.createVector(0, 0),
 			r: 10,
-			dp: s.random(0.93, 0.99),
-			angMult: s.random(10, 50),
-			color: s.random(colors),
+			dp: this.p.random(0.93, 0.99),
+			angMult: this.p.random(10, 50),
+			color: this.p.random(this.colors),
 			flg: false
 		}
-		this.s = s
 		Object.assign(def, args)
 		Object.assign(this, def)
 	}
+
 	draw () {
 		// strokeWeight(3)
-		mainGraphics.push()
-		mainGraphics.translate(this.p.x, this.p.y)
+		this.mainGraphics.push()
+		this.mainGraphics.translate(this.point.x, this.point.y)
 		// const color = s.color(this.color)
 		// color.setAlpha(125)
-		mainGraphics.fill(this.color)
-		mainGraphics.noStroke()
+		this.mainGraphics.fill(this.color)
+		this.mainGraphics.noStroke()
 		//stroke(0,100)
-		mainGraphics.ellipse(0, 0, this.r)
-		mainGraphics.pop()
+		this.mainGraphics.ellipse(0, 0, this.r)
+		this.mainGraphics.pop()
 	}
 
 	update () {
-		this.p.add(this.v)
+		this.point.add(this.v)
 		this.v.add(this.a)
-		let delta = this.s.createVector(this.p.x - this.s.width / 2, this.p.y - this.s.height / 2)
+		let delta = this.p.createVector(this.point.x - this.p.width / 2, this.point.y - this.p.height / 2)
 		let ang = delta.heading()
 		let rr = delta.mag()
 
-		this.v.x += -this.s.sin(ang * this.angMult + rr / 5) / 15 + this.s.cos(rr / 10) / 10
-		this.v.y += -this.s.cos(ang * this.angMult + rr / 5) / 15 + this.s.sin(rr / 10) / 10
-		this.a.x = (this.s.noise(this.p.x, this.p.y, 5) - 0.5) * 1.1
-		this.a.y = (this.s.noise(this.p.x, this.p.y, 5000) - 0.5) * 1.1
+		this.v.x += -this.p.sin(ang * this.angMult + rr / 5) / 15 + this.p.cos(rr / 10) / 10
+		this.v.y += -this.p.cos(ang * this.angMult + rr / 5) / 15 + this.p.sin(rr / 10) / 10
+		this.a.x = (this.p.noise(this.point.x, this.point.y, 5) - 0.5) * 1.1
+		this.a.y = (this.p.noise(this.point.x, this.point.y, 5000) - 0.5) * 1.1
 
 		this.v.mult(0.95)
 		// this.r*= this.dp
@@ -56,50 +57,55 @@ class Particle {
 	}
 }
 
-let particles = []
-let mainGraphics
-
 class SketchTest extends Sketch {
-	setup (s) {
+	constructor () {
+		super()
+		// variables
+		this.particles = []
+		this.mainGraphics
+		this.overAllTexture
+	}
+
+	setup () {
 		super.setup()
-		overAllTexture = s.createGraphics(s.width, s.height)
-		mainGraphics = s.createGraphics(s.width, s.height)
+		this.overAllTexture = this.p.createGraphics(this.p.width, this.p.height)
+		this.mainGraphics = this.p.createGraphics(this.p.width, this.p.height)
 		// mainGraphics.blendMode(s.ADD)
-		overAllTexture.loadPixels()
+		this.overAllTexture.loadPixels()
 
 		// noStroke()
-		for (let i = 0; i < s.width + 50; i++) {
-			for (let o = 0; o < s.height + 50; o++) {
-				overAllTexture.set(i, o, s.color(150, s.noise(i / 10, i * o / 300) * s.random([0, 50, 100])))
+		for (let i = 0; i < this.p.width + 50; i++) {
+			for (let o = 0; o < this.p.height + 50; o++) {
+				this.overAllTexture.set(i, o, this.p.color(150, this.p.noise(i / 10, i * o / 300) * this.p.random([0, 50, 100])))
 			}
 		}
-		overAllTexture.updatePixels()
+		this.overAllTexture.updatePixels()
 
-		s.background(0)
-		for (let i = 0; i < s.width; i += 200) {
-			for (let o = 0; o < s.height; o += 100) {
-				particles.push(
+		this.p.background(0)
+		for (let i = 0; i < this.p.width; i += 200) {
+			for (let o = 0; o < this.p.height; o += 100) {
+				this.particles.push(
 					new Particle({
-						p: s.createVector(i, o),
-						v: s.createVector(s.noise(i / 10) * 10 - 5, s.noise(o / 10) * 10 - 5),
-						r: s.random(150)
-					}, s)
+						point: this.p.createVector(i, o),
+						v: this.p.createVector(this.p.noise(i / 10) * 10 - 5, this.p.noise(o / 10) * 10 - 5),
+						r: this.p.random(150)
+					}, this.p, this.mainGraphics, this.overAllTexture)
 				)
 			}
 		}
-		mainGraphics.background(0)
+		this.mainGraphics.background(0)
 	}
 
-	draw (s) {
+	draw () {
 		super.draw()
-		particles.forEach(p => p.draw())
-		particles.forEach(p => p.update())
-		s.image(mainGraphics, 0, 0)
+		this.particles.forEach(p => p.draw())
+		this.particles.forEach(p => p.update())
+		this.p.image(this.mainGraphics, 0, 0)
 
-		s.push()
-		s.blendMode(s.ADD)
-		s.image(overAllTexture, 0, 0)
-		s.pop()
+		this.p.push()
+		this.p.blendMode(this.p.ADD)
+		this.p.image(this.overAllTexture, 0, 0)
+		this.p.pop()
 	}
 }
 

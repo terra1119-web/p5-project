@@ -2,44 +2,48 @@
 import Sketch from '@/class/Sketch.js'
 import ml5 from 'ml5'
 
-// variables
-let mask
-let mask2
-let mask_array = []
-let video
-let faceapi
-let detections
-let _this
-
 class SketchTest extends Sketch {
-	preload (s) {
-		super.preload()
-		mask = s.loadImage('images/mask.png')
-		mask2 = s.loadImage('images/sabito.png')
-		mask_array = [mask, mask2]
+	constructor () {
+		super()
+		// variables
+		this.mask
+		this.mask2
+		this.mask_array = []
+		this.video
+		this.faceapi
+		this.detections
+		this.modelLoaded = this.modelLoaded.bind(this)
+		this.gotFaces = this.gotFaces.bind(this)
 	}
 
-	setup (s) {
+	preload () {
+		super.preload()
+
+		this.mask = this.p.loadImage('images/mask.png')
+		this.mask2 = this.p.loadImage('images/sabito.png')
+		this.mask_array = [this.mask, this.mask2]
+	}
+
+	setup () {
 		super.setup()
 
-		_this = this
-		s.background(0)
-		mask.loadPixels()
-		mask2.loadPixels()
+		this.p.background(0)
+		this.mask.loadPixels()
+		this.mask2.loadPixels()
 
-		video = s.createCapture(s.VIDEO)
-		video.size(s.width, s.height)
-		video.hide()
+		this.video = this.p.createCapture(this.p.VIDEO)
+		this.video.size(this.p.width, this.p.height)
+		this.video.hide()
 
 		const detectionOptions = {
 			withLandmarks: true,
 			withDescriptors: false,
 		}
-		faceapi = ml5.faceApi(video, detectionOptions, this.modelLoaded)
+		this.faceapi = ml5.faceApi(this.video, detectionOptions, this.modelLoaded)
 	}
 
 	modelLoaded () {
-		faceapi.detect(_this.gotFaces)
+		this.faceapi.detect(this.gotFaces)
 	}
 
 	gotFaces (error, result) {
@@ -47,43 +51,43 @@ class SketchTest extends Sketch {
 			console.log(error)
 			return
 		}
-		detections = result
 
-		if (!_this) return
+		this.detections = result
 
-		_this.s.background(0)
-		_this.s.push()
-		_this.s.translate(_this.s.width, 0)
-		_this.s.scale(-1, 1)
-		_this.s.image(video, 0, 0, _this.s.width, _this.s.height)
+		this.p.background(0)
+		this.p.push()
+		this.p.translate(this.p.width, 0)
+		this.p.scale(-1, 1)
+		this.p.image(this.video, 0, 0, this.p.width, this.p.height)
 
-		if (detections && detections.length > 0) {
+		if (this.detections && this.detections.length > 0) {
 			let ii = 0
-			for (let i = 0, len = detections.length; i < len; i++) {
-				_this.s.image(
-					mask_array[ii],
-					detections[i].detection.box.left,
-					detections[i].detection.box.top,
-					detections[i].landmarks.imageWidth,
-					detections[i].landmarks.imageHeight
+			for (let i = 0, len = this.detections.length; i < len; i++) {
+				this.p.image(
+					this.mask_array[ii],
+					this.detections[i].detection.box.left,
+					this.detections[i].detection.box.top,
+					this.detections[i].landmarks.imageWidth,
+					this.detections[i].landmarks.imageHeight
 				)
 				ii++
 				if (ii === 2) ii = 0
 			}
 		}
-		_this.s.pop()
+		this.p.pop()
 
-		faceapi.detect(_this.gotFaces)
+		this.faceapi.detect(this.gotFaces)
 	}
 
 	dispose () {
-		mask = null
-		video.remove()
-		video = null
-		faceapi = null
-		_this.gotFaces = null
-		_this = null
 		super.dispose()
+
+		this.mask = null
+		this.video.remove()
+		this.video = null
+		this.faceapi = null
+		this.gotFaces = null
+		// _this = null
 	}
 }
 

@@ -1,64 +1,48 @@
 'use strict'
 import Sketch from '@/class/Sketch.js'
 
-// variables
-let unit, theta
-const frames = 240
-const num = 25
-
 class SketchTest extends Sketch {
-	preload(s) {
-		super.preload(s)
+	constructor () {
+		super()
+		// variables
+		this.unit
+		this.theta
+		this.frames = 240
+		this.num = 25
 	}
 
-	setup(s) {
-		super.setup(s)
+	setup () {
+		super.setup()
 
-		s.background(0)
-		unit = s.width / num
-		theta = 0
+		this.p.background(0)
+		this.unit = this.p.width / this.num
+		this.theta = 0
 	}
 
-	draw(s) {
-		super.draw(s)
-		s.background(0)
+	draw () {
+		super.draw()
 
-		s.fill(0, 30)
-		s.noStroke()
-		s.rect(0, 0, s.width, s.height)
-		s.fill(255)
-		for (let y = 0; y <= num; y++) {
-			for (let x = 0; x <= num; x++) {
-				const distance = s.dist(s.width / 2, s.height / 2, x * unit, y * unit)
-				const offSet = s.map(distance, 0, s.sqrt(s.sq(s.width / 2) + s.sq(s.height / 2)), 0, s.TWO_PI)
-				const sz = s.map(s.sin(theta + offSet), -1, 1, unit * .2, unit * .1)
-				const angle = s.atan2(y * unit - s.height / 2, x * unit - s.width / 2)
-				s.push()
-				s.translate(x * unit, y * unit)
-				s.rotate(angle)
-				const px = s.map(s.sin(theta + offSet), -1, 1, 0, 50)
-				s.ellipse(px, 0, sz, sz)
-				s.pop()
+		this.p.background(0)
+		this.p.fill(0, 30)
+		this.p.noStroke()
+		this.p.rect(0, 0, this.p.width, this.p.height)
+		this.p.fill(255)
+		for (let y = 0; y <= this.num; y++) {
+			for (let x = 0; x <= this.num; x++) {
+				const distance = this.p.dist(this.p.width / 2, this.p.height / 2, x * this.unit, y * this.unit)
+				const offSet = this.p.map(distance, 0, this.p.sqrt(this.p.sq(this.p.width / 2) + this.p.sq(this.p.height / 2)), 0, this.p.TWO_PI)
+				const sz = this.p.map(this.p.sin(this.theta + offSet), -1, 1, this.unit * .2, this.unit * .1)
+				const angle = this.p.atan2(y * this.unit - this.p.height / 2, x * this.unit - this.p.width / 2)
+				this.p.push()
+				this.p.translate(x * this.unit, y * this.unit)
+				this.p.rotate(angle)
+				const px = this.p.map(this.p.sin(this.theta + offSet), -1, 1, 0, 50)
+				this.p.ellipse(px, 0, sz, sz)
+				this.p.pop()
 			}
 		}
-		s.stroke(255)
-		theta -= s.TWO_PI / frames
-	}
-
-	mousePressed(s) {
-		super.mousePressed(s)
-	}
-
-	keyTyped(s) {
-		super.keyTyped(s)
-	}
-
-	keyPressed(s) {
-		super.keyPressed(s)
-	}
-
-	doubleClicked(s) {
-		super.doubleClicked(s)
+		// this.p.stroke(255)
+		this.theta -= this.p.TWO_PI / this.frames
 	}
 }
 
