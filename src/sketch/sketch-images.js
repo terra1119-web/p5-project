@@ -2,8 +2,8 @@
 import Sketch from '@/class/Sketch.js'
 
 class SketchTest extends Sketch {
-	constructor () {
-		super()
+	constructor() {
+		super({})
 		// variables
 		this.t
 		this.textsize = 14
@@ -38,7 +38,7 @@ class SketchTest extends Sketch {
 		this.alpha = 0
 	}
 
-	preload () {
+	preload() {
 		super.preload()
 
 		this.image_name_array.forEach(image => {
@@ -49,7 +49,7 @@ class SketchTest extends Sketch {
 		this.font = this.p.loadFont('images/text-draw/Roboto-Bold.ttf')
 	}
 
-	setup () {
+	setup() {
 		super.setup()
 
 		this.p.background(0)
@@ -67,21 +67,21 @@ class SketchTest extends Sketch {
 		this.initImage()
 	}
 
-	draw () {
+	draw() {
 		super.draw()
 		if (!this.p) return
 
-		this.time_count ++
+		this.time_count++
 		if (this.time_max < this.time_count) {
 			this.is_complete = true
 
 			this.p.fill(0, this.alpha)
-			this.p.rect(0, 0 , this.p.width, this.p.height)
+			this.p.rect(0, 0, this.p.width, this.p.height)
 			this.alpha += 1
-			if (this.alpha > 255){
-				this.play_count ++
+			if (this.alpha > 255) {
+				this.play_count++
 
-				if(this.play_max <= this.play_count){
+				if (this.play_max <= this.play_count) {
 					this.play_count = 0
 					this.initArray()
 				}
@@ -94,11 +94,11 @@ class SketchTest extends Sketch {
 			}
 
 		} else {
-			if(!this.is_complete && this.p) this.autoPaintRegion(0, 0, this.p.width, this.p.height)
+			if (!this.is_complete && this.p) this.autoPaintRegion(0, 0, this.p.width, this.p.height)
 		}
 	}
 
-	initArray () {
+	initArray() {
 		let clone = [...this.imgs]
 		this.rand_arr = new Array(clone.length)
 		this.temp_arr = null
@@ -123,24 +123,24 @@ class SketchTest extends Sketch {
 		}
 	}
 
-	initImage () {
+	initImage() {
 		this.img = null
 		this.img = this.rand_arr[this.play_count]
 		this.img.resize(this.p.width, this.p.height)
 	}
 
-	clearScreen () {
+	clearScreen() {
 		const field = this.blackNotWhite ? this.whitefield : this.blackfield
 		this.p.background(field)
 	}
 
-	autoPaintRegion (minX, minY, maxX, maxY) {
+	autoPaintRegion(minX, minY, maxX, maxY) {
 		const locX = Math.floor(this.p.random(minX, maxX))
 		const locY = Math.floor(this.p.random(minY, maxY))
 		this.paintWordAtPoint(locX, locY)
 	}
 
-	paintWordAtPoint (locX, locY) {
+	paintWordAtPoint(locX, locY) {
 		// absolute positioning
 		const offX = this.getJitter()
 		const offY = this.getJitter()
@@ -148,16 +148,16 @@ class SketchTest extends Sketch {
 		this.p.text(this.t.getWord(), locX + offX, locY + offY)
 	}
 
-	getJitter () {
+	getJitter() {
 		const rnd = this.p.random(-20, 20)
 		return rnd
 	}
 
-	setFill (locX, locY) {
+	setFill(locX, locY) {
 		if (locX < 0) locX = 0
-		if (locX >= this.p.width) locX = this.p.width-1
+		if (locX >= this.p.width) locX = this.p.width - 1
 		if (locY < 0) locY = 0
-		if (locY >= this.p.height) locY = this.p.height-1
+		if (locY >= this.p.height) locY = this.p.height - 1
 
 		// const loc = locX + (locY * this.s.width)
 		// console.log((loc + "/" + img.pixels.length + " locX: " + locX + " locY: " + locY))
@@ -175,7 +175,7 @@ class SketchTest extends Sketch {
 }
 
 class TextManager {
-	constructor (p, wInput = 'Wander ') {
+	constructor(p, wInput = 'Wander ') {
 		this.word = wInput
 		this.SPLIT_TOKENS = ' ?,;:[]<>()"'
 		this.charIndex = 0
@@ -183,13 +183,13 @@ class TextManager {
 		this.words = p.splitTokens(this.word, this.SPLIT_TOKENS)
 	}
 
-	getChar () {
+	getChar() {
 		const c = this.word.charAt(this.charIndex)
 		this.charIndex = (this.charIndex + 1) % this.word.length()
 		return c
 	}
 
-	getWord () {
+	getWord() {
 		const word = this.words[this.wordIndex]
 		this.wordIndex = (this.wordIndex + 1) % this.words.length
 		return word

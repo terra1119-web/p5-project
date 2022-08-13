@@ -1,5 +1,6 @@
-import P5 from 'p5'
-import Sketch from '@/class/Sketch.js'
+'use strict'
+import p5 from 'p5'
+import Sketch from '@/class/Sketch'
 
 class Particle {
 	constructor(p, vx, vy) {
@@ -13,19 +14,19 @@ class Particle {
 		this.img
 	}
 
-	update () {
+	update() {
 		this.velocity.add(this.accelaration)
 		this.velocity.mult(1.0 - this.friction)
 		this.location.add(this.velocity)
 		this.accelaration.set(0.0, 0.0)
 	}
 
-	display () {
+	display() {
 		this.p.image(this.img, this.location.x, this.location.y)
 	}
 
-	attract (particle) {
-		const force = new P5.Vector.sub(particle.location, this.location)
+	attract(particle) {
+		const force = new p5.Vector.sub(particle.location, this.location)
 		let distance = force.mag()
 		distance = this.p.constrain(distance, 4.0, 1000.0)
 		force.normalize()
@@ -34,12 +35,12 @@ class Particle {
 		return force
 	}
 
-	applyForce (force) {
-		const f = new P5.Vector.div(force, this.mass)
+	applyForce(force) {
+		const f = new p5.Vector.div(force, this.mass)
 		this.accelaration.add(f)
 	}
 
-	wallThrough () {
+	wallThrough() {
 		if (this.location.x > this.p.width) {
 			this.location.x = 0
 		}
@@ -54,7 +55,7 @@ class Particle {
 		}
 	}
 
-	createParticleImage () {
+	createParticleImage() {
 		const side = 400
 		const center = 200
 
@@ -86,14 +87,14 @@ class Particle {
 }
 
 class SketchTest extends Sketch {
-	constructor () {
-		super()
+	constructor() {
+		super({})
 		// variables
 		this.count = 100
 		this.particles = []
 	}
 
-	setup () {
+	setup() {
 		super.setup()
 
 		this.p.blendMode(this.p.ADD)
@@ -106,7 +107,7 @@ class SketchTest extends Sketch {
 		}
 	}
 
-	draw () {
+	draw() {
 		super.draw()
 		if (!this.p) return
 
@@ -129,7 +130,7 @@ class SketchTest extends Sketch {
 		}
 	}
 
-	mousePressed () {
+	mousePressed() {
 		super.mousePressed()
 
 		this.particles.push(new Particle(this.p, 0, 0))
@@ -143,4 +144,3 @@ export default function () {
 	const sketch = new SketchTest()
 	sketch.init()
 }
-

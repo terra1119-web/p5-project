@@ -2,8 +2,8 @@
 import Sketch from '@/class/Sketch.js'
 
 class SketchTest extends Sketch {
-	constructor () {
-		super()
+	constructor() {
+		super({})
 		// variables
 		this.unit
 		this.theta
@@ -11,7 +11,7 @@ class SketchTest extends Sketch {
 		this.num = 25
 	}
 
-	setup () {
+	setup() {
 		super.setup()
 
 		this.p.background(0)
@@ -19,7 +19,7 @@ class SketchTest extends Sketch {
 		this.theta = 0
 	}
 
-	draw () {
+	draw() {
 		super.draw()
 		if (!this.p) return
 

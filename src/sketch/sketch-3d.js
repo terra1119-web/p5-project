@@ -2,8 +2,11 @@
 import Sketch from '@/class/Sketch.js'
 
 class SketchTest extends Sketch {
-	constructor () {
-		super('WEBGL', false)
+	constructor() {
+		super({
+			renderer: 'WEBGL',
+			use2D: false
+		})
 		// variables
 		this.MATERIAL_MAX = 100
 		this.DISTANCE = 1200
@@ -14,7 +17,7 @@ class SketchTest extends Sketch {
 		this.count = 0
 	}
 
-	setup () {
+	setup() {
 		super.setup()
 
 		this.p.noFill()
@@ -22,7 +25,7 @@ class SketchTest extends Sketch {
 		this.spread()
 	}
 
-	draw () {
+	draw() {
 		super.draw()
 		if (!this.p) return
 
@@ -35,7 +38,7 @@ class SketchTest extends Sketch {
 		)
 		this.theta += 0.4
 		this.p.push()
-		for(let i = 0; i < this.MATERIAL_MAX; i++){
+		for (let i = 0; i < this.MATERIAL_MAX; i++) {
 			this.p.translate(this.array[i][0], this.array[i][1], this.array[i][2])
 			this.p.sphere(80)
 		}
@@ -48,17 +51,17 @@ class SketchTest extends Sketch {
 		}
 	}
 
-	xRandomInt (nMax, nMin) {
+	xRandomInt(nMax, nMin) {
 		// nMinからnMaxまでのランダムな整数を返す
-		const nRandomInt = Math.floor(Math.random()*(nMax-nMin+1))+nMin
+		const nRandomInt = Math.floor(Math.random() * (nMax - nMin + 1)) + nMin
 		return nRandomInt
 	}
 
-	spread () {
+	spread() {
 		this.no = this.xRandomInt(3, 0)
 		// no = 4
 		switch (this.no) {
-			case 0 :
+			case 0:
 				for (let i = 0; i < this.MATERIAL_MAX; i++) {
 					this.array[i] = []
 					this.array[i][0] = Math.random() * 2000 - 1000
@@ -66,7 +69,7 @@ class SketchTest extends Sketch {
 					this.array[i][2] = Math.random() * 2000 - 1000
 				}
 				break;
-			case 1 :
+			case 1:
 				for (let j = 0; j < this.MATERIAL_MAX; j++) {
 					const r = 360 / this.MATERIAL_MAX * j
 					this.array[j] = []
@@ -75,7 +78,7 @@ class SketchTest extends Sketch {
 					this.array[j][2] = j * 7 - 100
 				}
 				break;
-			case 2 :
+			case 2:
 				for (let k = 0; k < this.MATERIAL_MAX; k++) {
 					const r = 360 / this.MATERIAL_MAX * k
 					this.array[k] = []
@@ -84,7 +87,7 @@ class SketchTest extends Sketch {
 					this.array[k][2] = Math.sin(r * Math.PI / 180) * 200
 				}
 				break;
-			case 3 : {
+			case 3: {
 				const anglePer = ((Math.PI * 2) * (this.MATERIAL_MAX / 10)) / this.MATERIAL_MAX
 				let yPos = 0
 				for (let l = 0; l < this.MATERIAL_MAX; l++) {
@@ -92,7 +95,7 @@ class SketchTest extends Sketch {
 					this.array[l][0] = Math.cos(l * anglePer) * 200
 					this.array[l][1] = yPos - 100
 					this.array[l][2] = Math.sin(l * anglePer) * 200
-					if( (l+1) % 10 == 0 ){
+					if ((l + 1) % 10 == 0) {
 						yPos += 115
 					}
 				}

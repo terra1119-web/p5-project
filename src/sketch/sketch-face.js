@@ -3,8 +3,8 @@ import Sketch from '@/class/Sketch.js'
 import ml5 from 'ml5'
 
 class SketchTest extends Sketch {
-	constructor () {
-		super()
+	constructor() {
+		super({})
 		// variables
 		this.mask
 		this.mask2
@@ -16,7 +16,7 @@ class SketchTest extends Sketch {
 		this.gotFaces = this.gotFaces.bind(this)
 	}
 
-	preload () {
+	preload() {
 		super.preload()
 
 		this.mask = this.p.loadImage('images/mask.png')
@@ -24,7 +24,7 @@ class SketchTest extends Sketch {
 		this.mask_array = [this.mask, this.mask2]
 	}
 
-	setup () {
+	setup() {
 		super.setup()
 
 		this.p.background(0)
@@ -42,11 +42,11 @@ class SketchTest extends Sketch {
 		this.faceapi = ml5.faceApi(this.video, detectionOptions, this.modelLoaded)
 	}
 
-	modelLoaded () {
+	modelLoaded() {
 		this.faceapi.detect(this.gotFaces)
 	}
 
-	gotFaces (error, result) {
+	gotFaces(error, result) {
 		if (error) {
 			console.log(error)
 			return
@@ -80,7 +80,7 @@ class SketchTest extends Sketch {
 		this.faceapi.detect(this.gotFaces)
 	}
 
-	dispose () {
+	dispose() {
 		super.dispose()
 
 		this.mask = null

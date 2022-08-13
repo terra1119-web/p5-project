@@ -2,8 +2,8 @@
 import Sketch from '@/class/Sketch.js'
 
 class SketchTest extends Sketch {
-	constructor () {
-		super()
+	constructor() {
+		super({})
 		// variables
 		this.x = 0
 		this.y = 0
@@ -17,7 +17,7 @@ class SketchTest extends Sketch {
 		this.pointCount = 0
 	}
 
-	setup () {
+	setup() {
 		super.setup()
 
 		this.p.background(0)
@@ -33,7 +33,7 @@ class SketchTest extends Sketch {
 		this.toY = this.p.random(this.p.height)
 	}
 
-	draw () {
+	draw() {
 		super.draw()
 		if (!this.p) return
 
@@ -68,7 +68,7 @@ class SketchTest extends Sketch {
 		}
 	}
 
-	mousePressed () {
+	mousePressed() {
 		super.mousePressed()
 		this.x = this.p.mouseX
 		this.y = this.p.mouseY

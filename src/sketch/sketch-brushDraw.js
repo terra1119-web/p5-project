@@ -2,8 +2,8 @@
 import Sketch from '@/class/Sketch.js'
 
 class SketchTest extends Sketch {
-	constructor () {
-		super()
+	constructor() {
+		super({})
 		// variables
 		this.imgs = []
 		this.balls = []
@@ -32,7 +32,7 @@ class SketchTest extends Sketch {
 		]
 	}
 
-	preload () {
+	preload() {
 		super.preload()
 
 		this.image_name_array.forEach(image => {
@@ -41,7 +41,7 @@ class SketchTest extends Sketch {
 		})
 	}
 
-	setup () {
+	setup() {
 		super.setup()
 
 		this.p.background(0)
@@ -52,17 +52,17 @@ class SketchTest extends Sketch {
 		this.initImage()
 	}
 
-	draw () {
+	draw() {
 		super.draw()
 		if (!this.p) return
 
-		this.time_count ++
+		this.time_count++
 		if (this.time_max < this.time_count) {
 			this.p.fill(0, this.alpha)
-			this.p.rect(0, 0 , this.p.width, this.p.height)
+			this.p.rect(0, 0, this.p.width, this.p.height)
 			this.alpha += 1;
 			if (this.alpha > 255) {
-				this.play_count ++
+				this.play_count++
 
 				if (this.play_max <= this.play_count) {
 					this.play_count = 0
@@ -82,13 +82,13 @@ class SketchTest extends Sketch {
 			}
 
 			for (let i = 0; i < this.balls.length; i++) {
-				if (this.balls[i].radius < 0){
+				if (this.balls[i].radius < 0) {
 					this.balls.splice(i, 1)
 				}
 			}
 
 			const rnd = this.p.random(100)
-			if(rnd > 30) return
+			if (rnd > 30) return
 
 			for (let i = 0; i < 5; i++) {
 				const x = this.p.floor(this.p.random(this.p.width))
@@ -98,7 +98,7 @@ class SketchTest extends Sketch {
 		}
 	}
 
-	initArray () {
+	initArray() {
 		let clone = [...this.imgs]
 		this.rand_arr = new Array(clone.length)
 		this.temp_arr = null
@@ -123,19 +123,19 @@ class SketchTest extends Sketch {
 		}
 	}
 
-	initImage () {
+	initImage() {
 		this.img = null
 		this.img = this.rand_arr[this.play_count]
 		this.img.resize(this.p.width, this.p.height)
 	}
 
-	clearScreen () {
+	clearScreen() {
 		this.p.background(0)
 	}
 }
 
 class Ball {
-	constructor (mX, mY, c, p, img) {
+	constructor(mX, mY, c, p, img) {
 		this.p = p
 		this.img = img
 		this.location = this.p.createVector(mX, mY)
@@ -154,7 +154,7 @@ class Ball {
 		this.rangeHigh
 	}
 
-	update () {
+	update() {
 		this.radius -= this.p.random(0.0001)
 
 		this.xOff = this.xOff + this.p.random(-0.5, 0.5)
@@ -167,14 +167,14 @@ class Ball {
 		this.location.y += this.nY
 	}
 
-	changeColour () {
+	changeColour() {
 		this.c = this.p.color(this.img.get(this.location.x, this.location.y))
 		this.r = this.p.red(this.c)
 		this.g = this.p.green(this.c)
 		this.b = this.p.blue(this.c)
 	}
 
-	draw () {
+	draw() {
 		this.p.noStroke()
 		this.p.stroke(this.r, this.g, this.b)
 		this.p.ellipse(this.location.x, this.location.y, this.radius * 50, this.radius * 50)

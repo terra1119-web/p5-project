@@ -1,5 +1,7 @@
 'use strict'
-import { CONSTANT } from '@/util/constant'
+import {
+	CONSTANT
+} from '@/util/constant'
 
 // 実行するSketch
 const files = Object.freeze([
@@ -33,7 +35,7 @@ timerWorker.addEventListener('message', e => {
 	}
 })
 
-async function start (file) {
+async function start(file) {
 	const sketch = await import(`./sketch/${file}`)
 	sketch.default()
 	window.addEventListener('finish', removeCanvas, false)
@@ -56,7 +58,7 @@ function removeCanvas() {
 	start(files[rnd_array[sketch_count]])
 }
 
-function randomizing (max) {
+function randomizing(max) {
 	const arr = []
 	const numArr = []
 	for (let i = 0; i < max; i++) {

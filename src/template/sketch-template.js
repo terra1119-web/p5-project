@@ -1,38 +1,42 @@
 'use strict'
-import Sketch from '@/class/Sketch.js'
+import Sketch from '@/class/Sketch'
 
 class SketchTest extends Sketch {
-	constructor () {
-		super('WEBGL', false)
+	constructor() {
+		super({
+			renderer: 'P2D',
+			use2D: true,
+			useMic: false
+		})
 		// variables
 	}
 
-	preload () {
+	preload() {
 		super.preload()
 	}
 
-	setup () {
+	setup() {
 		super.setup()
 	}
 
-	draw () {
+	draw() {
 		super.draw()
 		if (!this.p) return
 	}
 
-	mousePressed () {
+	mousePressed() {
 		super.mousePressed()
 	}
 
-	keyTyped () {
+	keyTyped() {
 		super.keyTyped()
 	}
 
-	keyPressed () {
+	keyPressed() {
 		super.keyPressed()
 	}
 
-	doubleClicked () {
+	doubleClicked() {
 		super.doubleClicked()
 	}
 }

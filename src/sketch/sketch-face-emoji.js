@@ -3,8 +3,8 @@ import Sketch from '@/class/Sketch.js'
 import ml5 from 'ml5'
 
 class SketchTest extends Sketch {
-	constructor () {
-		super()
+	constructor() {
+		super({})
 		// variables
 		this.video
 		this.poseNet
@@ -12,7 +12,7 @@ class SketchTest extends Sketch {
 		this.emojiCode
 	}
 
-	setup () {
+	setup() {
 		super.setup()
 
 		this.p.background(0)
@@ -30,7 +30,7 @@ class SketchTest extends Sketch {
 		this.emojiCode = 128049
 	}
 
-	draw () {
+	draw() {
 		super.draw()
 		if (!this.p) return
 
@@ -46,11 +46,11 @@ class SketchTest extends Sketch {
 		this.p.pop()
 	}
 
-	modelReady () {
+	modelReady() {
 		console.log('modelReady')
 	}
 
-	drawEmoji () {
+	drawEmoji() {
 		// if (this.s.frameCount % 60 === 0) {
 		// 	emojiCode = this.s.floor(this.s.random(128512, 128592))
 		// }
@@ -85,14 +85,14 @@ class SketchTest extends Sketch {
 				const dis = this.p.dist(rightX, rightY, leftX, leftY)
 				this.p.blendMode(this.p.MULTIPLY)
 				this.p.textSize(dis * 1.5)
-				this.p.text(emojiText, noseX, noseY-100)
-				this.p.text(emojiText, noseX, noseY-100)
+				this.p.text(emojiText, noseX, noseY - 100)
+				this.p.text(emojiText, noseX, noseY - 100)
 				this.p.blendMode(this.p.BLEND)
 			}
 		}
 	}
 
-	dispose () {
+	dispose() {
 		super.dispose()
 
 		this.video.remove()

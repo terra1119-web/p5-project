@@ -2,8 +2,11 @@
 import Sketch from '@/class/Sketch.js'
 
 class SketchTest extends Sketch {
-	constructor () {
-		super('WEBGL', false)
+	constructor() {
+		super({
+			renderer: 'WEBGL',
+			use2D: false,
+		})
 		// variables
 		this.numFigures = 100
 		this.figureRadius
@@ -16,7 +19,7 @@ class SketchTest extends Sketch {
 		this.pctToFade = 0.6
 	}
 
-	setup () {
+	setup() {
 		super.setup()
 
 		this.p.pixelDensity(this.p.displayDensity())
@@ -32,7 +35,7 @@ class SketchTest extends Sketch {
 		this.p.colorMode(this.p.HSB, 255, 255, 255, 255)
 	}
 
-	draw () {
+	draw() {
 		super.draw()
 		if (!this.p) return
 
@@ -53,7 +56,7 @@ class SketchTest extends Sketch {
 			this.direction = 1
 	}
 
-	drawFigure () {
+	drawFigure() {
 		this.p.beginShape()
 		for (let i = 0; i < this.nVertex; i++) {
 			const x = this.figureRadius * this.p.cos(this.p.TWO_PI / this.nVertex * i)

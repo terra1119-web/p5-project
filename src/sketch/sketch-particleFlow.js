@@ -2,8 +2,10 @@
 import Sketch from '@/class/Sketch.js'
 
 class SketchTest extends Sketch {
-	constructor () {
-		super('WEBGL')
+	constructor() {
+		super({
+			renderer: 'WEBGL'
+		})
 		// variables
 		this.count = 300
 		this.particles_a = []
@@ -14,7 +16,7 @@ class SketchTest extends Sketch {
 		this.noiseStrength = 1.2
 	}
 
-	setup () {
+	setup() {
 		super.setup()
 
 		this.p.noStroke()
@@ -32,16 +34,16 @@ class SketchTest extends Sketch {
 			let dir_c = this.p.createVector(this.p.cos(angle_c), this.p.sin(angle_c))
 
 			this.particles_a[i] = new Particle(this.p, loc_a, dir_a, 0.5)
-			this.particles_b[i] = new Particle(this.p, loc_b, dir_b,0.6)
+			this.particles_b[i] = new Particle(this.p, loc_b, dir_b, 0.6)
 			this.particles_c[i] = new Particle(this.p, loc_c, dir_c, 0.75)
 		}
 	}
 
-	draw () {
+	draw() {
 		super.draw()
 		if (!this.p) return
 
-		this.p.fill(0,7)
+		this.p.fill(0, 7)
 		this.p.noStroke()
 		this.p.rect(0, 0, this.p.width, this.p.height)
 
@@ -51,7 +53,7 @@ class SketchTest extends Sketch {
 			this.particles_a[i].update(this.radius)
 			this.particles_a[i].checkEdges()
 
-			this.p.fill (57, 166, 163, this.fade)
+			this.p.fill(57, 166, 163, this.fade)
 			this.particles_b[i].move()
 			this.particles_b[i].update(this.radius)
 			this.particles_b[i].checkEdges()
@@ -65,7 +67,7 @@ class SketchTest extends Sketch {
 }
 
 class Particle {
-	constructor (p, loc_, dir_, speed_) {
+	constructor(p, loc_, dir_, speed_) {
 		this.p = p
 		this.loc = loc_
 		this.dir = dir_
@@ -74,18 +76,18 @@ class Particle {
 		this.noiseScale = 300
 	}
 
-	update (r) {
+	update(r) {
 		this.p.ellipse(this.loc.x, this.loc.y, r)
 	}
 
-	checkEdges () {
+	checkEdges() {
 		if (this.loc.x < 0 || this.loc.x > this.p.width || this.loc.y < 0 || this.loc.y > this.p.height) {
 			this.loc.x = this.p.random(this.p.width) + this.p.width * 0.5 - this.p.width * 0.5
 			this.loc.y = this.p.random(this.p.height) + this.p.height * 0.5 - this.p.height * 0.5
 		}
 	}
 
-	move () {
+	move() {
 		this.angle = this.p.noise(this.loc.x / this.noiseScale, this.loc.y / this.noiseScale, this.p.frameCount / this.noiseScale) * this.p.TWO_PI * this.noiseScale
 		this.dir.x = this.p.cos(this.angle) + this.p.sin(this.angle) - this.p.sin(this.angle)
 		this.dir.y = this.p.sin(this.angle) - this.p.cos(this.angle) * this.p.sin(this.angle)

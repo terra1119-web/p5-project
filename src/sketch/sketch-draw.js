@@ -2,7 +2,7 @@
 import Sketch from '@/class/Sketch.js'
 
 class Particle {
-	constructor (args, p, mainGraphics, overAllTexture) {
+	constructor(args, p, mainGraphics, overAllTexture) {
 		this.p = p
 		this.mainGraphics = mainGraphics
 		this.overAllTexture = overAllTexture
@@ -21,7 +21,7 @@ class Particle {
 		Object.assign(this, def)
 	}
 
-	draw () {
+	draw() {
 		// strokeWeight(3)
 		this.mainGraphics.push()
 		this.mainGraphics.translate(this.point.x, this.point.y)
@@ -34,7 +34,7 @@ class Particle {
 		this.mainGraphics.pop()
 	}
 
-	update () {
+	update() {
 		this.point.add(this.v)
 		this.v.add(this.a)
 		let delta = this.p.createVector(this.point.x - this.p.width / 2, this.point.y - this.p.height / 2)
@@ -58,15 +58,15 @@ class Particle {
 }
 
 class SketchTest extends Sketch {
-	constructor () {
-		super()
+	constructor() {
+		super({})
 		// variables
 		this.particles = []
 		this.mainGraphics
 		this.overAllTexture
 	}
 
-	setup () {
+	setup() {
 		super.setup()
 		this.overAllTexture = this.p.createGraphics(this.p.width, this.p.height)
 		this.mainGraphics = this.p.createGraphics(this.p.width, this.p.height)
@@ -96,7 +96,7 @@ class SketchTest extends Sketch {
 		this.mainGraphics.background(0)
 	}
 
-	draw () {
+	draw() {
 		super.draw()
 		if (!this.p) return
 

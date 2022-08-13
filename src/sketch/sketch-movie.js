@@ -2,8 +2,10 @@
 import Sketch from '@/class/Sketch.js'
 
 class SketchTest extends Sketch {
-	constructor () {
-		super('WEBGL')
+	constructor() {
+		super({
+			renderer: 'WEBGL'
+		})
 		// variables
 		this.movie_name_array = [
 			"Animals - 6572.mp4",
@@ -46,11 +48,11 @@ class SketchTest extends Sketch {
 		this.movie_height
 
 		this.rgb_array = [
-			[ 0, 0, 0 ]
+			[0, 0, 0]
 		]
 	}
 
-	setup () {
+	setup() {
 		super.setup()
 
 		this.p.background(0)
@@ -58,7 +60,7 @@ class SketchTest extends Sketch {
 		this.initMovie()
 	}
 
-	draw () {
+	draw() {
 		super.draw()
 		if (!this.p) return
 
@@ -96,7 +98,7 @@ class SketchTest extends Sketch {
 	}
 
 	// private method
-	shuffle (array) {
+	shuffle(array) {
 		for (let i = array.length - 1; i >= 0; i--) {
 			const j = Math.floor(Math.random() * (i + 1));
 			[array[i], array[j]] = [array[j], array[i]]
@@ -104,11 +106,11 @@ class SketchTest extends Sketch {
 		return array
 	}
 
-	initArray () {
+	initArray() {
 		this.rand_arr = this.shuffle(this.movie_name_array)
 	}
 
-	initMovie () {
+	initMovie() {
 		const movie_name = this.rand_arr[this.play_count]
 		this.movie = this.p.createVideo(`movies/${movie_name}`)
 		this.movie.volume(0)
@@ -131,7 +133,7 @@ class SketchTest extends Sketch {
 		}
 	}
 
-	initSplit () {
+	initSplit() {
 		this.col *= 2
 		this.col_count++
 		if (this.col_count >= this.col_max) {
