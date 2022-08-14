@@ -18,6 +18,7 @@ const files = Object.freeze([
 	'sketch-conchoid',
 	'sketch-brushDraw',
 	'sketch-tree',
+	'sketch-line',
 	// not yet
 	// 'sketch-face',
 	// 'sketch-face-emoji',
