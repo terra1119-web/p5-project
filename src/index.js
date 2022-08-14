@@ -17,10 +17,10 @@ const files = Object.freeze([
 	'sketch-images',
 	'sketch-conchoid',
 	'sketch-brushDraw',
+	'sketch-tree',
 	// not yet
 	// 'sketch-face',
 	// 'sketch-face-emoji',
-	// 'sketch-tree',
 ])
 
 const SKETCH_MAX = files.length
