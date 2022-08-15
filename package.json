@@ -5,21 +5,23 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "webpack-dev-server --config webpack.dev.config.js",
+    "dev": "webpack serve --config webpack.dev.config.js",
     "build": "webpack --config webpack.prod.config.js",
     "start": "node server.js"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "clean-webpack-plugin": "^4.0.0",
     "eslint": "^7.32.0",
     "eslint-config-prettier": "^8.5.0",
+    "html-webpack-plugin": "^5.5.0",
     "ml5": "^0.12.2",
     "prettier": "^2.7.1",
     "tone": "^14.7.77",
-    "webpack": "^4.46.0",
-    "webpack-cli": "^3.3.12",
-    "webpack-dev-server": "^3.11.3"
+    "webpack": "^5.74.0",
+    "webpack-cli": "^4.10.0",
+    "webpack-dev-server": "^4.10.0"
   },
   "dependencies": {
     "p5": "^1.4.2"
