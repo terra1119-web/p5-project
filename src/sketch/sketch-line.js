@@ -185,7 +185,6 @@ class BoxObject {
 		this.box_locz = z;
 
 		this.col = c;
-		console.log()
 	}
 
 	//void drawBox (float s = 1) {

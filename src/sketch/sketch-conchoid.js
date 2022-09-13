@@ -36,7 +36,7 @@ class SketchTest extends Sketch {
 		for (let i = -3; i <= 3; i++) {
 			this.conchoid(this.a + i)
 		}
-		const volume = this.p.map(this.getVolume, -50, 0, -30, 100)
+		const volume = this.p.map(this.getVolume, -100, 0, -30, 100)
 		this.a = 100 * this.p.sin(volume / 360)
 	}
 

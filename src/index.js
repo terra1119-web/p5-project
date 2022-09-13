@@ -19,6 +19,7 @@ const files = Object.freeze([
 	'sketch-brushDraw',
 	'sketch-tree',
 	'sketch-line',
+	'sketch-particle-ink',
 	// not yet
 	// 'sketch-face',
 	// 'sketch-face-emoji',
