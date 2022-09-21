@@ -1,12 +1,38 @@
 'use strict'
-import p5 from 'p5'
+import * as p5 from 'p5'
 import * as Tone from 'tone'
 
 import {
 	CONSTANT
 } from '@/util/constant'
 
-export default class Sketch {
+type SketchType = {
+	renderer: string
+	use2D: boolean
+	p: p5
+	w: number
+	h: number
+	alpha: number
+	graphic: p5.Graphics
+	fadeFlag: boolean
+	useMic: boolean
+	mic: Tone.UserMedia
+	meter: Tone.Meter
+}
+
+export default class Sketch implements SketchType {
+	renderer: string
+	use2D: boolean
+	p: p5
+	w: number
+	h: number
+	alpha: number
+	graphic: p5.Graphics
+	fadeFlag: boolean
+	useMic: boolean
+	mic: Tone.UserMedia
+	meter: Tone.Meter
+
 	constructor({
 		renderer = 'P2D',
 		use2D = true,
@@ -14,22 +40,17 @@ export default class Sketch {
 	}) {
 		this.renderer = renderer
 		this.use2D = use2D
-		// this.sketch
-		this.p
 		this.w = window.innerWidth
 		this.h = window.innerHeight
 		this.alpha = 0
 		this.graphic = null
-		this.canvas
 		this.fadeFlag = false
 		this.startFade = this.startFade.bind(this)
 		this.dispose = this.dispose.bind(this)
 		this.useMic = useMic
-		this.mic
-		this.meter
 	}
 
-	setup() {
+	setup(): void {
 		const renderer = this.renderer === 'WEBGL' ? this.p.WEBGL : this.p.P2D
 		this.p.createCanvas(this.w, this.h, renderer)
 		this.graphic = this.p.createGraphics(this.w, this.h)
@@ -44,13 +65,13 @@ export default class Sketch {
 		this.mic.connect(this.meter)
 	}
 
-	draw() {
+	draw(): void {
 		if (this.renderer === 'WEBGL' && this.use2D) {
 			this.p.translate(-this.p.width / 2, -this.p.height / 2, 0)
 		}
 
 		if (this.fadeFlag) {
-			this.graphic.clear()
+			this.graphic.clear(0, 0, 0, 0)
 			this.graphic.fill(0, this.alpha)
 			this.graphic.rect(0, 0, this.graphic.width, this.graphic.height)
 			this.alpha += 2
@@ -60,24 +81,24 @@ export default class Sketch {
 		}
 	}
 
-	preload() {}
+	preload(): void {}
 
-	mousePressed() {}
+	mousePressed(): void {}
 
-	keyTyped() {
+	keyTyped(): void {
 		if (this.p.keyCode === 32 && !this.fadeFlag) {
 			this.startFade()
 		}
 	}
 
-	keyPressed() {}
+	keyPressed(): void {}
 
-	doubleClicked() {
+	doubleClicked(): void {
 		this.p.saveCanvas('sketch', 'png')
 	}
 
-	init() {
-		const sketch = p => {
+	init(): void {
+		const sketch = (p: p5): void => {
 			this.p = p
 			this.p.preload = () => this.preload()
 			this.p.setup = () => this.setup()
@@ -88,21 +109,19 @@ export default class Sketch {
 			this.p.doubleClicked = () => this.doubleClicked()
 		}
 
-		this.canvas = new p5(sketch, 'canvas')
+		new p5(sketch, document.getElementById('canvas'))
 	}
 
-	startFade() {
+	startFade(): void {
 		this.graphic.show()
 		this.fadeFlag = true
 	}
 
-	dispose() {
+	dispose(): void {
 		this.graphic.remove()
 		this.graphic = null
 		this.p.remove()
 		this.p = null
-		this.sketch = null
-		this.canvas = null
 		if (this.useMic) this.mic.close()
 		this.mic = null
 		window.removeEventListener('fade', this.startFade, false)
@@ -110,11 +129,11 @@ export default class Sketch {
 		window.dispatchEvent(event)
 	}
 
-	get getSketch() {
+	get getSketch(): p5 {
 		return this.p
 	}
 
-	get getVolume() {
+	get getVolume(): number | number[] {
 		return this.meter.getValue()
 	}
 }

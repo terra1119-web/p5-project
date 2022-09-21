@@ -1,13 +1,26 @@
 'use strict'
-import Sketch from '@/class/Sketch.js'
+import Sketch from '@/class/Sketch'
 
 class Particle {
-	constructor(args, p, mainGraphics, overAllTexture) {
+	p: p5
+	mainGraphics: p5.Graphics
+	overAllTexture: p5.Graphics
+	colors: string[]
+	point: p5.Vector
+	v: p5.Vector
+	a: p5.Vector
+	r: number
+	dp: number
+	angMult: number
+	color: string
+	flg: boolean
+
+	constructor(args: object, p: p5, mainGraphics: p5.Graphics, overAllTexture: p5.Graphics) {
 		this.p = p
 		this.mainGraphics = mainGraphics
 		this.overAllTexture = overAllTexture
 		this.colors = "e6e1c5-d4cb92-395c6b-80a4ed-bcd3f2-f24-fff-52489c-4062bb-59c3c3-ebebeb-f45b69-0c090d-e01a4f-f15946-f9c22e-53b3cb".split("-").map(a => "#" + a)
-		const def = {
+		const def: object = {
 			point: this.p.createVector(0, 0),
 			v: this.p.createVector(0, 0),
 			a: this.p.createVector(0, 0),
@@ -21,7 +34,7 @@ class Particle {
 		Object.assign(this, def)
 	}
 
-	draw() {
+	draw(): void {
 		// strokeWeight(3)
 		this.mainGraphics.push()
 		this.mainGraphics.translate(this.point.x, this.point.y)
@@ -34,12 +47,12 @@ class Particle {
 		this.mainGraphics.pop()
 	}
 
-	update() {
+	update(): void {
 		this.point.add(this.v)
 		this.v.add(this.a)
-		let delta = this.p.createVector(this.point.x - this.p.width / 2, this.point.y - this.p.height / 2)
-		let ang = delta.heading()
-		let rr = delta.mag()
+		let delta: p5.Vector = this.p.createVector(this.point.x - this.p.width / 2, this.point.y - this.p.height / 2)
+		let ang: number = delta.heading()
+		let rr: number = delta.mag()
 
 		this.v.x += -this.p.sin(ang * this.angMult + rr / 5) / 15 + this.p.cos(rr / 10) / 10
 		this.v.y += -this.p.cos(ang * this.angMult + rr / 5) / 15 + this.p.sin(rr / 10) / 10
@@ -58,6 +71,11 @@ class Particle {
 }
 
 class SketchTest extends Sketch {
+	particles: Particle[]
+	mainGraphics: p5.Graphics
+	overAllTexture:p5.Graphics
+	p: p5
+
 	constructor() {
 		super({})
 		// variables
@@ -66,7 +84,7 @@ class SketchTest extends Sketch {
 		this.overAllTexture
 	}
 
-	setup() {
+	setup(): void {
 		super.setup()
 		this.overAllTexture = this.p.createGraphics(this.p.width, this.p.height)
 		this.mainGraphics = this.p.createGraphics(this.p.width, this.p.height)
@@ -74,16 +92,16 @@ class SketchTest extends Sketch {
 		this.overAllTexture.loadPixels()
 
 		// noStroke()
-		for (let i = 0; i < this.p.width + 50; i++) {
-			for (let o = 0; o < this.p.height + 50; o++) {
+		for (let i: number = 0; i < this.p.width + 50; i++) {
+			for (let o: number = 0; o < this.p.height + 50; o++) {
 				this.overAllTexture.set(i, o, this.p.color(150, this.p.noise(i / 10, i * o / 300) * this.p.random([0, 50, 100])))
 			}
 		}
 		this.overAllTexture.updatePixels()
 
 		this.p.background(0)
-		for (let i = 0; i < this.p.width; i += 200) {
-			for (let o = 0; o < this.p.height; o += 100) {
+		for (let i: number = 0; i < this.p.width; i += 200) {
+			for (let o: number = 0; o < this.p.height; o += 100) {
 				this.particles.push(
 					new Particle({
 						point: this.p.createVector(i, o),
@@ -96,7 +114,7 @@ class SketchTest extends Sketch {
 		this.mainGraphics.background(0)
 	}
 
-	draw() {
+	draw(): void {
 		super.draw()
 		if (!this.p) return
 
@@ -111,7 +129,7 @@ class SketchTest extends Sketch {
 	}
 }
 
-export default function () {
-	const sketch = new SketchTest()
+export default function (): void {
+	const sketch: SketchTest = new SketchTest()
 	sketch.init()
 }

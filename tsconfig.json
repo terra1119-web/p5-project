@@ -1,0 +1,14 @@
+{
+	"compilerOptions": {
+		"sourceMap": true,
+		"target": "es2021",
+		"module": "es2022",
+		"moduleResolution": "node",
+		"noImplicitAny": false,
+		"removeComments": false,
+		"baseUrl": "./src",
+		"paths": {
+			"@/*": ["./*"],
+		}
+	}
+}

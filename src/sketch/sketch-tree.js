@@ -1,5 +1,5 @@
 'use strict'
-import Sketch from '@/class/Sketch.js'
+import Sketch from '@/class/Sketch'
 
 class SketchTest extends Sketch {
 	constructor() {

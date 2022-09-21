@@ -2,9 +2,16 @@
 import Sketch from '@/class/Sketch'
 
 class Particle {
-	//constructor called when creating an instance of this class
-	// x & y are the location, r is the rate of decay, a is the starting alpha value
-	constructor(p, x, y, r, a) {
+	p: p5
+	location: p5.Vector
+	velocity: p5.Vector
+	acceleration: p5.Vector
+	alpha: number
+	palpha: number
+	amp: number
+	rate: number
+
+	constructor(p: p5, x: number, y: number, r: number, a: number) {
 		this.p = p
 		this.location = this.p.createVector(x, y)
 		this.velocity = this.p.createVector(this.p.random(-1, 1), this.p.random(-1, 1))
@@ -12,11 +19,10 @@ class Particle {
 		this.alpha = this.palpha = a
 		this.amp = 3; // size of the particle
 		this.rate = r
-
 	}
 
 	//update the velociy and location of particle
-	update(particles) {
+	update(particles: Particle[]): void {
 		this.acceleration.add(this.p.createVector((this.p.noise(this.location.x) * 2 - 1), (this.p.noise(this.location.y) * 2 - 1)))
 		this.velocity.add(this.acceleration)
 		this.acceleration.set(0, 0)
@@ -30,7 +36,7 @@ class Particle {
 	}
 
 	//show the particles
-	show() {
+	show(): void {
 		this.p.noStroke()
 		this.p.fill(this.p.random(360), this.p.random(100), this.p.random(100), this.alpha)
 		this.p.ellipse(this.location.x, this.location.y, this.amp)
@@ -39,25 +45,29 @@ class Particle {
 }
 
 class SketchTest extends Sketch {
+	// property
+	particles: Particle[]
+
 	constructor() {
 		super({
 			renderer: 'P2D',
 			use2D: true,
 			useMic: false
 		})
-		// variables
+
+		// initialize
 		this.particles = []
 	}
 
 
-	setup() {
+	setup(): void {
 		super.setup()
 		this.p.colorMode(this.p.HSB, 360, 100, 100, 100)
 		this.p.blendMode(this.p.SCREEN)
 		this.p.background(0)
 	}
 
-	draw() {
+	draw(): void {
 		super.draw()
 		if (!this.p) return
 
@@ -66,7 +76,7 @@ class SketchTest extends Sketch {
 			this.particles.push(new Particle(this.p, this.p.random(this.p.width), this.p.random(this.p.height), 5, 150))
 		}
 		// update and show the particles
-		for (let i = this.particles.length - 2; i >= 0; i--) {
+		for (let i: number = this.particles.length - 2; i >= 0; i--) {
 			this.particles[i].update(this.particles)
 			this.particles[i].show()
 			if (this.particles[i].alpha <= 10) this.particles.splice(i, 10)
@@ -74,7 +84,7 @@ class SketchTest extends Sketch {
 	}
 }
 
-export default function () {
-	const sketch = new SketchTest()
+export default function (): void {
+	const sketch: SketchTest = new SketchTest()
 	sketch.init()
 }

@@ -1,5 +1,5 @@
 'use strict'
-import Sketch from '@/class/Sketch.js'
+import Sketch from '@/class/Sketch'
 import ml5 from 'ml5'
 
 class SketchTest extends Sketch {

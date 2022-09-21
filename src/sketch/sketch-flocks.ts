@@ -1,11 +1,23 @@
 'use strict'
-import p5 from 'p5'
-import Sketch from '@/class/Sketch.js'
+import * as p5 from 'p5'
+import Sketch from '@/class/Sketch'
 
 class SketchTest extends Sketch {
+	// property
+	boids: Boid[]
+	preds: Predator[]
+	boidNum: number
+	predNum: number
+	obstRad: number
+	flocking: boolean
+	arrow: boolean
+	circle: boolean
+	predBool: boolean
+	obsBool: boolean
+
 	constructor() {
 		super({})
-		// variables
+		// initialize
 		this.boids = []
 		this.preds = []
 		this.boidNum = 130
@@ -18,19 +30,19 @@ class SketchTest extends Sketch {
 		this.obsBool = false
 	}
 
-	setup() {
+	setup(): void {
 		super.setup()
 
 		this.p.background(0)
-		for (let i = 0; i < this.boidNum; i++) { //Make boidNum boids.
+		for (let i: number = 0; i < this.boidNum; i++) { //Make boidNum boids.
 			this.boids.push(new Boid(this.p, new p5.Vector(this.p.random(0, this.p.width), this.p.random(0, this.p.height))))
 		}
-		for (let j = 0; j < this.predNum; j++) { //Make predNum predators.
-			this.preds.push(new Predator(this.p, new p5.Vector(this.p.random(0, this.p.width), this.p.random(0, this.p.height)), 80))
+		for (let j: number = 0; j < this.predNum; j++) { //Make predNum predators.
+			this.preds.push(new Predator(this.p, new p5.Vector(this.p.random(0, this.p.width), this.p.random(0, this.p.height))))
 		}
 	}
 
-	draw() {
+	draw(): void {
 		super.draw()
 		if (!this.p) return
 
@@ -71,7 +83,14 @@ class SketchTest extends Sketch {
 }
 
 class Boid {
-	constructor(p, location) {
+	p: p5
+	loc: p5.Vector
+	vec: p5.Vector
+	acc: p5.Vector
+	mass: number
+	maxForce: number
+
+	constructor(p: p5, location: p5.Vector) {
 		this.p = p
 		this.loc = location
 		this.vec = new p5.Vector()
@@ -80,14 +99,14 @@ class Boid {
 		this.maxForce = 6
 	}
 
-	flockForce(boids) {
+	flockForce(boids: Boid[]): void {
 		//The three behaviours that result in flocking; Defined below.
 		this.avoidForce(boids)
 		this.approachForce(boids)
 		this.alignForce(boids)
 	}
 
-	update() {
+	update(): void {
 		//Calculate the next position of the boid.
 		this.vec.add(this.acc)
 		this.loc.add(this.vec)
@@ -108,12 +127,12 @@ class Boid {
 		}
 	}
 
-	applyF(force) {
+	applyF(force: p5.Vector): void {
 		force.div(this.mass)
 		this.acc.add(force)
 	}
 
-	display(circle, arrow) {
+	display(circle: boolean, arrow: boolean): void {
 		this.update()
 		this.p.fill(255, 255, 255)
 		this.p.noStroke()
@@ -128,20 +147,20 @@ class Boid {
 		}
 	}
 
-	avoidForce(boids) {
+	avoidForce(boids: Boid[]): void {
 		//Applies a force to the boid that makes
 		//him avoid the average position of other boids.
-		let count = 0 //Keep track of how many boids are too close.
-		let locSum = new p5.Vector() //To store positions of the ones that are too close.
+		let count: number = 0 //Keep track of how many boids are too close.
+		const locSum: p5.Vector = new p5.Vector() //To store positions of the ones that are too close.
 
 		boids.forEach(other => {
-			let separation = this.mass + 20 //Desired separation from other boids. Arbitrarily linked to mass.
+			const separation: number = this.mass + 20 //Desired separation from other boids. Arbitrarily linked to mass.
 
-			let dist = p5.Vector.sub(other.getLoc(), this.loc) //distance to other boid.
-			let d = dist.mag()
+			const dist: p5.Vector = p5.Vector.sub(other.getLoc(), this.loc) //distance to other boid.
+			const d: number = dist.mag()
 
 			if (d != 0 && d < separation) { //If closer than desired, and not self.
-				let otherLoc = other.getLoc()
+				const otherLoc: p5.Vector = other.getLoc()
 				locSum.add(otherLoc) //All locs from closeby boids are added.
 				count++
 			}
@@ -149,23 +168,23 @@ class Boid {
 
 		if (count > 0) { //Don't divide by zero.
 			locSum.div(count) //Divide by number of positions that were added (to create average).
-			let avoidVec = p5.Vector.sub(this.loc, locSum) //AvoidVec connects loc and average loc.
+			const avoidVec: p5.Vector = p5.Vector.sub(this.loc, locSum) //AvoidVec connects loc and average loc.
 			avoidVec.limit(this.maxForce * 2.5) //Weigh by factor arbitrary factor 2.5.
 			this.applyF(avoidVec)
 		}
 	}
 
-	approachForce(boids) {
-		let count = 0 //Keep track of how many boids are within sight.
-		let locSum = new p5.Vector() //To store locations of boids in sight.
+	approachForce(boids: Boid[]): void {
+		let count: number = 0 //Keep track of how many boids are within sight.
+		const locSum: p5.Vector = new p5.Vector() //To store locations of boids in sight.
 		//Algorhithm analogous to avoidForve().
 		boids.forEach(other => {
-			let approachRadius = this.mass + 60 //Radius in which to look for other boids.
-			let dist = p5.Vector.sub(other.getLoc(), this.loc)
-			let d = dist.mag()
+			const approachRadius: number = this.mass + 60 //Radius in which to look for other boids.
+			const dist: p5.Vector = p5.Vector.sub(other.getLoc(), this.loc)
+			const d: number = dist.mag()
 
 			if (d != 0 && d < approachRadius) {
-				let otherLoc = other.getLoc()
+				const otherLoc: p5.Vector = other.getLoc()
 				locSum.add(otherLoc)
 				count++
 			}
@@ -173,23 +192,23 @@ class Boid {
 
 		if (count > 0) {
 			locSum.div(count)
-			let approachVec = p5.Vector.sub(locSum, this.loc)
+			const approachVec: p5.Vector = p5.Vector.sub(locSum, this.loc)
 			approachVec.limit(this.maxForce)
 			this.applyF(approachVec)
 		}
 	}
 
-	alignForce(boids) {
-		let count = 0 //Keep track of how many boids are in sight.
-		let velSum = new p5.Vector() //To store vels of boids in sight.
+	alignForce(boids: Boid[]): void {
+		let count: number = 0 //Keep track of how many boids are in sight.
+		const velSum: p5.Vector = new p5.Vector() //To store vels of boids in sight.
 		//Algorhithm analogous to approach- and avoidForce.
 		boids.forEach(other => {
-			let alignRadius = this.mass + 100;
-			let dist = p5.Vector.sub(other.getLoc(), this.loc);
-			let d = dist.mag();
+			const alignRadius: number = this.mass + 100
+			const dist: p5.Vector = p5.Vector.sub(other.getLoc(), this.loc)
+			const d: number = dist.mag()
 
 			if (d != 0 && d < alignRadius) {
-				let otherVel = other.getVel()
+				const otherVel: p5.Vector = other.getVel()
 				velSum.add(otherVel)
 				count++
 			}
@@ -197,20 +216,20 @@ class Boid {
 
 		if (count > 0) {
 			velSum.div(count)
-			let alignVec = velSum
+			const alignVec: p5.Vector = velSum
 			alignVec.limit(this.maxForce)
 			this.applyF(alignVec)
 		}
 	}
 
-	repelForce(obstacle, radius) {
+	repelForce(obstacle: p5.Vector, radius: number): void {
 		//Force that drives boid away from obstacle.
-		let futPos = p5.Vector.add(this.loc, this.vec) //Calculate future position for more effective behavior.
-		let dist = p5.Vector.sub(obstacle, futPos)
-		let d = dist.mag()
+		const futPos: p5.Vector = p5.Vector.add(this.loc, this.vec) //Calculate future position for more effective behavior.
+		const dist: p5.Vector = p5.Vector.sub(obstacle, futPos)
+		const d: number = dist.mag()
 
 		if (d <= radius) {
-			let repelVec = p5.Vector.sub(this.loc, obstacle)
+			const repelVec: p5.Vector = p5.Vector.sub(this.loc, obstacle)
 			repelVec.normalize()
 			if (d != 0) { //Don't divide by zero.
 				// let scale = 1.0/d; //The closer to the obstacle, the stronger the force.
@@ -225,30 +244,30 @@ class Boid {
 	}
 
 	//Easy way to acces loc and vel for any boid.
-	getLoc() {
+	getLoc(): p5.Vector {
 		return this.loc
 	}
 
-	getVel() {
+	getVel(): p5.Vector {
 		return this.vec
 	}
 }
 
 class Predator extends Boid { //Predators are just boids with some extra characteristics.
-	constructor(p, location) {
+	constructor(p: p5, location: p5.Vector) {
 		super(p, location)
 		this.maxForce = 10
 		this.mass = Math.floor(this.p.random(70, 100))
 	}
 
-	display() {
+	display(): void {
 		this.update()
 		this.p.fill(255, 0, 0)
 		this.p.noStroke()
 		this.p.ellipse(this.loc.x, this.loc.y, this.mass, this.mass)
 	}
 
-	update() { //Same as for boid, but with different vel.limit().
+	update(): void { //Same as for boid, but with different vel.limit().
 		//Calculate the next position of the boid.
 		this.vec.add(this.acc)
 		this.loc.add(this.vec)
@@ -269,17 +288,17 @@ class Predator extends Boid { //Predators are just boids with some extra charact
 		}
 	}
 
-	approachForce(boids) { //Same as for boid, but with bigger approachRadius.
+	approachForce(boids: Boid[]): void { //Same as for boid, but with bigger approachRadius.
 		let count = 0
-		let locSum = new p5.Vector()
+		const locSum: p5.Vector = new p5.Vector()
 
 		boids.forEach(other => {
-			let approachRadius = this.mass + 260
-			let dist = p5.Vector.sub(other.getLoc(), this.loc)
-			let d = dist.mag()
+			const approachRadius: number = this.mass + 260
+			const dist: p5.Vector = p5.Vector.sub(other.getLoc(), this.loc)
+			const d: number = dist.mag()
 
 			if (d != 0 && d < approachRadius) {
-				let otherLoc = other.getLoc()
+				const otherLoc: p5.Vector = other.getLoc()
 				locSum.add(otherLoc)
 				count++
 			}
@@ -287,14 +306,14 @@ class Predator extends Boid { //Predators are just boids with some extra charact
 
 		if (count > 0) {
 			locSum.div(count)
-			let approachVec = p5.Vector.sub(locSum, this.loc)
+			const approachVec: p5.Vector = p5.Vector.sub(locSum, this.loc)
 			approachVec.limit(this.maxForce)
 			this.applyF(approachVec)
 		}
 	}
 }
 
-export default function () {
-	const sketch = new SketchTest()
+export default function (): void {
+	const sketch: SketchTest = new SketchTest()
 	sketch.init()
 }

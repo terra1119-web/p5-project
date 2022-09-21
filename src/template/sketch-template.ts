@@ -2,46 +2,47 @@
 import Sketch from '@/class/Sketch'
 
 class SketchTest extends Sketch {
+	// property
 	constructor() {
 		super({
 			renderer: 'P2D',
 			use2D: true,
 			useMic: false
 		})
-		// variables
+		// initialize
 	}
 
-	preload() {
+	preload(): void {
 		super.preload()
 	}
 
-	setup() {
+	setup(): void {
 		super.setup()
 	}
 
-	draw() {
+	draw(): void {
 		super.draw()
 		if (!this.p) return
 	}
 
-	mousePressed() {
+	mousePressed(): void {
 		super.mousePressed()
 	}
 
-	keyTyped() {
+	keyTyped(): void {
 		super.keyTyped()
 	}
 
-	keyPressed() {
+	keyPressed(): void {
 		super.keyPressed()
 	}
 
-	doubleClicked() {
+	doubleClicked(): void {
 		super.doubleClicked()
 	}
 }
 
-export default function () {
-	const sketch = new SketchTest()
+export default function (): void {
+	const sketch: SketchTest = new SketchTest()
 	sketch.init()
 }

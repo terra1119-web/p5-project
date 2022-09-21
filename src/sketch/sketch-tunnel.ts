@@ -1,16 +1,25 @@
 'use strict'
-import Sketch from '@/class/Sketch.js'
+import Sketch from '@/class/Sketch'
 
 class SketchTest extends Sketch {
+	// property
+	numFigures: number
+	figureRadius: number
+	figureSeparation: number
+	nVertex: number
+	t: number
+	dt: number
+	rotSpeed: number
+	direction: number
+	pctToFade: number
+
 	constructor() {
 		super({
 			renderer: 'WEBGL',
 			use2D: false,
 		})
-		// variables
+		// initialize
 		this.numFigures = 100
-		this.figureRadius
-		this.figureSeparation
 		this.nVertex = 3
 		this.t = 0
 		this.dt = 5
@@ -19,7 +28,7 @@ class SketchTest extends Sketch {
 		this.pctToFade = 0.6
 	}
 
-	setup() {
+	setup(): void {
 		super.setup()
 
 		this.p.pixelDensity(this.p.displayDensity())
@@ -35,13 +44,13 @@ class SketchTest extends Sketch {
 		this.p.colorMode(this.p.HSB, 255, 255, 255, 255)
 	}
 
-	draw() {
+	draw(): void {
 		super.draw()
 		if (!this.p) return
 
 		this.p.background(0)
 		this.p.rotate(-this.t / this.dt * this.rotSpeed)
-		for (let i = 0; i < this.numFigures; i++) {
+		for (let i: number = 0; i < this.numFigures; i++) {
 			this.p.stroke(255, this.p.map(i, this.numFigures * this.pctToFade, this.numFigures, 255, 0))
 			this.p.push()
 			this.p.translate(0, 0, -this.figureSeparation * i + this.t)
@@ -56,9 +65,9 @@ class SketchTest extends Sketch {
 			this.direction = 1
 	}
 
-	drawFigure() {
+	drawFigure(): void {
 		this.p.beginShape()
-		for (let i = 0; i < this.nVertex; i++) {
+		for (let i: number = 0; i < this.nVertex; i++) {
 			const x = this.figureRadius * this.p.cos(this.p.TWO_PI / this.nVertex * i)
 			const y = this.figureRadius * this.p.sin(this.p.TWO_PI / this.nVertex * i)
 			this.p.vertex(x, y)
@@ -67,7 +76,7 @@ class SketchTest extends Sketch {
 	}
 }
 
-export default function () {
-	const sketch = new SketchTest()
+export default function (): void {
+	const sketch: SketchTest = new SketchTest()
 	sketch.init()
 }

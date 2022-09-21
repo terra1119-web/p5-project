@@ -2,16 +2,20 @@
 import Sketch from '@/class/Sketch'
 
 class SketchTest extends Sketch {
+	// property
+	a: number
+	r: number
+
 	constructor() {
 		super({
 			useMic: true
 		})
-		// variables
+		// initialize
 		this.a = 0
 		this.r = 0
 	}
 
-	setup() {
+	setup(): void {
 		super.setup()
 
 		this.p.background(0)
@@ -20,31 +24,33 @@ class SketchTest extends Sketch {
 		this.p.strokeWeight(0.05)
 	}
 
-	draw() {
+	draw(): void {
 		super.draw()
 		if (!this.p) return
 
 		this.p.background(0)
 		this.p.translate(this.p.width * 0.5, this.p.height * 0.5)
-		for (let i = -3; i <= 3; i++) {
+		for (let i: number = -3; i <= 3; i++) {
 			this.p.stroke(255, 255, 255, 100)
 			this.conchoid(this.a + i)
 			this.conchoid(this.a + i)
 		}
 		this.a = 100 * this.p.sin(this.p.frameCount / 360)
 
-		for (let i = -3; i <= 3; i++) {
+		for (let i: number = -3; i <= 3; i++) {
 			this.conchoid(this.a + i)
 		}
-		const volume = this.p.map(this.getVolume, -100, 0, -30, 100)
-		this.a = 100 * this.p.sin(volume / 360)
+		// console.log(this.meter.getValue())
+		// const n: any = this.getVolume
+		// const volume: number = this.p.map(n, -100, 0, -30, 100)
+		// this.a = 100 * this.p.sin(volume / 360)
 	}
 
-	conchoid(a) {
+	conchoid(a: number): void {
 		this.p.beginShape()
-		for (let i = 0; i < 360; i++) {
-			const y = this.p.width / 60 * (1 / this.p.cos(i) + a * this.p.cos(i)) * this.p.cos(i)
-			const x = this.p.width / 60 * (1 / this.p.cos(i) + a * this.p.cos(i)) * this.p.sin(i)
+		for (let i: number = 0; i < 360; i++) {
+			const y: number = this.p.width / 60 * (1 / this.p.cos(i) + a * this.p.cos(i)) * this.p.cos(i)
+			const x: number = this.p.width / 60 * (1 / this.p.cos(i) + a * this.p.cos(i)) * this.p.sin(i)
 			this.p.vertex(x, y)
 		}
 		this.p.endShape()
@@ -53,7 +59,7 @@ class SketchTest extends Sketch {
 	}
 }
 
-export default function () {
-	const sketch = new SketchTest()
+export default function (): void {
+	const sketch: SketchTest = new SketchTest()
 	sketch.init()
 }

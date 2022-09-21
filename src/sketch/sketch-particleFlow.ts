@@ -1,12 +1,21 @@
 'use strict'
-import Sketch from '@/class/Sketch.js'
+import Sketch from '@/class/Sketch'
 
 class SketchTest extends Sketch {
+	// property
+	count: number
+	particles_a: Particle[]
+	particles_b: Particle[]
+	particles_c: Particle[]
+	fade: number
+	radius: number
+	noiseStrength: number
+
 	constructor() {
 		super({
 			renderer: 'WEBGL'
 		})
-		// variables
+		// initialize
 		this.count = 300
 		this.particles_a = []
 		this.particles_b = []
@@ -16,22 +25,22 @@ class SketchTest extends Sketch {
 		this.noiseStrength = 1.2
 	}
 
-	setup() {
+	setup(): void {
 		super.setup()
 
 		this.p.noStroke()
-		for (let i = 0; i < this.count; i++) {
-			const loc_a = this.p.createVector(this.p.random(this.p.width) + this.p.width * 0.5 - this.p.width * 0.5, this.p.random(this.p.height) + this.p.height * 0.5 - this.p.height * 0.5, 2)
-			const angle_a = this.p.random(this.p.TWO_PI)
-			const dir_a = this.p.createVector(this.p.cos(angle_a), this.p.sin(angle_a))
+		for (let i: number = 0; i < this.count; i++) {
+			const loc_a: p5.Vector = this.p.createVector(this.p.random(this.p.width) + this.p.width * 0.5 - this.p.width * 0.5, this.p.random(this.p.height) + this.p.height * 0.5 - this.p.height * 0.5, 2)
+			const angle_a: number = this.p.random(this.p.TWO_PI)
+			const dir_a: p5.Vector = this.p.createVector(this.p.cos(angle_a), this.p.sin(angle_a))
 
-			const loc_b = this.p.createVector(this.p.random(this.p.width) + this.p.width * 0.5 - this.p.width * 0.5, this.p.random(this.p.height) + this.p.height * 0.5 - this.p.height * 0.5, 2)
-			const angle_b = this.p.random(this.p.TWO_PI)
-			const dir_b = this.p.createVector(this.p.cos(angle_b), this.p.sin(angle_b))
+			const loc_b: p5.Vector = this.p.createVector(this.p.random(this.p.width) + this.p.width * 0.5 - this.p.width * 0.5, this.p.random(this.p.height) + this.p.height * 0.5 - this.p.height * 0.5, 2)
+			const angle_b: number = this.p.random(this.p.TWO_PI)
+			const dir_b: p5.Vector = this.p.createVector(this.p.cos(angle_b), this.p.sin(angle_b))
 
-			const loc_c = this.p.createVector(this.p.random(this.p.width) + this.p.width * 0.5 - this.p.width * 0.5, this.p.random(this.p.height) + this.p.height * 0.5 - this.p.height * 0.5, 2)
-			const angle_c = this.p.random(this.p.TWO_PI)
-			const dir_c = this.p.createVector(this.p.cos(angle_c), this.p.sin(angle_c))
+			const loc_c: p5.Vector = this.p.createVector(this.p.random(this.p.width) + this.p.width * 0.5 - this.p.width * 0.5, this.p.random(this.p.height) + this.p.height * 0.5 - this.p.height * 0.5, 2)
+			const angle_c: number = this.p.random(this.p.TWO_PI)
+			const dir_c: p5.Vector = this.p.createVector(this.p.cos(angle_c), this.p.sin(angle_c))
 
 			this.particles_a[i] = new Particle(this.p, loc_a, dir_a, 0.5)
 			this.particles_b[i] = new Particle(this.p, loc_b, dir_b, 0.6)
@@ -39,7 +48,7 @@ class SketchTest extends Sketch {
 		}
 	}
 
-	draw() {
+	draw(): void {
 		super.draw()
 		if (!this.p) return
 
@@ -47,7 +56,7 @@ class SketchTest extends Sketch {
 		this.p.noStroke()
 		this.p.rect(0, 0, this.p.width, this.p.height)
 
-		for (let i = 0; i < this.count; i++) {
+		for (let i: number = 0; i < this.count; i++) {
 			this.p.fill(191, 19, 99, this.fade)
 			this.particles_a[i].move()
 			this.particles_a[i].update(this.radius)
@@ -67,7 +76,16 @@ class SketchTest extends Sketch {
 }
 
 class Particle {
-	constructor(p, loc_, dir_, speed_) {
+	p: p5
+	loc: p5.Vector
+	dir: p5.Vector
+	speed: number
+	d: number
+	noiseScale: number
+	angle: number
+	vel: p5.Vector
+
+	constructor(p: p5, loc_: p5.Vector, dir_: p5.Vector, speed_: number) {
 		this.p = p
 		this.loc = loc_
 		this.dir = dir_
@@ -76,18 +94,18 @@ class Particle {
 		this.noiseScale = 1000
 	}
 
-	update(r) {
+	update(r: number): void {
 		this.p.ellipse(this.loc.x, this.loc.y, r)
 	}
 
-	checkEdges() {
+	checkEdges(): void {
 		if (this.loc.x < 0 || this.loc.x > this.p.width || this.loc.y < 0 || this.loc.y > this.p.height) {
 			this.loc.x = this.p.random(this.p.width) + this.p.width * 0.5 - this.p.width * 0.5
 			this.loc.y = this.p.random(this.p.height) + this.p.height * 0.5 - this.p.height * 0.5
 		}
 	}
 
-	move() {
+	move(): void {
 		this.angle = this.p.noise(this.loc.x / this.noiseScale, this.loc.y / this.noiseScale, this.p.frameCount / this.noiseScale) * this.p.TWO_PI * this.noiseScale
 		this.dir.x = this.p.cos(this.angle) + this.p.sin(this.angle) - this.p.sin(this.angle)
 		this.dir.y = this.p.sin(this.angle) - this.p.cos(this.angle) * this.p.sin(this.angle)
@@ -97,7 +115,7 @@ class Particle {
 	}
 }
 
-export default function () {
-	const sketch = new SketchTest()
+export default function (): void {
+	const sketch: SketchTest = new SketchTest()
 	sketch.init()
 }

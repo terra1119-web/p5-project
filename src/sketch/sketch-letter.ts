@@ -1,7 +1,18 @@
 'use strict'
-import Sketch from '@/class/Sketch.js'
+import Sketch from '@/class/Sketch'
 
 class SketchTest extends Sketch {
+	x: number
+	y: number
+	toX: number
+	toY: number
+	stepSize: number
+	letters: string
+	fontSizeMin: number
+	angleDistortion: number
+	counter: number
+	pointCount: number
+
 	constructor() {
 		super({})
 		// variables
@@ -17,7 +28,7 @@ class SketchTest extends Sketch {
 		this.pointCount = 0
 	}
 
-	setup() {
+	setup(): void {
 		super.setup()
 
 		this.p.background(0)
@@ -33,7 +44,7 @@ class SketchTest extends Sketch {
 		this.toY = this.p.random(this.p.height)
 	}
 
-	draw() {
+	draw(): void {
 		super.draw()
 		if (!this.p) return
 
@@ -68,19 +79,19 @@ class SketchTest extends Sketch {
 		}
 	}
 
-	mousePressed() {
+	mousePressed(): void {
 		super.mousePressed()
 		this.x = this.p.mouseX
 		this.y = this.p.mouseY
 	}
 
-	initPoint() {
+	initPoint(): void {
 		this.toX = this.p.random(this.p.width)
 		this.toY = this.p.random(this.p.height)
 	}
 }
 
-export default function () {
-	const sketch = new SketchTest()
+export default function (): void {
+	const sketch: SketchTest = new SketchTest()
 	sketch.init()
 }
