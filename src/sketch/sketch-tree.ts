@@ -2,18 +2,24 @@
 import Sketch from '@/class/Sketch'
 
 class SketchTest extends Sketch {
+	// property
+	treeMax: number
+	trees: Tree[]
+	direction: p5.Vector
+	count: number[]
+	colorInt: number
+
 	constructor() {
 		super({})
-		// variables
+
+		// initialize
 		this.treeMax = 1
 		this.trees = []
-		// this.startPoint
-		this.direction
 		this.count = []
 		this.colorInt = 250
 	}
 
-	setup() {
+	setup(): void {
 		super.setup()
 
 		this.p.background(0)
@@ -22,28 +28,27 @@ class SketchTest extends Sketch {
 		this.p.ellipseMode(this.p.CENTER)
 		// this.p.smooth()
 		this.direction = this.p.createVector(0, -this.p.height)
-		for (let i = 0; i < this.treeMax; i++) {
-			const start = this.p.createVector(this.p.random(this.p.width / 4, this.p.width / 4 * 3), this.p.height / 1)
-			const myTree = new tree(this.p, start, this.direction)
+		for (let i: number = 0; i < this.treeMax; i++) {
+			const start: p5.Vector = this.p.createVector(this.p.random(this.p.width / 4, this.p.width / 4 * 3), this.p.height / 1)
+			const myTree: Tree = new Tree(this.p, start, this.direction)
 			this.trees[i] = myTree
 			this.count[i] = myTree.treeSize
 		}
 	}
 
-	draw() {
+	draw(): void {
 		super.draw()
 		if (!this.p) return
 
 		this.p.background(0)
-		let j
-		let size = 10
-		for (j = 0; j < this.treeMax; j++) {
+		let size: number = 10
+		for (let j: number = 0; j < this.treeMax; j++) {
 			this.trees[j].swing()
 		}
 
 		this.p.stroke(255, 200)
-		for (j = 0; j < this.treeMax; j++) {
-			for (let i = 1; i < this.count[j]; i++) {
+		for (let j: number = 0; j < this.treeMax; j++) {
+			for (let i: number = 1; i < this.count[j]; i++) {
 				this.p.strokeWeight(this.trees[j].twig[this.trees[j].map[i].x].thickness[this.trees[j].map[i].y])
 				this.p.line(
 					this.trees[j].twig[this.trees[j].map[i].x].location[this.trees[j].map[i].y - 1].x, this.trees[j].twig[this.trees[j].map[i].x].location[this.trees[j].map[i].y - 1].y,
@@ -55,17 +60,24 @@ class SketchTest extends Sketch {
 		this.p.noStroke()
 		size -= 0.4;
 		if (size <= 12) size = 10
-		for (j = 0; j < this.treeMax; j++) {
-			for (let i = 0; i < this.trees[j].twig.length; i++) {
-				const num = this.trees[j].twig[i].location.length - 1
+		for (let j: number = 0; j < this.treeMax; j++) {
+			for (let i: number = 0; i < this.trees[j].twig.length; i++) {
+				const num: number = this.trees[j].twig[i].location.length - 1
 				this.p.ellipse(this.trees[j].twig[i].location[num].x, this.trees[j].twig[i].location[num].y, size, size)
 			}
 		}
 	}
 }
 
-class branch {
-	constructor(p, loc, thic, id, branchIndex) {
+class Branch {
+	p: p5
+	location: p5.Vector[]
+	thickness: number[]
+	baseIndex: number[][]
+	isCandidate: boolean
+	dTheta: number[]
+
+	constructor(p: p5, loc: p5.Vector, thic: number, id: number, branchIndex: number) {
 		this.p = p
 		this.location = []
 		this.thickness = []
@@ -82,21 +94,27 @@ class branch {
 		this.dTheta = []
 	}
 
-	branchRotate(index, theta, reference) {
+	branchRotate(index: number, theta: number, reference: p5.Vector) {
 		this.location[index].sub(reference)
 		this.rotate2D(this.location[index], theta)
 		this.location[index].add(reference)
 	}
 
-	rotate2D(v, theta) {
-		const xTemp = v.x
+	rotate2D(v: p5.Vector, theta: number): void {
+		const xTemp: number = v.x
 		v.x = v.x * this.p.cos(theta) - v.y * this.p.sin(theta)
 		v.y = xTemp * this.p.sin(theta) + v.y * this.p.cos(theta)
 	}
 }
 
-class frontier {
-	constructor(p, startPoint, direction) {
+class Frontier {
+	p: p5
+	location: p5.Vector
+	velocity: p5.Vector
+	thickness: number
+	finished: boolean
+
+	constructor(p: p5, startPoint: p5.Vector, direction: p5.Vector) {
 		this.p = p
 		this.location = this.p.createVector(startPoint.x, startPoint.y)
 		this.velocity = this.p.createVector(direction.x, direction.y)
@@ -104,14 +122,14 @@ class frontier {
 		this.finished = false
 	}
 
-	update(factor) {
-		if (this.location.x > -10 &
-			this.location.y > -10 &
-			this.location.x < this.p.width + 10 &
-			this.location.y < this.p.height + 10 &
+	update(factor: number): void {
+		if (this.location.x > -10 &&
+			this.location.y > -10 &&
+			this.location.x < this.p.width + 10 &&
+			this.location.y < this.p.height + 10 &&
 			this.thickness > factor) {
 			this.velocity.normalize()
-			const uncertain = this.p.createVector(this.p.random(-1, 1), this.p.random(-1, 1))
+			const uncertain: p5.Vector = this.p.createVector(this.p.random(-1, 1), this.p.random(-1, 1))
 			uncertain.normalize()
 			uncertain.mult(0.2)
 			this.velocity.mult(0.8)
@@ -124,8 +142,14 @@ class frontier {
 	}
 }
 
-class frontierParent {
-	constructor(p, parent) {
+class FrontierParent {
+	p: p5
+	location: p5.Vector
+	velocity: p5.Vector
+	thickness: number
+	finished: boolean
+
+	constructor(p: p5, parent: Frontier) {
 		this.p = p
 		this.location = parent.location.copy()
 		this.velocity = parent.velocity.copy()
@@ -134,14 +158,14 @@ class frontierParent {
 		this.finished = parent.finished
 	}
 
-	update(factor) {
-		if (this.location.x > -10 &
-			this.location.y > -10 &
-			this.location.x < this.p.width + 10 &
-			this.location.y < this.p.height + 10 &
+	update(factor: number): void {
+		if (this.location.x > -10 &&
+			this.location.y > -10 &&
+			this.location.x < this.p.width + 10 &&
+			this.location.y < this.p.height + 10 &&
 			this.thickness > factor) {
 			this.velocity.normalize()
-			const uncertain = this.p.createVector(this.p.random(-1, 1), this.p.random(-1, 1))
+			const uncertain: p5.Vector = this.p.createVector(this.p.random(-1, 1), this.p.random(-1, 1))
 			uncertain.normalize()
 			uncertain.mult(0.2)
 			this.velocity.mult(0.8)
@@ -154,35 +178,47 @@ class frontierParent {
 	}
 }
 
-class tree {
-	constructor(p, startPoint, direction) {
+class Tree {
+	p: p5
+	BranchLengthFactor: number
+	BranchLocationFactor: number
+	dtheta: number[]
+	treeSize: number
+	candNum: number
+	candidateIndex: number[]
+	amplitude: number[]
+	phaseFactor: number[]
+	freq: number
+	period: number
+	dt: number
+	time: number
+	twig: Branch[]
+	map: p5.Vector[]
+
+	constructor(p: p5, startPoint: p5.Vector, direction: p5.Vector) {
 		this.p = p
 		this.BranchLengthFactor = 0.15
 		this.BranchLocationFactor = 0.3
-		this.dtheta
-		this.treeSize
 		this.candNum = 3
 		this.candidateIndex = new Array(this.candNum)
 		this.amplitude = new Array(this.candNum)
 		this.phaseFactor = new Array(this.candNum)
-		this.freq
-		this.period
 		this.dt = 0.025
 		this.time = 0
-		let id = 0
-		let growth = false
+		let id: number = 0
+		let growth: boolean = false
 
-		let fr = []
-		fr[id] = new frontier(this.p, startPoint, direction)
+		let fr: Frontier[] = []
+		fr[id] = new Frontier(this.p, startPoint, direction)
 
 		this.twig = []
-		this.twig[id] = new branch(this.p, fr[id].location, fr[id].thickness, id, 0)
+		this.twig[id] = new Branch(this.p, fr[id].location, fr[id].thickness, id, 0)
 
 		this.map = []
 		this.map[0] = this.p.createVector(id, this.twig[id].location.length - 1)
 
 		while (!growth) {
-			let growthSum = 0
+			let growthSum: number = 0
 			for (id = 0; id < fr.length; id++) {
 				fr[id].update(this.BranchLocationFactor)
 				if (!fr[id].finished) {
@@ -194,8 +230,8 @@ class tree {
 						fr[id].thickness *= 0.65;
 						this.twig[id].thickness[this.twig[id].thickness.length - 1] = fr[id].thickness
 						if (fr[id].thickness > this.BranchLocationFactor) { // control the number of the locations on all branches, i.e., treeSize.
-							fr = this.p.append(fr, new frontierParent(this.p, fr[id]))
-							this.twig = this.p.append(this.twig, new branch(this.p, fr[id].location, fr[id].thickness, id, this.twig[id].location.length - 1))
+							fr = this.p.append(fr, new FrontierParent(this.p, fr[id]))
+							this.twig = this.p.append(this.twig, new Branch(this.p, fr[id].location, fr[id].thickness, id, this.twig[id].location.length - 1))
 							let _id = id
 							if (_id !== 0) {
 								for (let _i = 0; _i < 2; _i++) {
@@ -213,9 +249,9 @@ class tree {
 			}
 		} // while(!growth)
 
-		let _candList = []
-		let _candfloat = new Array(this.twig.length)
-		for (let i = 0; i < this.twig.length; i++) {
+		let _candList: number[] = []
+		let _candfloat: number[] = new Array(this.twig.length)
+		for (let i: number = 0; i < this.twig.length; i++) {
 			_candfloat[i] = this.twig[i].location.length
 			_candList.push(_candfloat[i])
 		}
@@ -224,8 +260,8 @@ class tree {
 		this.twig[0].dTheta = new Array(this.twig[0].location.length)
 		_candfloat[0] = -1.0
 		_candList[0] = -1.0
-		for (let i = 1; i < this.candNum; i++) {
-			let _temp = this.p.max(_candfloat)
+		for (let i: number = 1; i < this.candNum; i++) {
+			let _temp: number = this.p.max(_candfloat)
 			this.candidateIndex[i] = _candList.indexOf(_temp)
 			this.twig[this.candidateIndex[i]].isCandidate = true
 			this.twig[this.candidateIndex[i]].dTheta = new Array(this.twig[this.candidateIndex[i]].location.length)
@@ -237,31 +273,31 @@ class tree {
 		this.phaseFactor[0] = this.p.random(0.6, 1.2)
 		this.freq = this.p.random(0.5, 0.8)
 		this.period = 1 / this.freq
-		for (let i = 1; i < this.candNum; i++) {
+		for (let i: number = 1; i < this.candNum; i++) {
 			this.amplitude[i] = this.amplitude[i - 1] * this.p.random(0.9, 1.4)
 			this.phaseFactor[i] = this.phaseFactor[i - 1] * this.p.random(0.9, 1.4)
 		}
 	}
 
-	swing() {
-		for (let i = 0; i < this.candNum; i++) {
-			let _num = this.twig[this.candidateIndex[i]].location.length
-			for (let j = 0; j < _num; j++) {
+	swing(): void {
+		for (let i: number = 0; i < this.candNum; i++) {
+			let _num: number = this.twig[this.candidateIndex[i]].location.length
+			for (let j: number = 0; j < _num; j++) {
 				this.twig[this.candidateIndex[i]].dTheta[j] = this.amplitude[i] * this.dt * this.p.TWO_PI * this.freq * this.p.cos(this.p.TWO_PI * this.freq * this.time - this.phaseFactor[i] * this.p.PI * j / _num)
 			}
 		}
 
-		for (let id = 0; id < this.twig.length; id++) {
+		for (let id: number = 0; id < this.twig.length; id++) {
 			if (this.twig[id].isCandidate) {
-				for (let _id = 1; _id < this.twig[id].location.length; _id++) {
+				for (let _id: number = 1; _id < this.twig[id].location.length; _id++) {
 					this.twig[id].branchRotate(_id, this.twig[id].dTheta[_id], this.twig[id].location[0])
 				}
 			}
 
 			for (let j = 0; j < this.twig[id].baseIndex[0].length; j++) {
-				if (!this.twig[this.twig[id].baseIndex[0][j]].isCandidate | id == 0) continue
+				if (!this.twig[this.twig[id].baseIndex[0][j]].isCandidate || id == 0) continue
 				else {
-					for (let k = (id == 0) ? 1 : 0; k < this.twig[id].location.length; k++) {
+					for (let k: number = (id == 0) ? 1 : 0; k < this.twig[id].location.length; k++) {
 						this.twig[id].branchRotate(k, this.twig[this.twig[id].baseIndex[0][j]].dTheta[this.twig[id].baseIndex[1][j]], this.twig[this.twig[id].baseIndex[0][j]].location[0])
 					}
 				}
@@ -273,7 +309,7 @@ class tree {
 	}
 }
 
-export default function () {
-	const sketch = new SketchTest()
+export default function (): void {
+	const sketch: SketchTest = new SketchTest()
 	sketch.init()
 }
