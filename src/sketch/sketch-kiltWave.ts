@@ -110,7 +110,7 @@ class SketchTest extends Sketch {
 
 			const n: number = this.p.map(this.p.noise(y / nsy, this.p.frameCount / 300), -1, 1, 0, 1)
 			const colors: string[] = this.p.shuffle(this.palette.concat())
-			const gradient: CanvasGradient = this.p.random() > 0.5
+			const gradient: any = this.p.random() > 0.5
 				? this.p.drawingContext.createLinearGradient(0, -yStep * 2, this.p.width, yStep * 2)
 				: this.p.drawingContext.createLinearGradient(this.p.width, -yStep * 2, 0, yStep * 2)
 
@@ -148,7 +148,7 @@ class SketchTest extends Sketch {
 			const d: number = (this.p.width / this.p.map(prob, 0, 1, this.p.width / 50, this.p.width / 10000)) * this.p.random(1, 1.5)
 			const angle: number = (this.p.int(this.p.random(8)) * 360) / 8
 			const r: number = d * this.p.sqrt(2)
-			const g: CanvasGradient = target.drawingContext.createLinearGradient(
+			const g: any = target.drawingContext.createLinearGradient(
 				this.p.cos(angle) * r,
 				this.p.sin(angle) * r,
 				this.p.cos(angle + this.p.PI) * r,
