@@ -21,7 +21,9 @@ const files: readonly string[] = Object.freeze([
 	'sketch-line',
 	'sketch-particle-ink',
 	'field-coloring',
+	'ink-drop',
 	// not yet
+	// 'test',
 	// 'sketch-face',
 	// 'sketch-face-emoji',
 ])

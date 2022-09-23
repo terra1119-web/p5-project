@@ -57,18 +57,18 @@ class SketchTest extends Sketch {
 		this.forceField = new Array(this.p.width * this.p.height).fill(this.p.width * this.p.height).map(() => [baseFlow.x, baseFlow.y])
 
 		const minSideLen: number = this.p.min(this.p.width, this.p.height)
-		const seed: number = this.p.random(99999)
-		for (let kk: number = 6; kk--;) {
+		const seed: number = this.p.random(999)
+		for (let kk: number = 3; kk--;) {
 			this.p.randomSeed(seed)
 
 			// Add circular flow
 			for (let t: number = 10; t--; ) {
 				const dir: p5.Vector = p5.Vector.fromAngle(this.p.random(this.p.TWO_PI))
-				dir.mult(this.p.random(1)**2*minSideLen * 0.7+ minSideLen * 0.2)
+				dir.mult(this.p.random(1) ** 2 * minSideLen * 0.7+ minSideLen * 0.2)
 				this.addCircularFlowField(
-					this.p.random(1) ** 10 * minSideLen*2 + minSideLen*0.5,
-					this.p.width / 2 + dir.x,
-					this.p.height / 2 + dir.y,
+					this.p.random(1) ** 10 * minSideLen * 2 + minSideLen * 0.5,
+					this.p.width * 0.5 + dir.x,
+					this.p.height * 0.5 + dir.y,
 					(this.p.random(1) > 0.5 ? 1 : -1)
 				)
 			}
@@ -200,7 +200,7 @@ class SketchTest extends Sketch {
 			id === undefined ? this.moverIndex++ : id, // identifier (running number)
 			radius === undefined ? this.p.random(1, 5) : radius, // size
 			life === undefined ? 0 : life, // life
-			maxLife === undefined ? this.p.random(60, 320) : maxLife, // Time to live
+			maxLife === undefined ? this.p.random(30, 160) : maxLife, // Time to live
 		]
 	}
 
