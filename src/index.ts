@@ -1,28 +1,27 @@
 'use strict'
-import {
-	CONSTANT
-} from '@/util/constant'
+import { CONSTANT } from '@/util/constant'
+import Microphone from '@/class/Microphone'
 
 // 実行するSketch
 const files: readonly string[] = Object.freeze([
-	'sketch-particle',
-	'sketch-letter',
-	'sketch-draw',
-	'sketch-tunnel',
-	'sketch-movie',
-	'sketch-wave',
-	'sketch-particleFlow',
-	'sketch-flocks',
-	'sketch-3d',
-	'sketch-images',
+	// 'sketch-particle',
+	// 'sketch-letter',
+	// 'sketch-draw',
+	// 'sketch-tunnel',
+	// 'sketch-movie',
+	// 'sketch-wave',
+	// 'sketch-particleFlow',
+	// 'sketch-flocks',
+	// 'sketch-3d',
+	// 'sketch-images',
 	'sketch-conchoid',
-	'sketch-brushDraw',
-	'sketch-tree',
-	'sketch-line',
-	'sketch-particle-ink',
-	'sketch-fieldColoring',
-	'sketch-inkDrop',
-	'sketch-kiltWave',
+	// 'sketch-brushDraw',
+	// 'sketch-tree',
+	// 'sketch-line',
+	// 'sketch-particle-ink',
+	// 'sketch-fieldColoring',
+	// 'sketch-inkDrop',
+	// 'sketch-kiltWave',
 	// not yet
 	// 'test',
 	// 'sketch-face',

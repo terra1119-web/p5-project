@@ -1,5 +1,6 @@
 'use strict'
 import Sketch from '@/class/Sketch'
+import Microphone from '@/class/Microphone'
 
 class SketchTest extends Sketch {
 	// property
@@ -7,9 +8,7 @@ class SketchTest extends Sketch {
 	r: number
 
 	constructor() {
-		super({
-			useMic: true
-		})
+		super({})
 		// initialize
 		this.a = 0
 		this.r = 0
@@ -22,6 +21,8 @@ class SketchTest extends Sketch {
 		this.p.stroke(255)
 		this.p.noFill()
 		this.p.strokeWeight(0.05)
+
+		console.log(Microphone.id)
 	}
 
 	draw(): void {
@@ -37,13 +38,15 @@ class SketchTest extends Sketch {
 		}
 		this.a = 100 * this.p.sin(this.p.frameCount / 360)
 
-		for (let i: number = -3; i <= 3; i++) {
+		for (let i: number = -2; i <= 2; i++) {
 			this.conchoid(this.a + i)
 		}
-		// console.log(this.meter.getValue())
-		// const n: any = this.getVolume
-		// const volume: number = this.p.map(n, -100, 0, -30, 100)
-		// this.a = 100 * this.p.sin(volume / 360)
+
+		Microphone.getAudio()
+		const volume: number = Microphone.getVolume
+		// console.log(volume)
+		this.a = 100 * this.p.sin(volume / 360)
+		this.conchoid(this.a)
 	}
 
 	conchoid(a: number): void {

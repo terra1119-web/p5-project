@@ -1,6 +1,5 @@
 'use strict'
 import * as p5 from 'p5'
-import * as Tone from 'tone'
 
 import {
 	CONSTANT
@@ -10,59 +9,38 @@ type SketchType = {
 	renderer: string
 	use2D: boolean
 	p: p5
-	w: number
-	h: number
 	alpha: number
 	graphic: p5.Graphics
 	fadeFlag: boolean
-	useMic: boolean
-	mic: Tone.UserMedia
-	meter: Tone.Meter
 }
 
 export default class Sketch implements SketchType {
 	renderer: string
 	use2D: boolean
 	p: p5
-	w: number
-	h: number
 	alpha: number
 	graphic: p5.Graphics
 	fadeFlag: boolean
-	useMic: boolean
-	mic: Tone.UserMedia
-	meter: Tone.Meter
 
 	constructor({
 		renderer = 'P2D',
 		use2D = true,
-		useMic = false
 	}) {
 		this.renderer = renderer
 		this.use2D = use2D
-		this.w = window.innerWidth
-		this.h = window.innerHeight
 		this.alpha = 0
 		this.graphic = null
 		this.fadeFlag = false
 		this.startFade = this.startFade.bind(this)
 		this.dispose = this.dispose.bind(this)
-		this.useMic = useMic
 	}
 
 	setup(): void {
 		const renderer = this.renderer === 'WEBGL' ? this.p.WEBGL : this.p.P2D
-		this.p.createCanvas(this.w, this.h, renderer)
-		this.graphic = this.p.createGraphics(this.w, this.h)
+		this.p.createCanvas(window.innerWidth, window.innerHeight, renderer)
+		this.graphic = this.p.createGraphics(window.innerWidth, window.innerHeight)
 		this.graphic.hide()
 		window.addEventListener('fade', this.startFade, false)
-
-		if (!this.useMic) return
-
-		this.meter = new Tone.Meter()
-		this.mic = new Tone.UserMedia()
-		this.mic.open()
-		this.mic.connect(this.meter)
 	}
 
 	draw(): void {
@@ -122,18 +100,8 @@ export default class Sketch implements SketchType {
 		this.graphic = null
 		this.p.remove()
 		this.p = null
-		if (this.useMic) this.mic.close()
-		this.mic = null
 		window.removeEventListener('fade', this.startFade, false)
 		const event = new Event('finish')
 		window.dispatchEvent(event)
-	}
-
-	get getSketch(): p5 {
-		return this.p
-	}
-
-	get getVolume(): number | number[] {
-		return this.meter.getValue()
 	}
 }

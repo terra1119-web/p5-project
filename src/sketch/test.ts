@@ -1,5 +1,6 @@
 'use strict'
 import Sketch from '@/class/Sketch'
+import Microphone from '@/class/Microphone'
 
 class SketchTest extends Sketch {
 	// property
@@ -7,7 +8,6 @@ class SketchTest extends Sketch {
 		super({
 			renderer: 'P2D',
 			use2D: true,
-			useMic: false
 		})
 		// initialize
 	}
@@ -19,6 +19,7 @@ class SketchTest extends Sketch {
 	setup(): void {
 		super.setup()
 
+		this.p.stroke(255)
 		this.p.noFill()
 	}
 
@@ -26,9 +27,18 @@ class SketchTest extends Sketch {
 		super.draw()
 		if (!this.p) return
 
-		this.p.strokeWeight(this.p.random(1, 5))
-		this.p.stroke(this.p.random(180, 250))
-		this.p.circle(this.p.mouseX, this.p.mouseY, this.p.mouseX)
+		this.p.background(0)
+		if (!Microphone.dataArray) return
+		Microphone.getAudio()
+		console.log(Microphone.getVolume)
+
+		this.p.beginShape()
+		Microphone.dataArray.forEach((data, index) => {
+			const x = this.p.map(index, 0, Microphone.dataArray.length - 1, 20, this.p.width -20)
+			const y = this.p.map(this.p.height * 0.5 - data, this.p.height * 0.5, 0, this.p.height * 0.5, 0)
+			this.p.vertex(x, y)
+		})
+		this.p.endShape()
 	}
 
 	mousePressed(): void {

@@ -98,7 +98,6 @@ class SketchTest extends Sketch {
 		super({
 			renderer: 'P2D',
 			use2D: true,
-			useMic: false
 		})
 		// initialize
 		this.rains = []
