@@ -1,26 +1,30 @@
 'use strict'
 import Sketch from '@/class/Sketch'
+import Microphone from '@/class/Microphone'
 
 class SketchTest extends Sketch {
 	// property
 	unit: number
 	theta: number
 	frames: number
-	num: number
+	waveNum: number
+	volumeCoefficient: number
 
 	constructor() {
 		super({})
 
 		// initialize
 		this.frames = 240
-		this.num = 25
+		this.waveNum = 24
+		this.volumeCoefficient = 0.07
 	}
 
 	setup(): void {
 		super.setup()
 
 		this.p.background(0)
-		this.unit = this.p.width / this.num
+		this.p.noStroke()
+		this.unit = this.p.width / this.waveNum
 		this.theta = 0
 	}
 
@@ -29,15 +33,19 @@ class SketchTest extends Sketch {
 		if (!this.p) return
 
 		this.p.background(0)
-		this.p.fill(0, 30)
-		this.p.noStroke()
-		this.p.rect(0, 0, this.p.width, this.p.height)
-		this.p.fill(255)
-		for (let y: number = 0; y <= this.num; y++) {
-			for (let x: number = 0; x <= this.num; x++) {
+		Microphone.getAudio()
+		// const volume: number = Microphone.getVolume
+		for (let y: number = 0; y <= this.waveNum; y++) {
+			for (let x: number = 0; x <= this.waveNum; x++) {
+				let volume: number = 0
+				if (Microphone.dataArray) {
+					const targetY = y < Microphone.dataArray.length ? Microphone.dataArray.length - y : 0
+					volume = Microphone.dataArray[targetY]
+				}
 				const distance: number = this.p.dist(this.p.width / 2, this.p.height / 2, x * this.unit, y * this.unit)
 				const offSet: number = this.p.map(distance, 0, this.p.sqrt(this.p.sq(this.p.width / 2) + this.p.sq(this.p.height / 2)), 0, this.p.TWO_PI)
-				const sz = this.p.map(this.p.sin(this.theta + offSet), -1, 1, this.unit * .2, this.unit * .1)
+				// const sz = this.p.map(this.p.sin(this.theta + offSet), -1, 1, this.unit * .2, this.unit * .1)
+				const sz = this.p.map(this.p.sin(this.theta + offSet), -1, 1, this.unit * .2, this.unit * .1) + volume * this.volumeCoefficient
 				const angle: number = this.p.atan2(y * this.unit - this.p.height / 2, x * this.unit - this.p.width / 2)
 				this.p.push()
 				this.p.translate(x * this.unit, y * this.unit)
@@ -47,7 +55,6 @@ class SketchTest extends Sketch {
 				this.p.pop()
 			}
 		}
-		// this.p.stroke(255)
 		this.theta -= this.p.TWO_PI / this.frames
 	}
 }

@@ -30,6 +30,7 @@ class SketchTest extends Sketch {
 		if (!this.p) return
 
 		this.p.background(0)
+		Microphone.getAudio()
 		this.p.translate(this.p.width * 0.5, this.p.height * 0.5)
 		for (let i: number = -3; i <= 3; i++) {
 			this.p.stroke(255, 255, 255, 100)
@@ -42,9 +43,7 @@ class SketchTest extends Sketch {
 			this.conchoid(this.a + i)
 		}
 
-		Microphone.getAudio()
 		const volume: number = Microphone.getVolume
-		// console.log(volume)
 		this.a = 100 * this.p.sin(volume / 360)
 		this.conchoid(this.a)
 	}
