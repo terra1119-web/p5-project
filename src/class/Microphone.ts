@@ -4,12 +4,11 @@ class Microphone {
 	analyser: AnalyserNode | null
 	dataArray: Uint8Array | null
 	volume: number
-	id: number
 
 	constructor() {
 		this.analyser = null
 		this.dataArray = null
-		this.id = Math.floor(Math.random() * 10)
+		this.volume = 0
 
 		navigator.mediaDevices.getUserMedia({audio: true, video: false})
 		.then(stream => {
@@ -43,10 +42,6 @@ class Microphone {
 		if (!this.analyser || !this.dataArray) return 0
 		const totalVolume = this.dataArray.reduce((sum, element) => sum + element, 0)
 		return Math.ceil(totalVolume / this.dataArray.length)
-	}
-
-	get getId(): number {
-		return this.id
 	}
 }
 

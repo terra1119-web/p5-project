@@ -1,17 +1,17 @@
 'use strict'
-let timerId = null
+let timerId: any = null
 // get current time
-let startDate = (new Date()).valueOf()
+let startDate: number = new Date().valueOf()
 
 function start () {
 	// repeat myTimer(d0) every 100 ms
 	timerId = setInterval(() => {
 		// get current time
-		const current = (new Date()).valueOf()
+		const current: number = new Date().valueOf()
 		// calculate time difference between now and initial time
-		const diff = current - startDate
+		const diff: number = current - startDate
 		// calculate number of seconds
-		const seconds = Math.floor(diff / 1000)
+		const seconds: number = Math.floor(diff / 1000)
 		// return output to Web Worker
 		self.postMessage(seconds)
 	}, 100)
@@ -24,7 +24,7 @@ addEventListener('message', e => {
 	}
 
 	if (e.data === 'init') {
-		startDate = (new Date()).valueOf()
+		startDate = new Date().valueOf()
 		start()
 	}
 })

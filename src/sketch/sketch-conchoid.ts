@@ -21,8 +21,6 @@ class SketchTest extends Sketch {
 		this.p.stroke(255)
 		this.p.noFill()
 		this.p.strokeWeight(0.05)
-
-		console.log(Microphone.id)
 	}
 
 	draw(): void {
