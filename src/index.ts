@@ -1,6 +1,5 @@
 'use strict'
 import { CONSTANT } from '@/util/constant'
-import Microphone from '@/class/Microphone'
 
 // 実行するSketch
 const files: readonly string[] = Object.freeze([

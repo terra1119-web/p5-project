@@ -46,12 +46,10 @@ class Drip {
 	y: number
 	death: number
 	noiseStart: number
-	colors: string[]
 
 	constructor(p:p5, x: number, y: number, extent: number, h: number, s: number, b: number) {
 		this.p = p
 		this.p.colorMode(this.p.HSB, 360, 100, 100, 100);
-		this.colors = ["#75b9be","#696d7d","#d72638","#f49d37","#140f2d"]
 		this.splat = []
 		this.color = this.p.color(h, s, b)
 		this.x = x
@@ -115,40 +113,24 @@ class SketchTest extends Sketch {
 
 		Microphone.getAudio()
 		if(this.p.frameCount % 10 === 0) {
-			console.log(Microphone.dataArray)
 			const maxValue: number = Math.max(...Microphone.dataArray)
 			const maxIndex: number = Microphone.dataArray.indexOf(maxValue)
 			let h: number
 			switch (maxIndex) {
 				case 0:
-					h = this.p.random(228, 265)
+					h = this.p.random(214, 265)
 					break;
 				case 1:
-					h = this.p.random(214, 228)
+					h = this.p.random(122, 214)
 					break;
 				case 2:
-					h = this.p.random(186, 214)
-					break;
-				case 3:
-					h = this.p.random(122, 186)
-					break;
-				case 4:
 					h = this.p.random(85, 122)
 					break;
-				case 5:
-					h = this.p.random(59, 85)
+				case 3:
+					h = this.p.random(41, 85)
 					break;
-				case 6:
-					h = this.p.random(41, 59)
-					break;
-				case 7:
-					h = this.p.random(22, 41)
-					break;
-				case 8:
-					h = this.p.random(11, 22)
-					break;
-				case 9:
-					h = this.p.random(3, 11)
+				case 4:
+					h = this.p.random(3, 41)
 					break;
 				// case 10:
 				// 	h = this.p.random(300, 330)
@@ -157,10 +139,10 @@ class SketchTest extends Sketch {
 				// 	h = this.p.random(270, 300)
 				// 	break;
 				default:
-					h = this.p.random(3, 11)
+					h = this.p.random(3, 41)
 					break;
 			}
-			const s: number = this.p.random(80, 100)
+			const s: number = this.p.random(70, 100)
 			const b: number = this.p.map(Microphone.getVolume, 0, 200, 60, 100)
 
 			this.rains.push(new Drip(this.p, this.p.random(this.p.width), this.p.random(-100, this.p.height), this.p.random(5, 30), h, s, b))
@@ -171,7 +153,7 @@ class SketchTest extends Sketch {
 			this.rains[i].show()
 		}
 
-		this.p.fill(0, 0.7)
+		this.p.fill(0, 0.8)
 		this.p.rect(0, 0, this.p.width, this.p.height)
 	}
 }
