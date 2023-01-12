@@ -13,7 +13,7 @@ class Pointer {
 	downSpeed: p5.Vector
 	downAcc: p5.Vector
 
-	constructor(p:p5, rad: number, acc: number, finalSize: number) {
+	constructor(p: p5, rad: number, acc: number, finalSize: number) {
 		this.p = p
 		this.dist = 1
 		this.rad = rad
@@ -27,10 +27,13 @@ class Pointer {
 	}
 
 	move(): void {
-		if(this.dist <= this.finalSize) {
+		if (this.dist <= this.finalSize) {
 			this.speed += this.acc
 			this.dist += this.speed
-			this.pos = this.p.createVector(this.p.cos(this.rad) * this.dist, this.p.sin(this.rad) * this.dist)
+			this.pos = this.p.createVector(
+				this.p.cos(this.rad) * this.dist,
+				this.p.sin(this.rad) * this.dist
+			)
 		} else {
 			this.downSpeed.add(this.downAcc)
 			this.pos.add(this.downSpeed)
@@ -47,27 +50,39 @@ class Drip {
 	death: number
 	noiseStart: number
 
-	constructor(p:p5, x: number, y: number, extent: number, h: number, s: number, b: number) {
+	constructor(
+		p: p5,
+		x: number,
+		y: number,
+		extent: number,
+		h: number,
+		s: number,
+		b: number
+	) {
 		this.p = p
-		this.p.colorMode(this.p.HSB, 360, 100, 100, 100);
+		this.p.colorMode(this.p.HSB, 360, 100, 100, 100)
 		this.splat = []
 		this.color = this.p.color(h, s, b)
 		this.x = x
 		this.y = y
 		this.death = 500
 		this.noiseStart = this.p.random(1000)
-		for(let i: number = this.noiseStart; i < this.noiseStart + this.p.TWO_PI; i += 0.1) {
+		for (
+			let i: number = this.noiseStart;
+			i < this.noiseStart + this.p.TWO_PI;
+			i += 0.1
+		) {
 			const acc: number = this.p.noise(i)
 			this.splat.push(new Pointer(this.p, i, acc, extent))
 		}
 	}
 
 	move(rains: Drip[]): void {
-		for(let n of this.splat) {
+		for (let n of this.splat) {
 			n.move()
 		}
 		this.death -= 1
-		if(this.death < 1) {
+		if (this.death < 1) {
 			const index: number = rains.indexOf(this)
 			rains.splice(index, 1)
 		}
@@ -80,7 +95,7 @@ class Drip {
 		this.p.push()
 		this.p.translate(this.x, this.y)
 		this.p.beginShape()
-		for(let i: number = 0; i < this.splat.length; i++) {
+		for (let i: number = 0; i < this.splat.length; i++) {
 			this.p.curveVertex(this.splat[i].pos.x, this.splat[i].pos.y)
 		}
 		this.p.endShape(this.p.CLOSE)
@@ -95,7 +110,7 @@ class SketchTest extends Sketch {
 	constructor() {
 		super({
 			renderer: 'P2D',
-			use2D: true,
+			use2D: true
 		})
 		// initialize
 		this.rains = []
@@ -112,26 +127,26 @@ class SketchTest extends Sketch {
 		if (!this.p) return
 
 		Microphone.getAudio()
-		if(this.p.frameCount % 10 === 0) {
+		if (this.p.frameCount % 10 === 0) {
 			const maxValue: number = Math.max(...Microphone.dataArray)
 			const maxIndex: number = Microphone.dataArray.indexOf(maxValue)
 			let h: number
 			switch (maxIndex) {
 				case 0:
-					h = this.p.random(214, 265)
-					break;
+					h = this.p.random(186, 265)
+					break
 				case 1:
-					h = this.p.random(122, 214)
-					break;
+					h = this.p.random(85, 186)
+					break
 				case 2:
-					h = this.p.random(85, 122)
-					break;
+					h = this.p.random(59, 85)
+					break
 				case 3:
-					h = this.p.random(41, 85)
-					break;
+					h = this.p.random(41, 59)
+					break
 				case 4:
 					h = this.p.random(3, 41)
-					break;
+					break
 				// case 10:
 				// 	h = this.p.random(300, 330)
 				// 	break;
@@ -140,15 +155,25 @@ class SketchTest extends Sketch {
 				// 	break;
 				default:
 					h = this.p.random(3, 41)
-					break;
+					break
 			}
 			const s: number = this.p.random(70, 100)
 			const b: number = this.p.map(Microphone.getVolume, 0, 200, 60, 100)
 
-			this.rains.push(new Drip(this.p, this.p.random(this.p.width), this.p.random(-100, this.p.height), this.p.random(5, 30), h, s, b))
+			this.rains.push(
+				new Drip(
+					this.p,
+					this.p.random(this.p.width),
+					this.p.random(-100, this.p.height),
+					this.p.random(5, 30),
+					h,
+					s,
+					b
+				)
+			)
 		}
 
-		for(let i: number = this.rains.length - 1; i >= 0; i--) {
+		for (let i: number = this.rains.length - 1; i >= 0; i--) {
 			this.rains[i].move(this.rains)
 			this.rains[i].show()
 		}

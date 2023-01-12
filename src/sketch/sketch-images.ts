@@ -24,7 +24,7 @@ class SketchTest extends Sketch {
 	constructor() {
 		super({})
 		// initialize
-		this.textsize = 14
+		this.textsize = 12
 		this.blackfield = '#000000'
 		this.whitefield = '#FFFFFF'
 		this.blackNotWhite = false
@@ -42,13 +42,14 @@ class SketchTest extends Sketch {
 			'010.jpg',
 			'011.jpg',
 			'012.jpg',
+			'2022_04_11_Oil__Acrylic_034.jpg'
 		]
 
 		this.rand_arr = []
 		this.temp_arr = []
 		this.play_count = 0
 		this.time_count = 0
-		this.time_max = 8000
+		this.time_max = 10000
 		this.is_complete = false
 		this.alpha = 0
 	}
@@ -107,9 +108,9 @@ class SketchTest extends Sketch {
 				this.clearScreen()
 				this.initImage()
 			}
-
 		} else {
-			if (!this.is_complete && this.p) this.autoPaintRegion(0, 0, this.p.width, this.p.height)
+			if (!this.is_complete && this.p)
+				this.autoPaintRegion(0, 0, this.p.width, this.p.height)
 		}
 	}
 
@@ -145,11 +146,18 @@ class SketchTest extends Sketch {
 	}
 
 	clearScreen(): void {
-		const field: string = this.blackNotWhite ? this.whitefield : this.blackfield
+		const field: string = this.blackNotWhite
+			? this.whitefield
+			: this.blackfield
 		this.p.background(field)
 	}
 
-	autoPaintRegion(minX: number, minY: number, maxX: number, maxY: number): void {
+	autoPaintRegion(
+		minX: number,
+		minY: number,
+		maxX: number,
+		maxY: number
+	): void {
 		const locX: number = Math.floor(this.p.random(minX, maxX))
 		const locY: number = Math.floor(this.p.random(minY, maxY))
 		this.paintWordAtPoint(locX, locY)

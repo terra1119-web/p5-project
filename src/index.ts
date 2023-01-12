@@ -3,25 +3,26 @@ import { CONSTANT } from '@/util/constant'
 
 // 実行するSketch
 const files: readonly string[] = Object.freeze([
-	'sketch-particle',
-	'sketch-letter',
-	'sketch-draw',
-	'sketch-tunnel',
-	'sketch-movie',
-	'sketch-wave',
-	'sketch-particleFlow',
-	'sketch-flocks',
-	'sketch-3d',
-	'sketch-images',
-	'sketch-conchoid',
-	'sketch-brushDraw',
-	'sketch-tree',
-	'sketch-line',
-	'sketch-particle-ink',
-	'sketch-fieldColoring',
-	'sketch-inkDrop',
-	'sketch-kiltWave',
-	'sketch-multicolor-boid',
+	// 'sketch-particle',
+	// 'sketch-letter',
+	// 'sketch-draw',
+	// 'sketch-tunnel',
+	// 'sketch-movie',
+	// 'sketch-wave',
+	// 'sketch-particleFlow',
+	// 'sketch-flocks',
+	// 'sketch-3d',
+	// 'sketch-images',
+	// 'sketch-conchoid',
+	// 'sketch-brushDraw',
+	// 'sketch-tree',
+	// 'sketch-line',
+	'sketch-particle-ink'
+	// 'sketch-fieldColoring'
+	// 'sketch-inkDrop',
+	// 'sketch-kiltWave',
+	// 'sketch-multicolor-boid'
+	// 'sketch-forest'
 	// not yet
 	// 'test',
 	// 'sketch-face',

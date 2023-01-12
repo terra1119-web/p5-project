@@ -21,7 +21,7 @@ class SketchTest extends Sketch {
 		// initialize
 		this.imgs = []
 		this.balls = []
-		this.time_max = 8000
+		this.time_max = 10000
 		this.rand_arr = []
 		this.temp_arr = []
 		this.play_count = 0
@@ -40,6 +40,7 @@ class SketchTest extends Sketch {
 			'010.jpg',
 			'011.jpg',
 			'012.jpg',
+			'2022_04_11_Oil__Acrylic_034.jpg'
 		]
 	}
 
@@ -71,7 +72,7 @@ class SketchTest extends Sketch {
 		if (this.time_max < this.time_count) {
 			this.p.fill(0, this.alpha)
 			this.p.rect(0, 0, this.p.width, this.p.height)
-			this.alpha += 1;
+			this.alpha += 1
 			if (this.alpha > 255) {
 				this.play_count++
 
@@ -104,7 +105,20 @@ class SketchTest extends Sketch {
 			for (let i: number = 0; i < 5; i++) {
 				const x: number = this.p.floor(this.p.random(this.p.width))
 				const y: number = this.p.floor(this.p.random(this.p.height))
-				this.balls.push(new Ball(x, y, this.p.color(this.img.get(x + this.p.random(2), y + this.p.random(2))), this.p, this.img))
+				this.balls.push(
+					new Ball(
+						x,
+						y,
+						this.p.color(
+							this.img.get(
+								x + this.p.random(2),
+								y + this.p.random(2)
+							)
+						),
+						this.p,
+						this.img
+					)
+				)
 			}
 		}
 	}
@@ -167,7 +181,7 @@ class Ball {
 		this.p = p
 		this.img = img
 		this.location = this.p.createVector(mX, mY)
-		this.radius = this.p.random(.01)
+		this.radius = this.p.random(0.01)
 		this.r = this.p.red(c)
 		this.g = this.p.green(c)
 		this.b = this.p.blue(c)
@@ -199,7 +213,12 @@ class Ball {
 	draw(): void {
 		this.p.noStroke()
 		this.p.stroke(this.r, this.g, this.b)
-		this.p.ellipse(this.location.x, this.location.y, this.radius * 50, this.radius * 50)
+		this.p.ellipse(
+			this.location.x,
+			this.location.y,
+			this.radius * 50,
+			this.radius * 50
+		)
 	}
 }
 

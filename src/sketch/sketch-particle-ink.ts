@@ -1,5 +1,6 @@
 'use strict'
 import Sketch from '@/class/Sketch'
+import Microphone from '@/class/Microphone'
 
 class Particle {
 	p: p5
@@ -14,16 +15,24 @@ class Particle {
 	constructor(p: p5, x: number, y: number, r: number, a: number) {
 		this.p = p
 		this.location = this.p.createVector(x, y)
-		this.velocity = this.p.createVector(this.p.random(-1, 1), this.p.random(-1, 1))
+		this.velocity = this.p.createVector(
+			this.p.random(-1, 1),
+			this.p.random(-1, 1)
+		)
 		this.acceleration = this.p.createVector()
 		this.alpha = this.palpha = a
-		this.amp = 3; // size of the particle
+		this.amp = 3 // size of the particle
 		this.rate = r
 	}
 
 	//update the velociy and location of particle
 	update(particles: Particle[]): void {
-		this.acceleration.add(this.p.createVector((this.p.noise(this.location.x) * 2 - 1), (this.p.noise(this.location.y) * 2 - 1)))
+		this.acceleration.add(
+			this.p.createVector(
+				this.p.noise(this.location.x) * 2 - 1,
+				this.p.noise(this.location.y) * 2 - 1
+			)
+		)
 		this.velocity.add(this.acceleration)
 		this.acceleration.set(0, 0)
 		this.location.add(this.velocity)
@@ -31,17 +40,48 @@ class Particle {
 		// this.amp -= this.rate;
 		// here is the recursion condition
 		if (this.alpha <= this.palpha * 0.25 && this.palpha > 10) {
-			particles.push(new Particle(this.p, this.location.x, this.location.y, this.rate * 0.25, this.palpha * 0.5))
+			particles.push(
+				new Particle(
+					this.p,
+					this.location.x,
+					this.location.y,
+					this.rate * 0.25,
+					this.palpha * 0.5
+				)
+			)
 		}
 	}
 
 	//show the particles
 	show(): void {
 		this.p.noStroke()
-		this.p.fill(this.p.random(360), this.p.random(100), this.p.random(100), this.alpha)
+		const maxValue: number = Math.max(...Microphone.dataArray)
+		const maxIndex: number = Microphone.dataArray.indexOf(maxValue)
+		let h: number
+		switch (maxIndex) {
+			case 0:
+				h = this.p.random(186, 265)
+				break
+			case 1:
+				h = this.p.random(85, 186)
+				break
+			case 2:
+				h = this.p.random(59, 85)
+				break
+			case 3:
+				h = this.p.random(41, 59)
+				break
+			case 4:
+				h = this.p.random(3, 41)
+				break
+			default:
+				h = this.p.random(3, 41)
+				break
+		}
+		const s: number = this.p.random(80, 100)
+		this.p.fill(h, s, this.p.random(100), this.alpha)
 		this.p.ellipse(this.location.x, this.location.y, this.amp)
 	}
-
 }
 
 class SketchTest extends Sketch {
@@ -51,13 +91,12 @@ class SketchTest extends Sketch {
 	constructor() {
 		super({
 			renderer: 'P2D',
-			use2D: true,
+			use2D: true
 		})
 
 		// initialize
 		this.particles = []
 	}
-
 
 	setup(): void {
 		super.setup()
@@ -70,9 +109,18 @@ class SketchTest extends Sketch {
 		super.draw()
 		if (!this.p) return
 
+		Microphone.getAudio()
 		this.p.background(0, 0, 0, 10)
 		if (this.p.random(100) > 80) {
-			this.particles.push(new Particle(this.p, this.p.random(this.p.width), this.p.random(this.p.height), 5, 150))
+			this.particles.push(
+				new Particle(
+					this.p,
+					this.p.random(this.p.width),
+					this.p.random(this.p.height),
+					5,
+					150
+				)
+			)
 		}
 		// update and show the particles
 		for (let i: number = this.particles.length - 2; i >= 0; i--) {

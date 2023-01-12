@@ -1,5 +1,6 @@
 'use strict'
 import Sketch from '@/class/Sketch'
+import Microphone from '@/class/Microphone'
 
 class SketchTest extends Sketch {
 	// property
@@ -30,7 +31,7 @@ class SketchTest extends Sketch {
 	dtx: number
 	dty: number
 	dtz: number
-	size: number
+	minSize: number
 	lines: LineObject[]
 	boxes: BoxObject[]
 
@@ -43,7 +44,7 @@ class SketchTest extends Sketch {
 		// initialize
 		this.lines = []
 		this.boxes = []
-		this.size = 40
+		this.minSize = 4
 	}
 
 	setup() {
@@ -75,6 +76,7 @@ class SketchTest extends Sketch {
 		super.draw()
 		if (!this.p) return
 
+		Microphone.getAudio()
 		this.p.background(0)
 		// this.p.blendMode(this.p.ADD)
 
@@ -83,17 +85,19 @@ class SketchTest extends Sketch {
 		// this.p.lightSpecular(222, 222, 222);
 		// this.p.directionalLight(102, 102, 102, 0, 0, -1);
 
-		this.pz -= 40.0;
+		this.pz -= 40.0
 		this.px = this.ampz * this.p.noise(this.pz / 200000.0, this.pn_time)
-		this.py = 0.0;
+		this.py = 0.0
 
-		this.dx = this.px + this.p.random(-1000, 1000);
-		this.dy = this.py + this.p.random(-1000, 1000);
-		this.dz = this.pz;
+		this.dx = this.px + this.p.random(-1000, 1000)
+		this.dy = this.py + this.p.random(-1000, 1000)
+		this.dz = this.pz
 
-		this.pn_time += 0.01;
+		this.pn_time += 0.01
 
-		this.lines.push(new LineObject(this.px, this.py, this.pz, this.dx, this.dy, this.dz));
+		this.lines.push(
+			new LineObject(this.px, this.py, this.pz, this.dx, this.dy, this.dz)
+		)
 
 		if (this.lines.length > this.line_num) {
 			this.lines.shift()
@@ -104,24 +108,32 @@ class SketchTest extends Sketch {
 			this.tly = this.offsety
 			this.tlz = this.offsetz
 
-			const pcamx = this.lines[this.lines.length - 60].px;
-			const pcamy = this.lines[this.lines.length - 60].py;
-			const pcamz = this.lines[this.lines.length - 60].pz;
+			const pcamx = this.lines[this.lines.length - 60].px
+			const pcamy = this.lines[this.lines.length - 60].py
+			const pcamz = this.lines[this.lines.length - 60].pz
 
-			const ncamx = this.lines[this.lines.length - 20].px;
-			const ncamy = this.lines[this.lines.length - 20].py;
-			const ncamz = this.lines[this.lines.length - 20].pz;
+			const ncamx = this.lines[this.lines.length - 20].px
+			const ncamy = this.lines[this.lines.length - 20].py
+			const ncamz = this.lines[this.lines.length - 20].pz
 
-			this.p.camera(pcamx + this.offsetx, pcamy + this.offsety - 60, pcamz + this.offsetz,
-				ncamx + this.offsetx, ncamy + this.offsety - 60, ncamz + this.offsetz,
-				0.0, 1.0, 1.0);
+			this.p.camera(
+				pcamx + this.offsetx,
+				pcamy + this.offsety - 60,
+				pcamz + this.offsetz,
+				ncamx + this.offsetx,
+				ncamy + this.offsety - 60,
+				ncamz + this.offsetz,
+				0.0,
+				1.0,
+				1.0
+			)
 
-			this.p.translate(this.tlx, this.tly, this.tlz);
+			this.p.translate(this.tlx, this.tly, this.tlz)
 
 			for (let i: number = 0; i < this.lines.length - 1; i++) {
 				if (i > 0) {
-					this.p.stroke(255, );
-					this.p.strokeWeight(1);
+					this.p.stroke(255)
+					this.p.strokeWeight(1)
 					this.stx = this.lines[i].px
 					this.sty = this.lines[i].py
 					this.stz = this.lines[i].pz
@@ -136,7 +148,7 @@ class SketchTest extends Sketch {
 					this.p.vertex(this.enx - 10, this.eny, this.enz)
 					this.p.vertex(this.enx + 10, this.eny, this.enz)
 					this.p.vertex(this.stx + 10, this.sty, this.stz)
-					this.p.endShape();
+					this.p.endShape()
 				}
 			}
 
@@ -144,7 +156,23 @@ class SketchTest extends Sketch {
 				// const c = this.p.color(this.p.random(255), this.p.random(255), this.p.random(255));
 				const c: p5.Color = this.p.color(255, 255, 255)
 				//boxes.add (new BoxObject (px + random (-600, 600), py + random (-600, 600), pz, 0, random (10, 60), random (10, 60), random (10, 60), c))
-				this.boxes.push(new BoxObject(this.p, this.px + this.p.random(-600, 600), this.py + this.p.random(-600, 600), this.pz, 0, this.size, this.size, this.size, c))
+				const size: number = this.p.random(
+					this.minSize,
+					Microphone.getVolume
+				)
+				this.boxes.push(
+					new BoxObject(
+						this.p,
+						this.px + this.p.random(-600, 600),
+						this.py + this.p.random(-600, 600),
+						this.pz,
+						0,
+						size,
+						size,
+						size,
+						c
+					)
+				)
 			}
 
 			this.boxes.forEach(b => {
@@ -156,7 +184,6 @@ class SketchTest extends Sketch {
 					this.boxes.shift()
 				}
 			}
-
 		}
 	}
 }
@@ -169,7 +196,14 @@ class LineObject {
 	dy: number
 	dz: number
 
-	constructor(px: number, py: number, pz: number, dx: number, dy: number, dz: number) {
+	constructor(
+		px: number,
+		py: number,
+		pz: number,
+		dx: number,
+		dy: number,
+		dz: number
+	) {
 		this.px = px
 		this.py = py
 		this.pz = pz
@@ -190,7 +224,17 @@ class BoxObject {
 	box_locz: number
 	col: p5.Color
 
-	constructor(p: p5, x: number, y: number, z: number, a: number, sx: number, sy: number, sz: number, c: p5.Color) {
+	constructor(
+		p: p5,
+		x: number,
+		y: number,
+		z: number,
+		a: number,
+		sx: number,
+		sy: number,
+		sz: number,
+		c: p5.Color
+	) {
 		this.p = p
 		this.alpha = a
 		this.box_sizex = sx

@@ -16,7 +16,7 @@ class SketchTest extends Sketch {
 		// initialize
 		this.frames = 240
 		this.waveNum = 24
-		this.volumeCoefficient = 0.07
+		this.volumeCoefficient = 0.1
 	}
 
 	setup(): void {
@@ -39,18 +39,52 @@ class SketchTest extends Sketch {
 			for (let x: number = 0; x <= this.waveNum; x++) {
 				let volume: number = 0
 				if (Microphone.dataArray) {
-					const targetY = y < Microphone.dataArray.length ? Microphone.dataArray.length - y : 0
+					const targetY =
+						y < Microphone.dataArray.length
+							? Microphone.dataArray.length - y
+							: 0
 					volume = Microphone.dataArray[targetY]
 				}
-				const distance: number = this.p.dist(this.p.width / 2, this.p.height / 2, x * this.unit, y * this.unit)
-				const offSet: number = this.p.map(distance, 0, this.p.sqrt(this.p.sq(this.p.width / 2) + this.p.sq(this.p.height / 2)), 0, this.p.TWO_PI)
+				const distance: number = this.p.dist(
+					this.p.width / 2,
+					this.p.height / 2,
+					x * this.unit,
+					y * this.unit
+				)
+				const offSet: number = this.p.map(
+					distance,
+					0,
+					this.p.sqrt(
+						this.p.sq(this.p.width / 2) +
+							this.p.sq(this.p.height / 2)
+					),
+					0,
+					this.p.TWO_PI
+				)
 				// const sz = this.p.map(this.p.sin(this.theta + offSet), -1, 1, this.unit * .2, this.unit * .1)
-				const sz = this.p.map(this.p.sin(this.theta + offSet), -1, 1, this.unit * .2, this.unit * .1) + volume * this.volumeCoefficient
-				const angle: number = this.p.atan2(y * this.unit - this.p.height / 2, x * this.unit - this.p.width / 2)
+				const sz =
+					this.p.map(
+						this.p.sin(this.theta + offSet),
+						-1,
+						1,
+						this.unit * 0.2,
+						this.unit * 0.1
+					) +
+					volume * this.volumeCoefficient
+				const angle: number = this.p.atan2(
+					y * this.unit - this.p.height / 2,
+					x * this.unit - this.p.width / 2
+				)
 				this.p.push()
 				this.p.translate(x * this.unit, y * this.unit)
 				this.p.rotate(angle)
-				const px: number = this.p.map(this.p.sin(this.theta + offSet), -1, 1, 0, 50)
+				const px: number = this.p.map(
+					this.p.sin(this.theta + offSet),
+					-1,
+					1,
+					0,
+					50
+				)
 				this.p.ellipse(px, 0, sz, sz)
 				this.p.pop()
 			}

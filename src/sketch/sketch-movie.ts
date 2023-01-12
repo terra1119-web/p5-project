@@ -4,7 +4,13 @@ import Sketch from '@/class/Sketch'
 // NOTE: imageの型定義を上書き
 declare module 'p5' {
 	interface p5InstanceExtensions {
-		image(img: Image | Element | MediaElement, x: number, y: number, width?: number, height?: number): void
+		image(
+			img: Image | Element | MediaElement,
+			x: number,
+			y: number,
+			width?: number,
+			height?: number
+		): void
 		image(
 			img: Image | Element | MediaElement,
 			dx: number,
@@ -43,28 +49,28 @@ class SketchTest extends Sketch {
 		})
 		// initialize
 		this.movie_name_array = [
-			"Animals - 6572.mp4",
-			"Bottle - 754.mp4",
-			"c.mp4",
-			"g.mp4",
-			"h.mp4",
-			"Milk - 4315.mp4",
-			"Mountains - 6872.mp4",
-			"Natural Landscapes - 1613.mp4",
-			"Rose - 3654.mp4",
-			"Running Sushi - 3625.mp4",
-			"Shoes - 3627.mp4",
-			"Synthesizer - 3239.mp4",
-			"Synthesizer - 6488.mp4",
-			"Vegetables - 4572.mp4",
-			"Water Dragon - 3779.mp4",
-			"Massage - 701.mp4",
-			"Parrot - 9219.mp4",
+			'Animals - 6572.mp4',
+			'Bottle - 754.mp4',
+			'c.mp4',
+			'g.mp4',
+			'h.mp4',
+			'Milk - 4315.mp4',
+			'Mountains - 6872.mp4',
+			'Natural Landscapes - 1613.mp4',
+			'Rose - 3654.mp4',
+			'Running Sushi - 3625.mp4',
+			'Shoes - 3627.mp4',
+			'Synthesizer - 3239.mp4',
+			'Synthesizer - 6488.mp4',
+			'Vegetables - 4572.mp4',
+			'Water Dragon - 3779.mp4',
+			'Massage - 701.mp4',
+			'Parrot - 9219.mp4',
 			"Woodhouse'S Toad - 397.mp4",
-			"A Wet Hawk.mp4",
-			"Video Of Jellyfishes Inside Of Aquarium.mp4",
-			"Pexels Videos 3563.mp4",
-			"Pexels Videos 1526909.mp4"
+			'A Wet Hawk.mp4',
+			'Video Of Jellyfishes Inside Of Aquarium.mp4',
+			'Pexels Videos 3563.mp4',
+			'Pexels Videos 1526909.mp4'
 		]
 		this.play_max = this.movie_name_array.length
 		this.time_max = 5400
@@ -76,9 +82,7 @@ class SketchTest extends Sketch {
 		this.col_count = 0
 		this.col = 1
 		this.col_max = 3
-		this.rgb_array = [
-			[0, 0, 0]
-		]
+		this.rgb_array = [[0, 0, 0]]
 	}
 
 	setup(): void {
@@ -97,8 +101,18 @@ class SketchTest extends Sketch {
 		let nn: number = 0
 		for (let i: number = 0; i < this.col; i++) {
 			for (let j: number = 0; j < this.col; j++) {
-				this.p.tint(this.rgb_array[nn][0], this.rgb_array[nn][1], this.rgb_array[nn][2])
-				this.p.image(this.movie, this.movie_width * i, this.movie_height * j, this.p.width / this.col, this.p.height / this.col)
+				this.p.tint(
+					this.rgb_array[nn][0],
+					this.rgb_array[nn][1],
+					this.rgb_array[nn][2]
+				)
+				this.p.image(
+					this.movie,
+					this.movie_width * i,
+					this.movie_height * j,
+					this.p.width / this.col,
+					this.p.height / this.col
+				)
 				nn++
 			}
 		}
@@ -129,8 +143,8 @@ class SketchTest extends Sketch {
 	// private method
 	shuffle(array: string[]): string[] {
 		for (let i: number = array.length - 1; i >= 0; i--) {
-			const j = Math.floor(Math.random() * (i + 1));
-			[array[i], array[j]] = [array[j], array[i]]
+			const j = Math.floor(Math.random() * (i + 1))
+			;[array[i], array[j]] = [array[j], array[i]]
 		}
 		return array
 	}
