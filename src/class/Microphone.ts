@@ -72,8 +72,13 @@ class Microphone {
 			case 4:
 				h = randRange(3, 41)
 				break
+			case 5:
+				h = randRange(265 - 360, 3)
+				if (h < 0) h = 360 - h
+				break
 			default:
-				h = randRange(3, 41)
+				h = randRange(265 - 360, 3)
+				if (h < 0) h = 360 - h
 				break
 		}
 
