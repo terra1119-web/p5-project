@@ -55,31 +55,8 @@ class Particle {
 	//show the particles
 	show(): void {
 		this.p.noStroke()
-		const maxValue: number = Math.max(...Microphone.dataArray)
-		const maxIndex: number = Microphone.dataArray.indexOf(maxValue)
-		let h: number
-		switch (maxIndex) {
-			case 0:
-				h = this.p.random(186, 265)
-				break
-			case 1:
-				h = this.p.random(85, 186)
-				break
-			case 2:
-				h = this.p.random(59, 85)
-				break
-			case 3:
-				h = this.p.random(41, 59)
-				break
-			case 4:
-				h = this.p.random(3, 41)
-				break
-			default:
-				h = this.p.random(3, 41)
-				break
-		}
 		const s: number = this.p.random(80, 100)
-		this.p.fill(h, s, this.p.random(100), this.alpha)
+		this.p.fill(Microphone.getHue, s, this.p.random(100), this.alpha)
 		this.p.ellipse(this.location.x, this.location.y, this.amp)
 	}
 }
