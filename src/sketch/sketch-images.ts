@@ -41,8 +41,8 @@ class SketchTest extends Sketch {
 			'009.jpg',
 			'010.jpg',
 			'011.jpg',
-			'012.jpg',
-			'2022_04_11_Oil__Acrylic_034.jpg'
+			'012.jpg'
+			// '2022_04_11_Oil__Acrylic_034.jpg'
 		]
 
 		this.rand_arr = []
