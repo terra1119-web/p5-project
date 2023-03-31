@@ -40,7 +40,8 @@ class SketchTest extends Sketch {
 			'010.jpg',
 			'011.jpg',
 			'012.jpg',
-			'2022_04_11_Oil__Acrylic_034.jpg'
+			'2022_04_11_Oil__Acrylic_034.jpg',
+			'Group1.png'
 		]
 	}
 
