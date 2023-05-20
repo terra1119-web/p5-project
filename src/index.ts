@@ -3,7 +3,6 @@ import { CONSTANT } from '@/util/constant'
 
 // 実行するSketch
 const files: readonly string[] = Object.freeze([
-	// 'sketch-particle',
 	'sketch-letter',
 	'sketch-draw',
 	'sketch-tunnel',
@@ -25,8 +24,10 @@ const files: readonly string[] = Object.freeze([
 	'sketch-forest',
 	'sketch-virtual-sea',
 	'skech-flourishing',
-	'sketch-color-drop'
+	'sketch-color-drop',
+	'skerch-splatter'
 	// not yet
+	// 'sketch-particle',
 	// 'test',
 	// 'sketch-face',
 	// 'sketch-face-emoji',
