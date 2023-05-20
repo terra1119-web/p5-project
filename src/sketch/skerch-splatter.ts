@@ -44,7 +44,8 @@ class SketchTest extends Sketch {
 		Microphone.getAudio()
 
 		this.p.blendMode(this.p.BLEND)
-		if (this.p.frameCount % 8 === 0) {
+		// if (this.p.frameCount % 8 === 0) {
+		if (Microphone.getVolume > 60 || this.p.frameCount % 50 === 0) {
 			const x: number = this.p.int(this.p.random(this.p.width))
 			const y: number = this.p.int(this.p.random(this.p.height))
 			this.drawBlob(x, y, this.blobSize, 8)
