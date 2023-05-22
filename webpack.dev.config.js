@@ -15,7 +15,7 @@ module.exports = {
 		// globalObject: 'self'
 	},
 	devServer: {
-		static: 'dist',
+		static: 'src/public',
 		open: true
 	},
 	resolve: {
