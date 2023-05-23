@@ -22,7 +22,7 @@ class SketchTest extends Sketch {
 		this.toY = 0
 		this.stepSize = 5.0
 		this.letters =
-			'The center is not always in the middle. Wander MUSIC for SUBLIMATION'
+			'The center is not always in the middle. Wander, MUSIC for SUBLIMATION'
 		this.fontSizeMin = 3
 		this.angleDistortion = 0.0
 		this.counter = 0
