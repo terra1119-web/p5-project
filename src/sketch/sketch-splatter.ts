@@ -45,7 +45,7 @@ class SketchTest extends Sketch {
 
 		this.p.blendMode(this.p.BLEND)
 		// if (this.p.frameCount % 8 === 0) {
-		if (Microphone.getVolume > 60 || this.p.frameCount % 50 === 0) {
+		if (Microphone.getVolume > 40 || this.p.frameCount % 50 === 0) {
 			const x: number = this.p.int(this.p.random(this.p.width))
 			const y: number = this.p.int(this.p.random(this.p.height))
 			this.drawBlob(x, y, this.blobSize, 8)
@@ -63,7 +63,6 @@ class SketchTest extends Sketch {
 		}
 
 		this.p.blendMode(this.p.DARKEST)
-		// this.overlay.blendMode(this.p.DARKEST)
 		this.overlay.clear(0, 0, 0, 0)
 		this.overlay.fill(this.hue, 50, this.brightness, 20)
 		this.overlay.rect(0, 0, this.p.width, this.p.height)

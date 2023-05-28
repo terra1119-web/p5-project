@@ -63,6 +63,7 @@ class SketchTest extends Sketch {
 
 		this.play_max = this.image_name_array.length
 
+		this.p.blendMode(this.p.HARD_LIGHT)
 		this.initArray()
 		this.initImage()
 	}
@@ -134,7 +135,7 @@ class SketchTest extends Sketch {
 	autoPaint(): void {
 		const t = (this.p.frameCount / 5) % 360 //how many breaths mod 360 do we have?
 		this.p.background(0, 0, 0, 1) //a gesso unique to each of us
-		for (let i = 1; i < 8000; i += 10) {
+		for (let i = 1; i < 7800; i += 10) {
 			//and only in daily loops do I become defined.
 			this.p.fill(this.p.random(20, 100)) //pixels of self
 			const x =
@@ -144,7 +145,7 @@ class SketchTest extends Sketch {
 					this.p.sin(t * 10 + i / 2 + this.p.random(5)) //placed on a horizon
 			const y =
 				this.p.width / 4 +
-				40 +
+				50 +
 				this.p.sqrt(i * 20) *
 					this.p.cos(t * 10 + i / 2 + this.p.random(5)) //placed up and down - and within
 			const pix: p5.Color = this.p.color(
@@ -155,24 +156,8 @@ class SketchTest extends Sketch {
 			) //do we all have a negative in which to derive from?
 			pix.setAlpha(this.p.random(200)) //to let light pass through us
 			this.p.fill(pix) //and yet fill this vessel
-			this.p.circle(x, y, this.p.random(0, 5 + 5 * this.p.sin(t))) //where I live
+			this.p.circle(x, y, this.p.random(0, 10 + 5 * this.p.sin(t))) //where I live
 		}
-	}
-
-	mousePressed(): void {
-		super.mousePressed()
-	}
-
-	keyTyped(): void {
-		super.keyTyped()
-	}
-
-	keyPressed(): void {
-		super.keyPressed()
-	}
-
-	doubleClicked(): void {
-		super.doubleClicked()
 	}
 }
 
