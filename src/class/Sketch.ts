@@ -1,9 +1,9 @@
 'use strict'
+import '@/global'
 import * as p5 from 'p5'
+import 'p5/lib/addons/p5.sound'
 
-import {
-	CONSTANT
-} from '@/util/constant'
+import { CONSTANT } from '@/util/constant'
 
 type SketchType = {
 	renderer: string
@@ -22,10 +22,7 @@ export default class Sketch implements SketchType {
 	graphic: p5.Graphics
 	fadeFlag: boolean
 
-	constructor({
-		renderer = 'P2D',
-		use2D = true,
-	}) {
+	constructor({ renderer = 'P2D', use2D = true }) {
 		this.renderer = renderer
 		this.use2D = use2D
 		this.alpha = 0
@@ -38,7 +35,10 @@ export default class Sketch implements SketchType {
 	setup(): void {
 		const renderer = this.renderer === 'WEBGL' ? this.p.WEBGL : this.p.P2D
 		this.p.createCanvas(window.innerWidth, window.innerHeight, renderer)
-		this.graphic = this.p.createGraphics(window.innerWidth, window.innerHeight)
+		this.graphic = this.p.createGraphics(
+			window.innerWidth,
+			window.innerHeight
+		)
 		this.graphic.hide()
 		window.addEventListener('fade', this.startFade, false)
 	}

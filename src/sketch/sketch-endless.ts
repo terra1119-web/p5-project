@@ -41,6 +41,21 @@ class SketchTest extends Sketch {
 			}
 		}
 		this.f += i / 8
+
+		// const frequency = this.p.map(this.p.mouseX, 0, this.p.width, 100, 1000)
+		// const volume = this.p.map(this.p.mouseY, 0, this.p.height, 0, 0.5)
+
+		// // 音声の再生
+		// this.playSound(frequency, volume)
+	}
+
+	playSound(frequency: number, volume: number): void {
+		const oscillator = new p5.Oscillator()
+		oscillator.setType('sine') // 振幅の形状を指定
+		oscillator.freq(frequency) // 周波数を設定
+		oscillator.amp(volume) // 振幅を設定
+		oscillator.start()
+		oscillator.stop(0.1) // 0.1秒後に停止
 	}
 }
 
