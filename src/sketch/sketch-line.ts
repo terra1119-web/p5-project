@@ -1,7 +1,5 @@
 'use strict'
 import Sketch from '@/class/Sketch'
-import Microphone from '@/class/Microphone'
-
 class SketchTest extends Sketch {
 	// property
 	line_num: number
@@ -76,7 +74,6 @@ class SketchTest extends Sketch {
 		super.draw()
 		if (!this.p) return
 
-		Microphone.getAudio()
 		this.p.background(0)
 		// this.p.blendMode(this.p.ADD)
 
@@ -156,10 +153,8 @@ class SketchTest extends Sketch {
 				// const c = this.p.color(this.p.random(255), this.p.random(255), this.p.random(255));
 				const c: p5.Color = this.p.color(255, 255, 255)
 				//boxes.add (new BoxObject (px + random (-600, 600), py + random (-600, 600), pz, 0, random (10, 60), random (10, 60), random (10, 60), c))
-				const size: number = this.p.random(
-					this.minSize,
-					Microphone.getVolume
-				)
+				const volume: number = this.mic.getLevel() * 1000
+				const size: number = this.p.random(this.minSize, volume)
 				this.boxes.push(
 					new BoxObject(
 						this.p,

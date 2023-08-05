@@ -1,6 +1,5 @@
 'use strict'
 import Sketch from '@/class/Sketch'
-import Microphone from '@/class/Microphone'
 
 class SketchTest extends Sketch {
 	// property
@@ -45,8 +44,7 @@ class SketchTest extends Sketch {
 		super.draw()
 		if (!this.p) return
 
-		Microphone.getAudio()
-		// this.speed = Microphone.getVolume * 0.001
+		const volume: number = this.mic.getLevel() * 1000
 
 		this.flying -= this.speed
 		let yoff = this.flying
@@ -58,7 +56,7 @@ class SketchTest extends Sketch {
 					0,
 					1,
 					-100,
-					Microphone.getVolume
+					volume
 				)
 				xoff += 0.1
 			}

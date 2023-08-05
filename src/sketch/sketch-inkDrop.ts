@@ -129,7 +129,9 @@ class SketchTest extends Sketch {
 		Microphone.getAudio()
 		if (this.p.frameCount % 10 === 0) {
 			const s: number = this.p.random(70, 100)
-			const b: number = this.p.map(Microphone.getVolume, 0, 200, 60, 100)
+			const volume: number = this.mic.getLevel() * 1000
+			console.log(volume)
+			const b: number = this.p.map(volume, 0, 200, 60, 100)
 
 			this.rains.push(
 				new Drip(

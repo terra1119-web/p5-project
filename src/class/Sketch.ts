@@ -21,6 +21,7 @@ export default class Sketch implements SketchType {
 	alpha: number
 	graphic: p5.Graphics
 	fadeFlag: boolean
+	mic: p5.AudioIn
 
 	constructor({ renderer = 'P2D', use2D = true }) {
 		this.renderer = renderer
@@ -41,6 +42,9 @@ export default class Sketch implements SketchType {
 		)
 		this.graphic.hide()
 		window.addEventListener('fade', this.startFade, false)
+
+		this.mic = new p5.AudioIn()
+		this.mic.start()
 	}
 
 	draw(): void {

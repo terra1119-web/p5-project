@@ -44,8 +44,9 @@ class SketchTest extends Sketch {
 		Microphone.getAudio()
 
 		this.p.blendMode(this.p.BLEND)
+		const volume: number = this.mic.getLevel() * 1000
 		// if (this.p.frameCount % 8 === 0) {
-		if (Microphone.getVolume > 40 || this.p.frameCount % 50 === 0) {
+		if (volume > 40 || this.p.frameCount % 50 === 0) {
 			const x: number = this.p.int(this.p.random(this.p.width))
 			const y: number = this.p.int(this.p.random(this.p.height))
 			this.drawBlob(x, y, this.blobSize, 8)
@@ -70,8 +71,9 @@ class SketchTest extends Sketch {
 	}
 
 	drawBlob(x: number, y: number, radius: number, level: number) {
+		const volume: number = this.mic.getLevel() * 1000
 		const s: number = this.p.random(70, 100)
-		const b: number = this.p.map(Microphone.getVolume, 0, 200, 60, 100)
+		const b: number = this.p.map(volume, 0, 200, 60, 100)
 		const color: number[] = [Microphone.getHue, s, b, 100]
 		this.p.fill(color)
 
