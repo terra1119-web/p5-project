@@ -12,6 +12,8 @@ type SketchType = {
 	alpha: number
 	graphic: p5.Graphics
 	fadeFlag: boolean
+	mic: p5.AudioIn | null
+	useMic: boolean
 }
 
 export default class Sketch implements SketchType {
@@ -21,14 +23,17 @@ export default class Sketch implements SketchType {
 	alpha: number
 	graphic: p5.Graphics
 	fadeFlag: boolean
-	mic: p5.AudioIn
+	mic: p5.AudioIn | null
+	useMic: boolean
 
-	constructor({ renderer = 'P2D', use2D = true }) {
+	constructor({ renderer = 'P2D', use2D = true, useMic = false }) {
 		this.renderer = renderer
 		this.use2D = use2D
+		this.useMic = useMic
 		this.alpha = 0
 		this.graphic = null
 		this.fadeFlag = false
+		this.mic = null
 		this.startFade = this.startFade.bind(this)
 		this.dispose = this.dispose.bind(this)
 	}
@@ -43,8 +48,11 @@ export default class Sketch implements SketchType {
 		this.graphic.hide()
 		window.addEventListener('fade', this.startFade, false)
 
+		if (!this.useMic) return
 		this.mic = new p5.AudioIn()
-		this.mic.start()
+		this.p.userStartAudio().then(() => {
+			this.mic.start()
+		})
 	}
 
 	draw(): void {
@@ -100,6 +108,8 @@ export default class Sketch implements SketchType {
 	}
 
 	dispose(): void {
+		if (this.mic) this.mic.stop()
+		this.mic = null
 		this.graphic.remove()
 		this.graphic = null
 		this.p.remove()

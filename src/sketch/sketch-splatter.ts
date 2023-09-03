@@ -14,7 +14,8 @@ class SketchTest extends Sketch {
 	constructor() {
 		super({
 			renderer: 'P2D',
-			use2D: true
+			use2D: true,
+			useMic: true
 		})
 		// initialize
 		this.hue = 0
@@ -39,12 +40,13 @@ class SketchTest extends Sketch {
 
 	draw(): void {
 		super.draw()
-		if (!this.p) return
+		if (!this.p || !this.mic) return
 
 		Microphone.getAudio()
 
 		this.p.blendMode(this.p.BLEND)
-		const volume: number = this.mic.getLevel() * 1000
+		const micVolume: number = this.mic.getLevel()
+		const volume: number = this.p.map(micVolume, 0, 1, 0, 1000)
 		// if (this.p.frameCount % 8 === 0) {
 		if (volume > 40 || this.p.frameCount % 50 === 0) {
 			const x: number = this.p.int(this.p.random(this.p.width))

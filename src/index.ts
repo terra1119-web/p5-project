@@ -29,9 +29,9 @@ const files: readonly string[] = Object.freeze([
 	'sketch-spiral-image',
 	'sketch-motes',
 	'sketch-endless',
-	'sketch-3d-cube',
-	'sketch-sand'
+	'sketch-3d-cube'
 	// not yet
+	// 'sketch-sand'
 	// 'sketch-auto-paint'
 	// 'sketch-particle',
 	// 'test',

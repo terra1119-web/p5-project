@@ -36,7 +36,8 @@ class SketchTest extends Sketch {
 	constructor() {
 		super({
 			renderer: 'WEBGL',
-			use2D: false
+			use2D: false,
+			useMic: true
 		})
 
 		// initialize
@@ -72,7 +73,7 @@ class SketchTest extends Sketch {
 
 	draw() {
 		super.draw()
-		if (!this.p) return
+		if (!this.p || !this.mic) return
 
 		this.p.background(0)
 		// this.p.blendMode(this.p.ADD)
@@ -153,7 +154,8 @@ class SketchTest extends Sketch {
 				// const c = this.p.color(this.p.random(255), this.p.random(255), this.p.random(255));
 				const c: p5.Color = this.p.color(255, 255, 255)
 				//boxes.add (new BoxObject (px + random (-600, 600), py + random (-600, 600), pz, 0, random (10, 60), random (10, 60), random (10, 60), c))
-				const volume: number = this.mic.getLevel() * 1000
+				const micVolume: number = this.mic.getLevel()
+				const volume: number = this.p.map(micVolume, 0, 1, 0, 500)
 				const size: number = this.p.random(this.minSize, volume)
 				this.boxes.push(
 					new BoxObject(

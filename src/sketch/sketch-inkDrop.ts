@@ -110,7 +110,8 @@ class SketchTest extends Sketch {
 	constructor() {
 		super({
 			renderer: 'P2D',
-			use2D: true
+			use2D: true,
+			useMic: true
 		})
 		// initialize
 		this.rains = []
@@ -129,8 +130,8 @@ class SketchTest extends Sketch {
 		Microphone.getAudio()
 		if (this.p.frameCount % 10 === 0) {
 			const s: number = this.p.random(70, 100)
-			const volume: number = this.mic.getLevel() * 1000
-			console.log(volume)
+			const micVolume: number = this.mic.getLevel()
+			const volume: number = this.p.map(micVolume, 0, 1, 0, 1000)
 			const b: number = this.p.map(volume, 0, 200, 60, 100)
 
 			this.rains.push(

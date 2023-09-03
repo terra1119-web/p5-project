@@ -7,7 +7,7 @@ class SketchTest extends Sketch {
 	r: number
 
 	constructor() {
-		super({})
+		super({ useMic: true })
 		// initialize
 		this.a = 0
 		this.r = 0
@@ -39,7 +39,8 @@ class SketchTest extends Sketch {
 			this.conchoid(this.a + i)
 		}
 
-		const volume: number = this.mic.getLevel() * 1000
+		const micVolume: number = this.mic.getLevel()
+		const volume: number = this.p.map(micVolume, 0, 1, 0, 1000)
 		this.a = 100 * this.p.sin(volume / 360)
 		this.conchoid(this.a)
 	}
