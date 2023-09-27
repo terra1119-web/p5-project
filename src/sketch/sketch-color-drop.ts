@@ -1,6 +1,5 @@
 'use strict'
 import Sketch from '@/class/Sketch'
-import Microphone from '@/class/Microphone'
 
 class SketchTest extends Sketch {
 	// property
@@ -11,7 +10,8 @@ class SketchTest extends Sketch {
 	constructor() {
 		super({
 			renderer: 'P2D',
-			use2D: true
+			use2D: true,
+			useMic: true
 		})
 		// initialize
 		this.ripples = []
@@ -28,11 +28,11 @@ class SketchTest extends Sketch {
 		super.draw()
 		if (!this.p) return
 
-		Microphone.getAudio()
+		const hue: number = this.getHue()
 
 		this.p.background(0)
 		if (this.p.frameCount % 40 == 1) {
-			this.drops.push(new Drop(this.p, Microphone.getHue))
+			this.drops.push(new Drop(this.p, hue))
 		}
 
 		for (let ripple of this.ripples) {

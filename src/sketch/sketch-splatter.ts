@@ -1,6 +1,5 @@
 'use strict'
 import Sketch from '@/class/Sketch'
-import Microphone from '@/class/Microphone'
 
 class SketchTest extends Sketch {
 	// property
@@ -42,13 +41,11 @@ class SketchTest extends Sketch {
 		super.draw()
 		if (!this.p || !this.mic) return
 
-		Microphone.getAudio()
-
 		this.p.blendMode(this.p.BLEND)
 		const micVolume: number = this.mic.getLevel()
 		const volume: number = this.p.map(micVolume, 0, 1, 0, 1000)
 		// if (this.p.frameCount % 8 === 0) {
-		if (volume > 40 || this.p.frameCount % 50 === 0) {
+		if (volume > 20 || this.p.frameCount % 50 === 0) {
 			const x: number = this.p.int(this.p.random(this.p.width))
 			const y: number = this.p.int(this.p.random(this.p.height))
 			this.drawBlob(x, y, this.blobSize, 8)
@@ -76,7 +73,8 @@ class SketchTest extends Sketch {
 		const volume: number = this.mic.getLevel() * 1000
 		const s: number = this.p.random(70, 100)
 		const b: number = this.p.map(volume, 0, 200, 60, 100)
-		const color: number[] = [Microphone.getHue, s, b, 100]
+		const hue: number = this.getHue()
+		const color: number[] = [hue, s, b, 100]
 		this.p.fill(color)
 
 		this.p.beginShape()

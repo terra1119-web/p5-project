@@ -1,6 +1,5 @@
 'use strict'
 import Sketch from '@/class/Sketch'
-import Microphone from '@/class/Microphone'
 
 class Particle {
 	p: p5
@@ -53,10 +52,10 @@ class Particle {
 	}
 
 	//show the particles
-	show(): void {
+	show(hue): void {
 		this.p.noStroke()
 		const s: number = this.p.random(80, 100)
-		this.p.fill(Microphone.getHue, s, this.p.random(100), this.alpha)
+		this.p.fill(hue, s, this.p.random(100), this.alpha)
 		this.p.ellipse(this.location.x, this.location.y, this.amp)
 	}
 }
@@ -68,7 +67,8 @@ class SketchTest extends Sketch {
 	constructor() {
 		super({
 			renderer: 'P2D',
-			use2D: true
+			use2D: true,
+			useMic: true
 		})
 
 		// initialize
@@ -86,7 +86,6 @@ class SketchTest extends Sketch {
 		super.draw()
 		if (!this.p) return
 
-		Microphone.getAudio()
 		this.p.background(0, 0, 0, 10)
 		if (this.p.random(100) > 80) {
 			this.particles.push(
@@ -99,10 +98,11 @@ class SketchTest extends Sketch {
 				)
 			)
 		}
+		const hue: number = this.getHue()
 		// update and show the particles
 		for (let i: number = this.particles.length - 2; i >= 0; i--) {
 			this.particles[i].update(this.particles)
-			this.particles[i].show()
+			this.particles[i].show(hue)
 			if (this.particles[i].alpha <= 10) this.particles.splice(i, 10)
 		}
 	}

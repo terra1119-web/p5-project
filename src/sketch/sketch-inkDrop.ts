@@ -1,6 +1,5 @@
 'use strict'
 import Sketch from '@/class/Sketch'
-import Microphone from '@/class/Microphone'
 
 class Pointer {
 	p: p5
@@ -127,7 +126,7 @@ class SketchTest extends Sketch {
 		super.draw()
 		if (!this.p) return
 
-		Microphone.getAudio()
+		const hue: number = this.getHue()
 		if (this.p.frameCount % 10 === 0) {
 			const s: number = this.p.random(70, 100)
 			const micVolume: number = this.mic.getLevel()
@@ -140,7 +139,7 @@ class SketchTest extends Sketch {
 					this.p.random(this.p.width),
 					this.p.random(-100, this.p.height),
 					this.p.random(5, 30),
-					Microphone.getHue,
+					hue,
 					s,
 					b
 				)

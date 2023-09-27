@@ -1,6 +1,5 @@
 'use strict'
 import Sketch from '@/class/Sketch'
-import Microphone from '@/class/Microphone'
 
 class SketchTest extends Sketch {
 	// property
@@ -11,12 +10,12 @@ class SketchTest extends Sketch {
 	volumeCoefficient: number
 
 	constructor() {
-		super({})
+		super({ useMic: true })
 
 		// initialize
 		this.frames = 240
 		this.waveNum = 24
-		this.volumeCoefficient = 0.1
+		this.volumeCoefficient = 0.06
 	}
 
 	setup(): void {
@@ -33,17 +32,27 @@ class SketchTest extends Sketch {
 		if (!this.p) return
 
 		this.p.background(0)
-		Microphone.getAudio()
-		// const volume: number = Microphone.getVolume
+		const array = this.getVolumeEachBand()
+		const maxValue: number = Math.max(...array)
+		const maxIndex: number = array.indexOf(maxValue)
+		const targetYArray: number[] =
+			maxIndex === 0
+				? [0, 1]
+				: maxIndex === 1
+				? [3, 4, 5, 6, 7, 8, 9]
+				: maxIndex === 2
+				? [10, 11, 12, 13, 14, 15]
+				: maxIndex === 3
+				? [16, 17, 18, 19]
+				: maxIndex === 4
+				? [20, 21, 22]
+				: []
+
 		for (let y: number = 0; y <= this.waveNum; y++) {
 			for (let x: number = 0; x <= this.waveNum; x++) {
-				let volume: number = 0
-				if (Microphone.dataArray) {
-					const targetY =
-						y < Microphone.dataArray.length
-							? Microphone.dataArray.length - y
-							: 0
-					volume = Microphone.dataArray[targetY]
+				let volume = 0
+				if (targetYArray.includes(y)) {
+					volume = maxValue
 				}
 				const distance: number = this.p.dist(
 					this.p.width / 2,

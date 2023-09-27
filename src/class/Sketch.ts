@@ -13,6 +13,8 @@ type SketchType = {
 	graphic: p5.Graphics
 	fadeFlag: boolean
 	mic: p5.AudioIn | null
+	fft: p5.FFT
+	spectrum: any[]
 	useMic: boolean
 }
 
@@ -24,6 +26,8 @@ export default class Sketch implements SketchType {
 	graphic: p5.Graphics
 	fadeFlag: boolean
 	mic: p5.AudioIn | null
+	fft: p5.FFT | null
+	spectrum: any[]
 	useMic: boolean
 
 	constructor({ renderer = 'P2D', use2D = true, useMic = false }) {
@@ -52,6 +56,8 @@ export default class Sketch implements SketchType {
 		this.mic = new p5.AudioIn()
 		this.p.userStartAudio().then(() => {
 			this.mic.start()
+			this.fft = new p5.FFT()
+			this.fft.setInput(this.mic)
 		})
 	}
 
@@ -117,5 +123,58 @@ export default class Sketch implements SketchType {
 		window.removeEventListener('fade', this.startFade, false)
 		const event = new Event('finish')
 		window.dispatchEvent(event)
+	}
+
+	getHue(): number {
+		if (!this.fft) return 0
+
+		const array = this.getVolumeEachBand()
+
+		const maxValue: number = Math.max(...array)
+		const maxIndex: number = array.indexOf(maxValue)
+		const randRange = (min: number, max: number): number =>
+			Math.floor(Math.random() * (max - min + 1) + min)
+		let h: number
+		switch (maxIndex) {
+			case 0:
+				h = randRange(265 - 360, 22)
+				if (h < 0) h = 360 - h
+				break
+			case 1:
+				h = randRange(22, 59)
+				break
+			case 2:
+				h = randRange(59, 122)
+				break
+			case 3:
+				h = randRange(122, 186)
+				break
+			case 4:
+				h = randRange(186, 214)
+				break
+			case 5:
+				h = randRange(214, 265)
+				break
+			default:
+				h = randRange(265 - 360, 22)
+				if (h < 0) h = 360 - h
+				break
+		}
+
+		return h
+	}
+
+	getVolumeEachBand() {
+		if (!this.fft) return [0, 0, 0, 0, 0]
+
+		this.fft.analyze()
+		const bass = this.fft.getEnergy('bass')
+		const lowMid = this.fft.getEnergy('lowMid')
+		const mid = this.fft.getEnergy('mid') * 2
+		const highMid = this.fft.getEnergy('highMid') * 3
+		const treble = this.fft.getEnergy('treble') * 3
+		const array = [treble, highMid, mid, lowMid, bass]
+
+		return array
 	}
 }
