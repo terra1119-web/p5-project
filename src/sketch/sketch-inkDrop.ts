@@ -131,7 +131,7 @@ class SketchTest extends Sketch {
 			const s: number = this.p.random(70, 100)
 			const micVolume: number = this.mic.getLevel()
 			const volume: number = this.p.map(micVolume, 0, 1, 0, 1000)
-			const b: number = this.p.map(volume, 0, 200, 60, 100)
+			const b: number = this.p.map(volume, 0, 1, 20, 100)
 
 			this.rains.push(
 				new Drip(

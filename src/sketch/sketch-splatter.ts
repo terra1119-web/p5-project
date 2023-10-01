@@ -45,7 +45,7 @@ class SketchTest extends Sketch {
 		const micVolume: number = this.mic.getLevel()
 		const volume: number = this.p.map(micVolume, 0, 1, 0, 1000)
 		// if (this.p.frameCount % 8 === 0) {
-		if (volume > 20 || this.p.frameCount % 50 === 0) {
+		if (volume > 10 || this.p.frameCount % 50 === 0) {
 			const x: number = this.p.int(this.p.random(this.p.width))
 			const y: number = this.p.int(this.p.random(this.p.height))
 			this.drawBlob(x, y, this.blobSize, 8)

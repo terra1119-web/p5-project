@@ -9,20 +9,18 @@ class SketchTest extends Sketch {
 	particles_c: Particle[]
 	fade: number
 	radius: number
-	noiseStrength: number
 
 	constructor() {
 		super({
-			renderer: 'WEBGL'
+			// renderer: 'WEBGL'
 		})
 		// initialize
-		this.count = 300
+		this.count = 400
 		this.particles_a = []
 		this.particles_b = []
 		this.particles_c = []
 		this.fade = 255
 		this.radius = 3
-		this.noiseStrength = 1.2
 	}
 
 	setup(): void {
@@ -30,17 +28,50 @@ class SketchTest extends Sketch {
 
 		this.p.noStroke()
 		for (let i: number = 0; i < this.count; i++) {
-			const loc_a: p5.Vector = this.p.createVector(this.p.random(this.p.width) + this.p.width * 0.5 - this.p.width * 0.5, this.p.random(this.p.height) + this.p.height * 0.5 - this.p.height * 0.5, 2)
+			const loc_a: p5.Vector = this.p.createVector(
+				this.p.random(this.p.width) +
+					this.p.width * 0.5 -
+					this.p.width * 0.5,
+				this.p.random(this.p.height) +
+					this.p.height * 0.5 -
+					this.p.height * 0.5,
+				2
+			)
 			const angle_a: number = this.p.random(this.p.TWO_PI)
-			const dir_a: p5.Vector = this.p.createVector(this.p.cos(angle_a), this.p.sin(angle_a))
+			const dir_a: p5.Vector = this.p.createVector(
+				this.p.cos(angle_a),
+				this.p.sin(angle_a)
+			)
 
-			const loc_b: p5.Vector = this.p.createVector(this.p.random(this.p.width) + this.p.width * 0.5 - this.p.width * 0.5, this.p.random(this.p.height) + this.p.height * 0.5 - this.p.height * 0.5, 2)
+			const loc_b: p5.Vector = this.p.createVector(
+				this.p.random(this.p.width) +
+					this.p.width * 0.5 -
+					this.p.width * 0.5,
+				this.p.random(this.p.height) +
+					this.p.height * 0.5 -
+					this.p.height * 0.5,
+				2
+			)
 			const angle_b: number = this.p.random(this.p.TWO_PI)
-			const dir_b: p5.Vector = this.p.createVector(this.p.cos(angle_b), this.p.sin(angle_b))
+			const dir_b: p5.Vector = this.p.createVector(
+				this.p.cos(angle_b),
+				this.p.sin(angle_b)
+			)
 
-			const loc_c: p5.Vector = this.p.createVector(this.p.random(this.p.width) + this.p.width * 0.5 - this.p.width * 0.5, this.p.random(this.p.height) + this.p.height * 0.5 - this.p.height * 0.5, 2)
+			const loc_c: p5.Vector = this.p.createVector(
+				this.p.random(this.p.width) +
+					this.p.width * 0.5 -
+					this.p.width * 0.5,
+				this.p.random(this.p.height) +
+					this.p.height * 0.5 -
+					this.p.height * 0.5,
+				2
+			)
 			const angle_c: number = this.p.random(this.p.TWO_PI)
-			const dir_c: p5.Vector = this.p.createVector(this.p.cos(angle_c), this.p.sin(angle_c))
+			const dir_c: p5.Vector = this.p.createVector(
+				this.p.cos(angle_c),
+				this.p.sin(angle_c)
+			)
 
 			this.particles_a[i] = new Particle(this.p, loc_a, dir_a, 0.5)
 			this.particles_b[i] = new Particle(this.p, loc_b, dir_b, 0.6)
@@ -99,16 +130,39 @@ class Particle {
 	}
 
 	checkEdges(): void {
-		if (this.loc.x < 0 || this.loc.x > this.p.width || this.loc.y < 0 || this.loc.y > this.p.height) {
-			this.loc.x = this.p.random(this.p.width) + this.p.width * 0.5 - this.p.width * 0.5
-			this.loc.y = this.p.random(this.p.height) + this.p.height * 0.5 - this.p.height * 0.5
+		if (
+			this.loc.x < 0 ||
+			this.loc.x > this.p.width ||
+			this.loc.y < 0 ||
+			this.loc.y > this.p.height
+		) {
+			this.loc.x =
+				this.p.random(this.p.width) +
+				this.p.width * 0.5 -
+				this.p.width * 0.5
+			this.loc.y =
+				this.p.random(this.p.height) +
+				this.p.height * 0.5 -
+				this.p.height * 0.5
 		}
 	}
 
 	move(): void {
-		this.angle = this.p.noise(this.loc.x / this.noiseScale, this.loc.y / this.noiseScale, this.p.frameCount / this.noiseScale) * this.p.TWO_PI * this.noiseScale
-		this.dir.x = this.p.cos(this.angle) + this.p.sin(this.angle) - this.p.sin(this.angle)
-		this.dir.y = this.p.sin(this.angle) - this.p.cos(this.angle) * this.p.sin(this.angle)
+		this.angle =
+			this.p.noise(
+				this.loc.x / this.noiseScale,
+				this.loc.y / this.noiseScale,
+				this.p.frameCount / this.noiseScale
+			) *
+			this.p.TWO_PI *
+			this.noiseScale
+		this.dir.x =
+			this.p.cos(this.angle) +
+			this.p.sin(this.angle) -
+			this.p.sin(this.angle)
+		this.dir.y =
+			this.p.sin(this.angle) -
+			this.p.cos(this.angle) * this.p.sin(this.angle)
 		this.vel = this.dir.copy()
 		this.vel.mult(this.speed * this.d)
 		this.loc.add(this.vel)

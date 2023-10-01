@@ -48,10 +48,10 @@ class SketchTest extends Sketch {
 	preload(): void {
 		super.preload()
 
-		this.image_name_array.forEach(image => {
+		for (const image of this.image_name_array) {
 			const img: p5.Image = this.p.loadImage(`images/brushDraw/${image}`)
 			this.imgs.push(img)
-		})
+		}
 	}
 
 	setup(): void {

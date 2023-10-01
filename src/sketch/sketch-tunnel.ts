@@ -17,10 +17,11 @@ class SketchTest extends Sketch {
 		super({
 			renderer: 'WEBGL',
 			use2D: false,
+			useMic: true
 		})
 		// initialize
 		this.numFigures = 100
-		this.nVertex = 3
+		this.nVertex = 5
 		this.t = 0
 		this.dt = 5
 		this.rotSpeed = 0.002
@@ -49,27 +50,39 @@ class SketchTest extends Sketch {
 		if (!this.p) return
 
 		this.p.background(0)
-		this.p.rotate(-this.t / this.dt * this.rotSpeed)
+		this.p.rotate((-this.t / this.dt) * this.rotSpeed)
 		for (let i: number = 0; i < this.numFigures; i++) {
-			this.p.stroke(255, this.p.map(i, this.numFigures * this.pctToFade, this.numFigures, 255, 0))
+			this.p.stroke(
+				255,
+				this.p.map(
+					i,
+					this.numFigures * this.pctToFade,
+					this.numFigures,
+					255,
+					0
+				)
+			)
 			this.p.push()
 			this.p.translate(0, 0, -this.figureSeparation * i + this.t)
-			this.p.rotate(this.p.PI / 60 * i)
+			this.p.rotate((this.p.PI / 60) * i)
 			this.drawFigure()
 			this.p.pop()
 		}
 		this.t += this.dt * this.direction
 		if (this.t > this.figureSeparation * this.numFigures)
 			this.direction = -1
-		else if (this.t < 0)
-			this.direction = 1
+		else if (this.t < 0) this.direction = 1
 	}
 
 	drawFigure(): void {
 		this.p.beginShape()
 		for (let i: number = 0; i < this.nVertex; i++) {
-			const x = this.figureRadius * this.p.cos(this.p.TWO_PI / this.nVertex * i)
-			const y = this.figureRadius * this.p.sin(this.p.TWO_PI / this.nVertex * i)
+			const x =
+				this.figureRadius *
+				this.p.cos((this.p.TWO_PI / this.nVertex) * i)
+			const y =
+				this.figureRadius *
+				this.p.sin((this.p.TWO_PI / this.nVertex) * i)
 			this.p.vertex(x, y)
 		}
 		this.p.endShape(this.p.CLOSE)

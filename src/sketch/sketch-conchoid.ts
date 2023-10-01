@@ -40,7 +40,7 @@ class SketchTest extends Sketch {
 		}
 
 		const micVolume: number = this.mic.getLevel()
-		const volume: number = this.p.map(micVolume, 0, 1, 0, 1000)
+		const volume: number = this.p.map(micVolume, 0, 1, 0, 2000)
 		this.a = 100 * this.p.sin(volume / 360)
 		this.conchoid(this.a)
 	}

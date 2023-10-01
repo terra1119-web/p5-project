@@ -155,7 +155,7 @@ class SketchTest extends Sketch {
 				const c: p5.Color = this.p.color(255, 255, 255)
 				//boxes.add (new BoxObject (px + random (-600, 600), py + random (-600, 600), pz, 0, random (10, 60), random (10, 60), random (10, 60), c))
 				const micVolume: number = this.mic.getLevel()
-				const volume: number = this.p.map(micVolume, 0, 1, 0, 500)
+				const volume: number = this.p.map(micVolume, 0, 1, 0, 1000)
 				const size: number = this.p.random(this.minSize, volume)
 				this.boxes.push(
 					new BoxObject(
@@ -172,9 +172,9 @@ class SketchTest extends Sketch {
 				)
 			}
 
-			this.boxes.forEach(b => {
-				b.drawBox()
-			})
+			for (const box of this.boxes) {
+				box.drawBox()
+			}
 
 			if (this.boxes.length > this.box_num) {
 				for (let i: number = 0; i < 4; i++) {
