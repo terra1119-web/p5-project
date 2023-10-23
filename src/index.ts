@@ -30,7 +30,8 @@ const files: readonly string[] = Object.freeze([
 	'sketch-endless',
 	'sketch-3d-cube',
 	'sketch-galaxy-noise',
-	'sketch-light-line'
+	'sketch-light-line',
+	'sketch-colorful-rings-noise'
 	// not yet
 	// 'sketch-letter',
 	// 'sketch-sand'
