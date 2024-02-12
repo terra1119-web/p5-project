@@ -205,7 +205,7 @@ class SketchTest extends Sketch {
 		// pass the interactive information to the shader
 		this.theShader.setUniform('iResolution', [this.p.width, this.p.height])
 		this.theShader.setUniform('iTime', this.p.millis() / 1000.0)
-		this.theShader.setUniform('iVolume', volume * 0.05)
+		this.theShader.setUniform('iVolume', volume * 0.02)
 
 		// rect gives us some geometry on the screen to draw the shader on
 		this.shaderGraphics.rect(0, 0, this.p.width, this.p.height)

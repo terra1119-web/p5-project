@@ -54,7 +54,7 @@ timerWorker.addEventListener('message', e => {
 })
 
 async function start(file: string): Promise<void> {
-	const sketch: any = await import(`./sketch/${file}`)
+	const sketch: any = await import(`./sketch/${file}.ts`)
 	sketch.default()
 	window.addEventListener('finish', removeCanvas, false)
 }

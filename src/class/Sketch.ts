@@ -1,6 +1,6 @@
 'use strict'
 import '@/global'
-import * as p5 from 'p5'
+import p5 from 'p5'
 import 'p5/lib/addons/p5.sound'
 
 import { CONSTANT } from '@/util/constant'
