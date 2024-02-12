@@ -1,5 +1,5 @@
 'use strict'
-import * as p5 from 'p5'
+import p5 from 'p5'
 import Sketch from '@/class/Sketch'
 
 class Particle {
@@ -17,7 +17,10 @@ class Particle {
 		this.mass = 1.0
 		this.friction = 0.03
 		this.g = 10
-		this.location = this.p.createVector(this.p.random(this.p.width), this.p.random(this.p.height))
+		this.location = this.p.createVector(
+			this.p.random(this.p.width),
+			this.p.random(this.p.height)
+		)
 		this.velocity = this.p.createVector(0.0, 0.0)
 		this.accelaration = this.p.createVector(vx, vy)
 	}
@@ -38,13 +41,14 @@ class Particle {
 		let distance: number = force.mag()
 		distance = this.p.constrain(distance, 4.0, 1000.0)
 		force.normalize()
-		const strength: number = (this.g * this.mass * particle.mass) / this.p.pow(distance, 2.0)
+		const strength: number =
+			(this.g * this.mass * particle.mass) / this.p.pow(distance, 2.0)
 		force.mult(strength)
 		return force
 	}
 
 	applyForce(force: p5.Vector): void {
-		const f: p5.Vector = p5.Vector.div(force, this.mass)
+		const f: any = p5.Vector.div(force, this.mass)
 		this.accelaration.add(f)
 	}
 
@@ -84,7 +88,8 @@ class Particle {
 		this.img.loadPixels()
 		for (let y: number = 0; y < side; y++) {
 			for (let x: number = 0; x < side; x++) {
-				const d: number = (this.p.sq(center - x) + this.p.sq(center - y)) / num
+				const d: number =
+					(this.p.sq(center - x) + this.p.sq(center - y)) / num
 				const col: p5.Color = this.p.color(Cr / d, Cg / d, Cb / d)
 				this.img.set(x, y, col)
 			}
@@ -130,7 +135,9 @@ class SketchTest extends Sketch {
 		for (let i: number = 0; i < this.count; i++) {
 			for (let j: number = 0; j < this.count; j++) {
 				if (i != j) {
-					const force: p5.Vector = this.particles[i].attract(this.particles[j])
+					const force: p5.Vector = this.particles[i].attract(
+						this.particles[j]
+					)
 					this.particles[i].applyForce(force)
 				}
 			}
