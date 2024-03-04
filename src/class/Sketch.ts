@@ -2,6 +2,8 @@
 import '@/global'
 import p5 from 'p5'
 import 'p5/lib/addons/p5.sound'
+import { mountFlex } from 'p5.flex'
+mountFlex(p5)
 
 import { CONSTANT } from '@/util/constant'
 
@@ -16,6 +18,7 @@ type SketchType = {
 	fft: p5.FFT
 	spectrum: any[]
 	useMic: boolean
+	canvas: any
 }
 
 export default class Sketch implements SketchType {
@@ -29,6 +32,7 @@ export default class Sketch implements SketchType {
 	fft: p5.FFT | null
 	spectrum: any[]
 	useMic: boolean
+	canvas: any
 
 	constructor({ renderer = 'P2D', use2D = true, useMic = false }) {
 		this.renderer = renderer
@@ -44,7 +48,11 @@ export default class Sketch implements SketchType {
 
 	setup(): void {
 		const renderer = this.renderer === 'WEBGL' ? this.p.WEBGL : this.p.P2D
-		this.p.createCanvas(window.innerWidth, window.innerHeight, renderer)
+		this.canvas = this.p.createCanvas(
+			window.innerWidth,
+			window.innerHeight,
+			renderer
+		)
 		this.graphic = this.p.createGraphics(
 			window.innerWidth,
 			window.innerHeight
@@ -59,6 +67,7 @@ export default class Sketch implements SketchType {
 			this.fft = new p5.FFT()
 			this.fft.setInput(this.mic)
 		})
+		this.p.flex()
 	}
 
 	draw(): void {

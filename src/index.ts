@@ -31,10 +31,12 @@ const files: readonly string[] = Object.freeze([
 	// 'sketch-3d-cube',
 	// 'sketch-galaxy-noise',
 	// 'sketch-light-line',
-	// 'sketch-colorful-rings-noise'
-	// 'sketch-magical-trail-shader'
-	'sketch-graduation'
+	// 'sketch-colorful-rings-noise',
+	'sketch-devil',
+	'sketch-thread'
 	// not yet
+	// 'sketch-magical-trail-shader'
+	// 'sketch-graduation'
 	// 'sketch-letter',
 	// 'sketch-sand'
 	// 'sketch-auto-paint'
