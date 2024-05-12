@@ -67,7 +67,7 @@ export default class Sketch implements SketchType {
 			this.fft = new p5.FFT()
 			this.fft.setInput(this.mic)
 		})
-		this.p.flex()
+		// this.p.flex()
 	}
 
 	draw(): void {

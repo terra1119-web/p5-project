@@ -2,9 +2,12 @@
 import Sketch from '@/class/Sketch'
 
 class SketchTest extends Sketch {
+	// property
 	curlSpan: number
 	particles: Particle[]
-	// property
+	timer: number
+	threadMax: number
+
 	constructor() {
 		super({
 			renderer: 'P2D',
@@ -14,6 +17,8 @@ class SketchTest extends Sketch {
 		// initialize
 		this.curlSpan = 0
 		this.particles = []
+		this.timer = 0
+		this.threadMax = 140
 	}
 
 	preload(): void {
@@ -23,31 +28,23 @@ class SketchTest extends Sketch {
 	setup(): void {
 		super.setup()
 
-		this.p.pixelDensity(3)
-		this.p.background(100)
+		this.p.pixelDensity(2)
+		this.p.background(0)
 
-		this.p.fill(0)
-		this.p.rect(0, 0, this.p.width, this.p.height)
-
-		const count = 200
-		for (let i = 0; i < count; i++) {
-			this.particles.push(
-				new Particle({
-					p5: this.p,
-					p: this.p
-						.createVector(this.p.width / 2, this.p.height / 2)
-						.add(this.p.createVector(-5, 5)),
-					v: this.p
-						.createVector(0, 3.5)
-						.rotate((i / count) * this.p.PI * 2)
-				})
-			)
-		}
+		this.createParticle()
 	}
 
 	draw(): void {
 		super.draw()
 		if (!this.p) return
+
+		this.timer++
+		if (this.timer > 500) {
+			this.timer = 0
+			this.particles = []
+			this.p.background(0)
+			this.createParticle()
+		}
 
 		this.particles = this.particles.filter(p => p.alive)
 		this.particles.forEach(obj => {
@@ -82,6 +79,22 @@ class SketchTest extends Sketch {
 			}
 			obj.draw()
 		})
+	}
+
+	createParticle() {
+		for (let i = 0; i < this.threadMax; i++) {
+			this.particles.push(
+				new Particle({
+					p5: this.p,
+					p: this.p
+						.createVector(this.p.width / 2, this.p.height / 2)
+						.add(this.p.createVector(-5, 5)),
+					v: this.p
+						.createVector(0, 3.5)
+						.rotate((i / this.threadMax) * this.p.PI * 2)
+				})
+			)
+		}
 	}
 }
 
