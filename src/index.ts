@@ -36,7 +36,8 @@ const files: readonly string[] = Object.freeze([
 	'sketch-thread',
 	'sketch-walkers',
 	'sketch-simple-feedback',
-	'sketch-symmetries'
+	'sketch-symmetries',
+	'sketch-shader'
 	// not yet
 	// 'sketch-magical-trail-shader'
 	// 'sketch-graduation'
