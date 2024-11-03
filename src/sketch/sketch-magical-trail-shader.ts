@@ -1,5 +1,6 @@
 'use strict'
 import Sketch from '@/class/Sketch'
+import p5 from 'p5'
 
 const MAX_PARTICLE_COUNT = 70
 const MAX_TRAIL_COUNT = 30

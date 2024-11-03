@@ -3,6 +3,8 @@ import { CONSTANT } from '@/util/constant'
 
 // 実行するSketch
 const files: readonly string[] = Object.freeze([
+	// 'sketch-particle',
+	'sketch-letter',
 	'sketch-draw',
 	'sketch-tunnel',
 	'sketch-movie',
@@ -15,41 +17,41 @@ const files: readonly string[] = Object.freeze([
 	'sketch-brushDraw',
 	'sketch-tree',
 	'sketch-line',
-	'sketch-particle-ink',
 	'sketch-fieldColoring',
-	'sketch-inkDrop',
-	'sketch-kiltWave',
+	// 'sketch-inkDrop',
 	'sketch-multicolor-boid',
 	'sketch-forest',
-	'sketch-virtual-sea',
 	'sketch-flourishing',
-	'sketch-color-drop',
 	'sketch-splatter',
-	'sketch-spiral-image',
-	'sketch-motes',
+	// 'sketch-spiral-image',
 	'sketch-endless',
-	'sketch-3d-cube',
+	// 'sketch-3d-cube',
 	'sketch-galaxy-noise',
-	'sketch-light-line',
 	'sketch-colorful-rings-noise',
 	'sketch-devil',
 	'sketch-thread',
-	'sketch-walkers',
+	// 'sketch-walkers',
 	'sketch-simple-feedback',
-	'sketch-symmetries',
+	// 'sketch-symmetries',
 	'sketch-shader',
 	'sketch-fish',
-	'sketch-mystery-sphere'
+	// 'sketch-mystery-sphere',
+	'sketch-dna',
+	'sketch-acoustic'
 	// not yet
 	// 'sketch-magical-trail-shader'
 	// 'sketch-graduation'
-	// 'sketch-letter',
 	// 'sketch-sand'
 	// 'sketch-auto-paint'
-	// 'sketch-particle',
 	// 'sketch-face',
 	// 'sketch-face-emoji',
 	// 'sketch-plasma-shapes',
+	// 'sketch-particle-ink',
+	// 'sketch-kiltWave',
+	// 'sketch-virtual-sea',
+	// 'sketch-color-drop',
+	// 'sketch-motes',
+	// 'sketch-light-line',
 ])
 
 const SKETCH_MAX: number = files.length

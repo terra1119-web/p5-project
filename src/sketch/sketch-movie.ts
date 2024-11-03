@@ -1,5 +1,6 @@
 'use strict'
 import Sketch from '@/class/Sketch'
+import p5 from 'p5'
 
 // NOTE: imageの型定義を上書き
 declare module 'p5' {

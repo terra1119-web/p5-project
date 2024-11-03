@@ -1,4 +1,5 @@
 'use strict'
+import p5 from 'p5'
 import Sketch from '@/class/Sketch'
 
 class SketchTest extends Sketch {

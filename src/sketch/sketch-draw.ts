@@ -1,5 +1,6 @@
 'use strict'
 import Sketch from '@/class/Sketch'
+import p5 from 'p5'
 
 class Particle {
 	p: p5
@@ -15,11 +16,19 @@ class Particle {
 	color: string
 	flg: boolean
 
-	constructor(args: object, p: p5, mainGraphics: p5.Graphics, overAllTexture: p5.Graphics) {
+	constructor(
+		args: object,
+		p: p5,
+		mainGraphics: p5.Graphics,
+		overAllTexture: p5.Graphics
+	) {
 		this.p = p
 		this.mainGraphics = mainGraphics
 		this.overAllTexture = overAllTexture
-		this.colors = "e6e1c5-d4cb92-395c6b-80a4ed-bcd3f2-f24-fff-52489c-4062bb-59c3c3-ebebeb-f45b69-0c090d-e01a4f-f15946-f9c22e-53b3cb".split("-").map(a => "#" + a)
+		this.colors =
+			'e6e1c5-d4cb92-395c6b-80a4ed-bcd3f2-f24-fff-52489c-4062bb-59c3c3-ebebeb-f45b69-0c090d-e01a4f-f15946-f9c22e-53b3cb'
+				.split('-')
+				.map(a => '#' + a)
 		const def: object = {
 			point: this.p.createVector(0, 0),
 			v: this.p.createVector(0, 0),
@@ -50,12 +59,19 @@ class Particle {
 	update(): void {
 		this.point.add(this.v)
 		this.v.add(this.a)
-		let delta: p5.Vector = this.p.createVector(this.point.x - this.p.width / 2, this.point.y - this.p.height / 2)
+		let delta: p5.Vector = this.p.createVector(
+			this.point.x - this.p.width / 2,
+			this.point.y - this.p.height / 2
+		)
 		let ang: number = delta.heading()
 		let rr: number = delta.mag()
 
-		this.v.x += -this.p.sin(ang * this.angMult + rr / 5) / 15 + this.p.cos(rr / 10) / 10
-		this.v.y += -this.p.cos(ang * this.angMult + rr / 5) / 15 + this.p.sin(rr / 10) / 10
+		this.v.x +=
+			-this.p.sin(ang * this.angMult + rr / 5) / 15 +
+			this.p.cos(rr / 10) / 10
+		this.v.y +=
+			-this.p.cos(ang * this.angMult + rr / 5) / 15 +
+			this.p.sin(rr / 10) / 10
 		this.a.x = (this.p.noise(this.point.x, this.point.y, 5) - 0.5) * 1.1
 		this.a.y = (this.p.noise(this.point.x, this.point.y, 5000) - 0.5) * 1.1
 
@@ -73,7 +89,7 @@ class Particle {
 class SketchTest extends Sketch {
 	particles: Particle[]
 	mainGraphics: p5.Graphics
-	overAllTexture:p5.Graphics
+	overAllTexture: p5.Graphics
 	p: p5
 
 	constructor() {
@@ -94,7 +110,15 @@ class SketchTest extends Sketch {
 		// noStroke()
 		for (let i: number = 0; i < this.p.width + 50; i++) {
 			for (let o: number = 0; o < this.p.height + 50; o++) {
-				this.overAllTexture.set(i, o, this.p.color(150, this.p.noise(i / 10, i * o / 300) * this.p.random([0, 50, 100])))
+				this.overAllTexture.set(
+					i,
+					o,
+					this.p.color(
+						150,
+						this.p.noise(i / 10, (i * o) / 300) *
+							this.p.random([0, 50, 100])
+					)
+				)
 			}
 		}
 		this.overAllTexture.updatePixels()
@@ -103,11 +127,19 @@ class SketchTest extends Sketch {
 		for (let i: number = 0; i < this.p.width; i += 200) {
 			for (let o: number = 0; o < this.p.height; o += 100) {
 				this.particles.push(
-					new Particle({
-						point: this.p.createVector(i, o),
-						v: this.p.createVector(this.p.noise(i / 10) * 10 - 5, this.p.noise(o / 10) * 10 - 5),
-						r: this.p.random(150)
-					}, this.p, this.mainGraphics, this.overAllTexture)
+					new Particle(
+						{
+							point: this.p.createVector(i, o),
+							v: this.p.createVector(
+								this.p.noise(i / 10) * 10 - 5,
+								this.p.noise(o / 10) * 10 - 5
+							),
+							r: this.p.random(150)
+						},
+						this.p,
+						this.mainGraphics,
+						this.overAllTexture
+					)
 				)
 			}
 		}

@@ -1,5 +1,6 @@
 'use strict'
 import Sketch from '@/class/Sketch'
+import p5 from 'p5'
 
 class SketchTest extends Sketch {
 	// property
@@ -204,7 +205,7 @@ class TextManager {
 	wordIndex: number
 	words: string[]
 
-	constructor(p: p5, wInput: string = 'Wander ') {
+	constructor(p: p5, wInput: string = 'Wander × Acoustic') {
 		this.word = wInput
 		this.SPLIT_TOKENS = ' ?,;:[]<>()"'
 		this.charIndex = 0

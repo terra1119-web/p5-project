@@ -1,5 +1,6 @@
 'use strict'
 import Sketch from '@/class/Sketch'
+import p5 from 'p5'
 
 const frag = `
 // learn from https://www.shadertoy.com/view/7syXzw
