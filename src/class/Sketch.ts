@@ -32,7 +32,7 @@ export default class Sketch implements SketchType {
 	fft: p5.FFT | null
 	spectrum: any[]
 	useMic: boolean
-	canvas: any
+	canvas: p5.Renderer
 
 	constructor({ renderer = 'P2D', use2D = true, useMic = false }) {
 		this.renderer = renderer
@@ -137,40 +137,14 @@ export default class Sketch implements SketchType {
 	getHue(): number {
 		if (!this.fft) return 0
 
-		const array = this.getVolumeEachBand()
+		this.fft.analyze()
 
-		const maxValue: number = Math.max(...array)
-		const maxIndex: number = array.indexOf(maxValue)
-		const randRange = (min: number, max: number): number =>
-			Math.floor(Math.random() * (max - min + 1) + min)
-		let h: number
-		switch (maxIndex) {
-			case 0:
-				h = randRange(265 - 360, 22)
-				if (h < 0) h = 360 - h
-				break
-			case 1:
-				h = randRange(22, 59)
-				break
-			case 2:
-				h = randRange(59, 122)
-				break
-			case 3:
-				h = randRange(122, 186)
-				break
-			case 4:
-				h = randRange(186, 214)
-				break
-			case 5:
-				h = randRange(214, 265)
-				break
-			default:
-				h = randRange(265 - 360, 22)
-				if (h < 0) h = 360 - h
-				break
-		}
+		// 周波数帯域の中央値を取得
+		const freq = this.fft.getCentroid()
 
-		return h
+		// 周波数を色相にマッピング (0-360の範囲)
+		const hue = this.p.map(freq, 0, 3000, 0, 360)
+		return hue
 	}
 
 	getVolumeEachBand() {
@@ -179,9 +153,9 @@ export default class Sketch implements SketchType {
 		this.fft.analyze()
 		const bass = this.fft.getEnergy('bass')
 		const lowMid = this.fft.getEnergy('lowMid')
-		const mid = this.fft.getEnergy('mid') * 2
-		const highMid = this.fft.getEnergy('highMid') * 3
-		const treble = this.fft.getEnergy('treble') * 3
+		const mid = this.fft.getEnergy('mid')
+		const highMid = this.fft.getEnergy('highMid')
+		const treble = this.fft.getEnergy('treble')
 		const array = [treble, highMid, mid, lowMid, bass]
 
 		return array

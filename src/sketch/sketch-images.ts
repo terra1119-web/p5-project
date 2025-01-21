@@ -73,7 +73,10 @@ class SketchTest extends Sketch {
 		this.p.textFont(this.font)
 
 		this.clearScreen()
-		this.t = new TextManager(this.p)
+		this.t = new TextManager(
+			this.p,
+			'C O S M I C § E C H O DEEP GROOVE YOSHIO JEF TAKURO'
+		)
 		this.p.textSize(this.textsize)
 		this.p.textAlign(this.p.CENTER, this.p.CENTER)
 		// s.frameRate(60) // change if paint events seem to be too rapid

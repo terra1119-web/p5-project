@@ -11,7 +11,8 @@ class SketchTest extends Sketch {
 	constructor() {
 		super({
 			renderer: 'WEBGL',
-			use2D: false
+			use2D: false,
+			useMic: true
 		})
 		// initialize
 		this.angleX = 0
@@ -22,6 +23,8 @@ class SketchTest extends Sketch {
 
 	setup(): void {
 		super.setup()
+
+		this.p.colorMode(this.p.HSB)
 	}
 
 	draw(): void {
@@ -40,40 +43,58 @@ class SketchTest extends Sketch {
 		for (let i = -this.cubeSize; i <= this.cubeSize; i += 50) {
 			for (let j = -this.cubeSize; j <= this.cubeSize; j += 50) {
 				for (let k = -this.cubeSize; k <= this.cubeSize; k += 50) {
-					const r = this.p.map(
-						this.p.sin(this.p.frameCount * 0.01 + i + j + k),
-						-1,
-						1,
-						0,
-						255
-					)
-					const g = this.p.map(
+					// const r = this.p.map(
+					// 	this.p.sin(this.p.frameCount * 0.01 + i + j + k),
+					// 	-1,
+					// 	1,
+					// 	0,
+					// 	255
+					// )
+					// const g = this.p.map(
+					// 	this.p.sin(this.p.frameCount * 0.02 + i + j + k),
+					// 	-1,
+					// 	1,
+					// 	0,
+					// 	255
+					// )
+					// const b = this.p.map(
+					// 	this.p.sin(this.p.frameCount * 0.03 + i + j + k),
+					// 	-1,
+					// 	1,
+					// 	0,
+					// 	255
+					// )
+					const hue = this.getHue()
+					const s = this.p.map(
 						this.p.sin(this.p.frameCount * 0.02 + i + j + k),
 						-1,
 						1,
 						0,
-						255
+						100
 					)
 					const b = this.p.map(
 						this.p.sin(this.p.frameCount * 0.03 + i + j + k),
 						-1,
 						1,
 						0,
-						255
+						100
 					)
 
 					this.p.push()
 					this.p.translate(i, j, k)
-					this.p.stroke(r, g, b)
+					// this.p.stroke(r, g, b)
+					this.p.stroke(hue, s, b)
 					this.p.box(15)
 					this.p.pop()
 				}
 			}
 		}
 
-		this.angleX += 0.01
-		this.angleY += 0.02
-		this.angleZ += 0.03
+		const volume = this.mic.getLevel()
+
+		this.angleX += 0.01 + volume
+		this.angleY += 0.02 + volume
+		this.angleZ += 0.03 + volume
 	}
 
 	mousePressed(): void {

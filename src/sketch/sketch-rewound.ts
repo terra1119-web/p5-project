@@ -67,10 +67,7 @@ class SketchTest extends Sketch {
 
 	setup(): void {
 		super.setup()
-		this.simplex = openSimplexNoise(Date.now())
-		this.colors = this.p.random(this.palettes)
-		this.p.background(0)
-		this.p.noStroke()
+		this.initSketch()
 	}
 
 	draw(): void {
@@ -80,7 +77,7 @@ class SketchTest extends Sketch {
 		this.count += this.num
 		if (this.count < this.switchTime) {
 			this.steps += this.num
-		} else if (this.count > this.switchTime) {
+		} else if (this.count > this.switchTime * 2) {
 			this.p.blendMode(this.p.DODGE)
 			this.steps -= this.num
 		}
@@ -89,9 +86,13 @@ class SketchTest extends Sketch {
 			this.steps = 0
 		}
 
-		// if (this.p.frameCount > this.switchTime * 2) {
-		// 	this.p.noLoop()
-		// }
+		if (this.p.frameCount > this.switchTime * 2) {
+			this.p.blendMode(this.p.NORMAL)
+			this.p.frameCount = 0
+			this.count = 0
+			this.steps = 0
+			this.initSketch()
+		}
 
 		this.p.noFill()
 		this.p.beginShape()
@@ -149,6 +150,13 @@ class SketchTest extends Sketch {
 		let alpha = 30 + this.p.noise(ind / 20) * 75
 		coloring.setAlpha(alpha)
 		return coloring
+	}
+
+	initSketch() {
+		this.simplex = openSimplexNoise(Date.now())
+		this.colors = this.p.random(this.palettes)
+		this.p.background(0)
+		this.p.noStroke()
 	}
 }
 

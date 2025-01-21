@@ -11,7 +11,8 @@ class SketchTest extends Sketch {
 	constructor() {
 		super({
 			renderer: 'P2D',
-			use2D: true
+			use2D: true,
+			useMic: true
 		})
 		// initialize
 		this.particles = []
@@ -48,9 +49,10 @@ class SketchTest extends Sketch {
 			this.createParticle()
 		}
 
+		const hue = this.getHue()
 		this.particles.forEach(particle => {
 			particle.update()
-			particle.draw()
+			particle.draw(hue)
 		})
 		this.particles = this.particles.filter(particle => particle.alive)
 	}
@@ -114,7 +116,7 @@ class Particle {
 		Object.assign(this, def)
 	}
 
-	draw() {
+	draw(hue: number = 0) {
 		this.p.push()
 		this.brush(
 			this.point.x + this.p.random(-1, 1),
@@ -136,7 +138,7 @@ class Particle {
 				this.p.random(-1, 1),
 				this.r * this.p.random(2),
 				this.p.color(
-					this.p.random(0, 40),
+					hue,
 					this.p.random(50, 100),
 					this.p.random(50, 100),
 					this.p.random(0.5)

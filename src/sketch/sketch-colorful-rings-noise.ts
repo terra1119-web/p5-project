@@ -201,7 +201,7 @@ class SketchTest extends Sketch {
 		this.shaderGraphics.shader(this.theShader)
 
 		const micVolume: number = this.mic.getLevel()
-		const volume: number = this.p.map(micVolume, 0, 1, 0, 30)
+		const volume: number = this.p.map(micVolume, 0, 1, 0, 40)
 
 		// pass the interactive information to the shader
 		this.theShader.setUniform('iResolution', [this.p.width, this.p.height])

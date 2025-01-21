@@ -23,6 +23,7 @@
     "vite": "^5.1.1"
   },
   "dependencies": {
+    "matter-js": "^0.20.0",
     "p5": "^1.9.0",
     "spectral.js": "^2.0.2"
   }
