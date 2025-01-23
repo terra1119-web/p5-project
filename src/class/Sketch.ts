@@ -147,6 +147,12 @@ export default class Sketch implements SketchType {
 		return hue
 	}
 
+	getVolume(): number {
+		if (!this.mic) return 0
+		const volume = this.mic.getLevel() || 0
+		return volume
+	}
+
 	getVolumeEachBand() {
 		if (!this.fft) return [0, 0, 0, 0, 0]
 
