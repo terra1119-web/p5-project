@@ -1,46 +1,53 @@
 'use strict'
 import { CONSTANT } from '@/util/constant'
 
+const TIMER_WORKER_PATH = './worker/timer-worker.js'
+const TIMER_MESSAGE_EVENT = 'message'
+const TIMER_STOP_MESSAGE = 'stop'
+const TIMER_INIT_MESSAGE = 'init'
+const SKETCH_FADE_EVENT = 'fade'
+const SKETCH_FINISH_EVENT = 'finish'
+
 // 実行するSketch
 const files: readonly string[] = Object.freeze([
-	'sketch-letter',
-	'sketch-draw',
-	'sketch-tunnel',
-	'sketch-movie',
-	'sketch-wave',
-	'sketch-particleFlow',
-	'sketch-flocks',
-	'sketch-3d',
-	'sketch-images',
-	'sketch-conchoid',
-	'sketch-brushDraw',
-	'sketch-tree',
-	'sketch-line',
-	'sketch-fieldColoring',
-	'sketch-inkDrop',
-	'sketch-multicolor-boid',
-	'sketch-forest',
-	'sketch-flourishing',
-	'sketch-splatter',
-	'sketch-endless',
-	'sketch-3d-cube',
-	'sketch-galaxy-noise',
-	'sketch-thread',
-	'sketch-walkers',
-	'sketch-simple-feedback',
-	'sketch-symmetries',
-	'sketch-fish',
-	'sketch-dna',
-	'sketch-rewound',
-	'sketch-triquid',
-	'sketch-winter',
-	'sketch-octagonalTunnel',
-	'sketch-mystery-sphere',
-	'sketch-shader',
-	'sketch-devil',
-	'sketch-colorful-rings-noise',
-	'sketch-text-particle',
-	'sketch-geometric-pattern'
+	'sketch-letter'
+	// 'sketch-draw',
+	// 'sketch-tunnel',
+	// 'sketch-movie',
+	// 'sketch-wave',
+	// 'sketch-particleFlow',
+	// 'sketch-flocks',
+	// 'sketch-3d',
+	// 'sketch-images',
+	// 'sketch-conchoid',
+	// 'sketch-brushDraw',
+	// 'sketch-tree',
+	// 'sketch-line',
+	// 'sketch-fieldColoring',
+	// 'sketch-inkDrop',
+	// 'sketch-multicolor-boid',
+	// 'sketch-forest',
+	// 'sketch-flourishing',
+	// 'sketch-splatter',
+	// 'sketch-endless',
+	// 'sketch-3d-cube',
+	// 'sketch-galaxy-noise',
+	// 'sketch-thread',
+	// 'sketch-walkers',
+	// 'sketch-simple-feedback',
+	// 'sketch-symmetries',
+	// 'sketch-fish',
+	// 'sketch-dna',
+	// 'sketch-rewound',
+	// 'sketch-triquid',
+	// 'sketch-winter',
+	// 'sketch-octagonalTunnel',
+	// 'sketch-mystery-sphere',
+	// 'sketch-shader',
+	// 'sketch-devil',
+	// 'sketch-colorful-rings-noise',
+	// 'sketch-text-particle',
+	// 'sketch-geometric-pattern'
 	// not yet
 	// 'sketch-mystery-sphere',
 	// 'sketch-shader',
@@ -69,34 +76,42 @@ let sketch_count: number = 0
 let rnd_array: number[] = []
 
 // タイマー
-const timerWorker: Worker = new Worker('./worker/timer-worker.js')
-timerWorker.addEventListener('message', e => {
+const timerWorker: Worker = new Worker(TIMER_WORKER_PATH)
+timerWorker.addEventListener(TIMER_MESSAGE_EVENT, e => {
 	if (e.data > CONSTANT.TIME_MAX) {
 		stop()
 	}
 })
 
 async function start(file: string): Promise<void> {
-	const sketch: any = await import(`./sketch/${file}.ts`)
+	const sketch = await import(`./sketch/${file}.ts`)
 	sketch.default()
-	window.addEventListener('finish', removeCanvas, false)
+	window.addEventListener(SKETCH_FINISH_EVENT, removeCanvas, false)
 }
 
 function stop(): void {
-	timerWorker.postMessage('stop')
-	const event: Event = new Event('fade')
+	timerWorker.postMessage(TIMER_STOP_MESSAGE)
+	const event: Event = new Event(SKETCH_FADE_EVENT)
 	window.dispatchEvent(event)
 }
 
-function removeCanvas(): void {
-	timerWorker.postMessage('init')
-	window.removeEventListener('finish', removeCanvas, false)
+function resetCanvas(): void {
+	timerWorker.postMessage(TIMER_INIT_MESSAGE)
+	window.removeEventListener(SKETCH_FINISH_EVENT, removeCanvas, false)
+}
+
+function nextSketch(): void {
 	sketch_count++
 	if (sketch_count >= SKETCH_MAX) {
 		sketch_count = 0
 		rnd_array = randomizing(SKETCH_MAX)
 	}
 	start(files[rnd_array[sketch_count]])
+}
+
+function removeCanvas(): void {
+	resetCanvas()
+	nextSketch()
 }
 
 function randomizing(max: number): number[] {
