@@ -90,7 +90,7 @@ class SketchTest extends Sketch {
 			}
 		}
 
-		const volume = this.mic.getLevel()
+		const volume = this.getVolume()
 
 		this.angleX += 0.01 + volume
 		this.angleY += 0.02 + volume

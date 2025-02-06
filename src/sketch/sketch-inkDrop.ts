@@ -130,7 +130,7 @@ class SketchTest extends Sketch {
 		const hue: number = this.getHue()
 		if (this.p.frameCount % 10 === 0) {
 			const s: number = this.p.random(70, 100)
-			const micVolume: number = this.mic.getLevel()
+			const micVolume: number = this.getVolume()
 			const volume: number = this.p.map(micVolume, 0, 1, 0, 1000)
 			const b: number = this.p.map(volume, 0, 1, 20, 100)
 

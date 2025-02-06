@@ -74,7 +74,7 @@ class SketchTest extends Sketch {
 
 	draw() {
 		super.draw()
-		if (!this.p || !this.mic) return
+		if (!this.p) return
 
 		this.p.background(0)
 		// this.p.blendMode(this.p.ADD)
@@ -155,7 +155,7 @@ class SketchTest extends Sketch {
 				// const c = this.p.color(this.p.random(255), this.p.random(255), this.p.random(255));
 				const c: p5.Color = this.p.color(255, 255, 255)
 				//boxes.add (new BoxObject (px + random (-600, 600), py + random (-600, 600), pz, 0, random (10, 60), random (10, 60), random (10, 60), c))
-				const micVolume: number = this.mic.getLevel()
+				const micVolume: number = this.getVolume()
 				const volume: number = this.p.map(micVolume, 0, 1, 0, 1000)
 				const size: number = this.p.random(this.minSize, volume)
 				this.boxes.push(

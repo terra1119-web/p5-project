@@ -6,6 +6,7 @@ import { mountFlex } from 'p5.flex'
 mountFlex(p5)
 
 import { CONSTANT } from '@/util/constant'
+import AudioAnalyzer from './AudioAnalyzer'
 
 type SketchType = {
 	renderer: string
@@ -14,8 +15,6 @@ type SketchType = {
 	alpha: number
 	graphic: p5.Graphics
 	fadeFlag: boolean
-	mic: p5.AudioIn | null
-	fft: p5.FFT
 	spectrum: any[]
 	useMic: boolean
 	canvas: any
@@ -28,8 +27,7 @@ export default class Sketch implements SketchType {
 	alpha: number
 	graphic: p5.Graphics
 	fadeFlag: boolean
-	mic: p5.AudioIn | null
-	fft: p5.FFT | null
+	audioAnalyzer: AudioAnalyzer
 	spectrum: any[]
 	useMic: boolean
 	canvas: p5.Renderer
@@ -41,7 +39,6 @@ export default class Sketch implements SketchType {
 		this.alpha = 0
 		this.graphic = null
 		this.fadeFlag = false
-		this.mic = null
 		this.startFade = this.startFade.bind(this)
 		this.dispose = this.dispose.bind(this)
 	}
@@ -61,13 +58,8 @@ export default class Sketch implements SketchType {
 		window.addEventListener('fade', this.startFade, false)
 
 		if (!this.useMic) return
-		this.mic = new p5.AudioIn()
-		this.p.userStartAudio().then(() => {
-			this.mic.start()
-			this.fft = new p5.FFT()
-			this.fft.setInput(this.mic)
-		})
-		// this.p.flex()
+		this.audioAnalyzer = new AudioAnalyzer(this.p)
+		this.audioAnalyzer.setup()
 	}
 
 	draw(): void {
@@ -123,8 +115,7 @@ export default class Sketch implements SketchType {
 	}
 
 	dispose(): void {
-		if (this.mic) this.mic.stop()
-		this.mic = null
+		if (this.audioAnalyzer) this.audioAnalyzer.dispose()
 		this.graphic.remove()
 		this.graphic = null
 		this.p.remove()
@@ -135,35 +126,14 @@ export default class Sketch implements SketchType {
 	}
 
 	getHue(): number {
-		if (!this.fft) return 0
-
-		this.fft.analyze()
-
-		// 周波数帯域の中央値を取得
-		const freq = this.fft.getCentroid()
-
-		// 周波数を色相にマッピング (0-360の範囲)
-		const hue = this.p.map(freq, 0, 3000, 0, 360)
-		return hue
+		return this.audioAnalyzer.getHue()
 	}
 
 	getVolume(): number {
-		if (!this.mic) return 0
-		const volume = this.mic.getLevel() || 0
-		return volume
+		return this.audioAnalyzer.getVolume()
 	}
 
 	getVolumeEachBand() {
-		if (!this.fft) return [0, 0, 0, 0, 0]
-
-		this.fft.analyze()
-		const bass = this.fft.getEnergy('bass')
-		const lowMid = this.fft.getEnergy('lowMid')
-		const mid = this.fft.getEnergy('mid')
-		const highMid = this.fft.getEnergy('highMid')
-		const treble = this.fft.getEnergy('treble')
-		const array = [treble, highMid, mid, lowMid, bass]
-
-		return array
+		return this.audioAnalyzer.getVolumeEachBand()
 	}
 }

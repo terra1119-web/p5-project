@@ -40,10 +40,10 @@ class SketchTest extends Sketch {
 
 	draw(): void {
 		super.draw()
-		if (!this.p || !this.mic) return
+		if (!this.p) return
 
 		this.p.blendMode(this.p.BLEND)
-		const micVolume: number = this.mic.getLevel()
+		const micVolume: number = this.getVolume()
 		const volume: number = this.p.map(micVolume, 0, 1, 0, 1000)
 		// if (this.p.frameCount % 8 === 0) {
 		if (volume > 10 || this.p.frameCount % 50 === 0) {
@@ -71,7 +71,7 @@ class SketchTest extends Sketch {
 	}
 
 	drawBlob(x: number, y: number, radius: number, level: number) {
-		const volume: number = this.mic.getLevel() * 1000
+		const volume: number = this.getVolume() * 1000
 		const s: number = this.p.random(70, 100)
 		const b: number = this.p.map(volume, 0, 200, 60, 100)
 		const hue: number = this.getHue()

@@ -45,7 +45,7 @@ class SketchTest extends Sketch {
 		super.draw()
 		if (!this.p) return
 
-		const micVolume: number = this.mic.getLevel()
+		const micVolume: number = this.getVolume()
 		const volume: number = this.p.map(micVolume, 0, 1, 0, 100)
 
 		this.flying -= this.speed

@@ -200,7 +200,7 @@ class SketchTest extends Sketch {
 		// shader() sets the active shader with our shader
 		this.shaderGraphics.shader(this.theShader)
 
-		const micVolume: number = this.mic.getLevel()
+		const micVolume: number = this.getVolume()
 		const volume: number = this.p.map(micVolume, 0, 1, 0, 40)
 
 		// pass the interactive information to the shader

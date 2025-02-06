@@ -50,7 +50,7 @@ class SketchTest extends Sketch {
 				this.p.noise(i + this.p.frameCount / 150 + i + 100) *
 				this.p.height
 
-			const micVolume: number = this.mic.getLevel()
+			const micVolume: number = this.getVolume()
 			const volume: number = this.p.map(micVolume, 0, 0.05, 0, 255)
 			// Modify the stroke color to include a mix of colors (red and green)
 			this.p.stroke(
