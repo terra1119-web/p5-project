@@ -1,7 +1,7 @@
 'use strict'
 import Sketch from '@/class/Sketch'
 
-class SketchTest extends Sketch {
+class TunnelSketch extends Sketch {
 	// property
 	numFigures: number
 	figureRadius: number
@@ -13,20 +13,29 @@ class SketchTest extends Sketch {
 	direction: number
 	pctToFade: number
 
-	constructor() {
+	// Constants for magic numbers
+	private readonly ROTATION_FACTOR: number = 60
+
+	constructor(
+		numFigures: number = 100,
+		nVertex: number = 5,
+		dt: number = 5,
+		rotSpeed: number = 0.002,
+		pctToFade: number = 0.6
+	) {
 		super({
 			renderer: 'WEBGL',
 			use2D: false,
 			useMic: true
 		})
 		// initialize
-		this.numFigures = 100
-		this.nVertex = 5
+		this.numFigures = numFigures
+		this.nVertex = nVertex
 		this.t = 0
-		this.dt = 5
-		this.rotSpeed = 0.002
+		this.dt = dt
+		this.rotSpeed = rotSpeed
 		this.direction = 1 // 1 or -1
-		this.pctToFade = 0.6
+		this.pctToFade = pctToFade
 	}
 
 	setup(): void {
@@ -64,7 +73,7 @@ class SketchTest extends Sketch {
 			)
 			this.p.push()
 			this.p.translate(0, 0, -this.figureSeparation * i + this.t)
-			this.p.rotate((this.p.PI / 60) * i)
+			this.p.rotate((this.p.PI / this.ROTATION_FACTOR) * i)
 			this.drawFigure()
 			this.p.pop()
 		}
@@ -77,12 +86,9 @@ class SketchTest extends Sketch {
 	drawFigure(): void {
 		this.p.beginShape()
 		for (let i: number = 0; i < this.nVertex; i++) {
-			const x =
-				this.figureRadius *
-				this.p.cos((this.p.TWO_PI / this.nVertex) * i)
-			const y =
-				this.figureRadius *
-				this.p.sin((this.p.TWO_PI / this.nVertex) * i)
+			const angle = (this.p.TWO_PI / this.nVertex) * i
+			const x = this.figureRadius * this.p.cos(angle)
+			const y = this.figureRadius * this.p.sin(angle)
 			this.p.vertex(x, y)
 		}
 		this.p.endShape(this.p.CLOSE)
@@ -90,6 +96,6 @@ class SketchTest extends Sketch {
 }
 
 export default function (): void {
-	const sketch: SketchTest = new SketchTest()
+	const sketch: TunnelSketch = new TunnelSketch()
 	sketch.init()
 }
