@@ -2,10 +2,12 @@
 import Sketch from '@/class/Sketch'
 
 class SketchTest extends Sketch {
-	angleX: number
-	angleY: number
-	angleZ: number
-	cubeSize: number
+	angleX: number = 0
+	angleY: number = 0
+	angleZ: number = 0
+	cubeSize: number = 150
+	cubeStep: number = 50
+	boxSize: number = 15
 
 	// property
 	constructor() {
@@ -14,11 +16,6 @@ class SketchTest extends Sketch {
 			use2D: false,
 			useMic: true
 		})
-		// initialize
-		this.angleX = 0
-		this.angleY = 0
-		this.angleZ = 0
-		this.cubeSize = 150
 	}
 
 	setup(): void {
@@ -40,61 +37,47 @@ class SketchTest extends Sketch {
 		this.p.rotateY(this.angleY)
 		this.p.rotateZ(this.angleZ)
 
-		for (let i = -this.cubeSize; i <= this.cubeSize; i += 50) {
-			for (let j = -this.cubeSize; j <= this.cubeSize; j += 50) {
-				for (let k = -this.cubeSize; k <= this.cubeSize; k += 50) {
-					// const r = this.p.map(
-					// 	this.p.sin(this.p.frameCount * 0.01 + i + j + k),
-					// 	-1,
-					// 	1,
-					// 	0,
-					// 	255
-					// )
-					// const g = this.p.map(
-					// 	this.p.sin(this.p.frameCount * 0.02 + i + j + k),
-					// 	-1,
-					// 	1,
-					// 	0,
-					// 	255
-					// )
-					// const b = this.p.map(
-					// 	this.p.sin(this.p.frameCount * 0.03 + i + j + k),
-					// 	-1,
-					// 	1,
-					// 	0,
-					// 	255
-					// )
+		for (let i = -this.cubeSize; i <= this.cubeSize; i += this.cubeStep) {
+			for (
+				let j = -this.cubeSize;
+				j <= this.cubeSize;
+				j += this.cubeStep
+			) {
+				for (
+					let k = -this.cubeSize;
+					k <= this.cubeSize;
+					k += this.cubeStep
+				) {
 					const hue = this.getHue()
-					const s = this.p.map(
-						this.p.sin(this.p.frameCount * 0.02 + i + j + k),
-						-1,
-						1,
-						0,
-						100
-					)
-					const b = this.p.map(
-						this.p.sin(this.p.frameCount * 0.03 + i + j + k),
-						-1,
-						1,
-						0,
-						100
-					)
+					const getMappedSin = (multiplier: number) => {
+						return this.p.map(
+							this.p.sin(
+								this.p.frameCount * multiplier + i + j + k
+							),
+							-1,
+							1,
+							0,
+							100
+						)
+					}
+					const s = getMappedSin(0.02)
+					const b = getMappedSin(0.03)
 
 					this.p.push()
 					this.p.translate(i, j, k)
-					// this.p.stroke(r, g, b)
 					this.p.stroke(hue, s, b)
-					this.p.box(15)
+					this.p.box(this.boxSize)
 					this.p.pop()
 				}
 			}
 		}
 
 		const volume = this.getVolume()
+		const baseRotationSpeed = 0.01
 
-		this.angleX += 0.01 + volume
-		this.angleY += 0.02 + volume
-		this.angleZ += 0.03 + volume
+		this.angleX += baseRotationSpeed + volume
+		this.angleY += baseRotationSpeed * 2 + volume
+		this.angleZ += baseRotationSpeed * 3 + volume
 	}
 
 	mousePressed(): void {

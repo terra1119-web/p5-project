@@ -10,10 +10,10 @@ const SKETCH_FINISH_EVENT = 'finish'
 
 // 実行するSketch
 const files: readonly string[] = Object.freeze([
-	'sketch-letter'
+	// 'sketch-letter'
 	// 'sketch-draw',
 	// 'sketch-tunnel',
-	// 'sketch-movie',
+	'sketch-movie'
 	// 'sketch-wave',
 	// 'sketch-particleFlow',
 	// 'sketch-flocks',
