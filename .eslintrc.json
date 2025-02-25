@@ -1,29 +1,24 @@
 {
-  "env": {
-    "es2020": true,
-    "node": true,
-    "browser": true
-  },
-  "plugins": [
-  ],
-  "settings": {
-  },
-  "extends": [
-    "eslint:recommended",
-    "prettier"
-  ],
-  "parserOptions": {
-    "ecmaFeatures": {
-      "jsx": true
-    },
-    "sourceType": "module"
-  },
-  "rules": {
-	// allow async-await
-	"generator-star-spacing": "off",
-	// allow debugger during development
-	"indent": ["error", "tab", { "SwitchCase": 1 }],
-	"no-tabs": 0,
-	"no-irregular-whitespace": ["error", { "skipRegExps": true }]
-  }
+	"env": {
+		"es2020": true,
+		"node": true,
+		"browser": true
+	},
+	"plugins": [],
+	"settings": {},
+	"extends": ["eslint:recommended", "prettier"],
+	"parserOptions": {
+		"ecmaFeatures": {
+			"jsx": true
+		},
+		"sourceType": "module"
+	},
+	"rules": {
+		// allow async-await
+		"generator-star-spacing": "off",
+		// allow debugger during development
+		"indent": ["error", "tab", { "SwitchCase": 1 }],
+		"no-tabs": 0,
+		"no-irregular-whitespace": ["error", { "skipRegExps": true }]
+	}
 }

@@ -27,29 +27,31 @@ declare module 'p5' {
 }
 
 class SketchTest extends Sketch {
-	// property
-	movie_name_array: string[]
-	play_max: number
-	time_max: number
-	split_time_max: number
-	movie: p5.MediaElement | any
-	rand_arr: string[]
-	play_count: number
-	time_count: number
-	split_time_count: number
-	col_count: number
-	col: number
-	col_max: number
-	movie_width: number
-	movie_height: number
-	rgb_array: number[][]
+	// Constants
+	private readonly TIME_MAX: number = 5400
+	private readonly SPLIT_TIME_MAX: number = 900
+
+	// Properties
+	private movieNameArray: string[]
+	private playMax: number
+	private movie: p5.MediaElement
+	private randomMovieOrder: string[]
+	private playCount: number
+	private timeCount: number
+	private splitTimeCount: number
+	private colorCount: number
+	private colorDivisions: number
+	private maxColorDivisions: number
+	private movieWidth: number
+	private movieHeight: number
+	private rgbArray: number[][]
 
 	constructor() {
 		super({
-			renderer: 'WEBGL'
+			renderer: 'WEBGL',
 		})
 		// initialize
-		this.movie_name_array = [
+		this.movieNameArray = [
 			'Animals - 6572.mp4',
 			'Bottle - 754.mp4',
 			'c.mp4',
@@ -70,28 +72,28 @@ class SketchTest extends Sketch {
 			"Woodhouse'S Toad - 397.mp4",
 			'A Wet Hawk.mp4',
 			'Video Of Jellyfishes Inside Of Aquarium.mp4',
-			'Pexels Videos 3563.mp4',
-			'Pexels Videos 1526909.mp4'
+			// 'Pexels Videos 3563.mp4',
+			// 'Pexels Videos 1526909.mp4',
+			// '2405380-uhd_3840_2160_24fps.mp4',
+			// '857130-hd_1280_720_24fps.mp4',
 		]
-		this.play_max = this.movie_name_array.length
-		this.time_max = 5400
-		this.split_time_max = 900
-		this.rand_arr = []
-		this.play_count = 0
-		this.time_count = 0
-		this.split_time_count = 0
-		this.col_count = 0
-		this.col = 1
-		this.col_max = 3
-		this.rgb_array = [[0, 0, 0]]
+		this.playMax = this.movieNameArray.length
+		this.randomMovieOrder = []
+		this.playCount = 0
+		this.timeCount = 0
+		this.splitTimeCount = 0
+		this.colorCount = 0
+		this.colorDivisions = 1
+		this.maxColorDivisions = 3
+		this.rgbArray = [[0, 0, 0]]
 	}
 
 	setup(): void {
 		super.setup()
 
 		this.p.background(0)
-		this.initArray()
-		this.initMovie()
+		this.initializeMovieOrder()
+		this.initializeMovie()
 	}
 
 	draw(): void {
@@ -99,50 +101,40 @@ class SketchTest extends Sketch {
 		if (!this.p) return
 
 		this.p.background(0)
-		let nn: number = 0
-		for (let i: number = 0; i < this.col; i++) {
-			for (let j: number = 0; j < this.col; j++) {
-				this.p.tint(
-					this.rgb_array[nn][0],
-					this.rgb_array[nn][1],
-					this.rgb_array[nn][2]
-				)
-				this.p.image(
-					this.movie,
-					this.movie_width * i,
-					this.movie_height * j,
-					this.p.width / this.col,
-					this.p.height / this.col
-				)
-				nn++
-			}
+
+		const numDivisions = this.colorDivisions * this.colorDivisions
+		for (let i = 0; i < numDivisions; i++) {
+			const x = (i % this.colorDivisions) * this.movieWidth
+			const y = Math.floor(i / this.colorDivisions) * this.movieHeight
+
+			this.p.tint(
+				this.rgbArray[i][0],
+				this.rgbArray[i][1],
+				this.rgbArray[i][2]
+			)
+			this.p.image(
+				this.movie,
+				x,
+				y,
+				this.p.width / this.colorDivisions,
+				this.p.height / this.colorDivisions
+			)
 		}
 
-		this.split_time_count++
-		if (this.split_time_max < this.split_time_count) {
-			this.split_time_count = 0
+		this.splitTimeCount++
+		if (this.SPLIT_TIME_MAX < this.splitTimeCount) {
+			this.splitTimeCount = 0
 			this.initSplit()
 		}
 
-		this.time_count++
-		if (this.time_max < this.time_count) {
-			this.play_count++
-			if (this.play_max <= this.play_count) {
-				this.play_count = 0
-				this.initArray()
-			}
-			this.time_count = 0
-
-			this.movie.stop()
-			// this.movie.disconnect()
-			this.movie = null
-
-			this.initMovie()
+		this.timeCount++
+		if (this.TIME_MAX < this.timeCount) {
+			this.updateMovie()
 		}
 	}
 
 	// private method
-	shuffle(array: string[]): string[] {
+	private shuffle(array: string[]): string[] {
 		for (let i: number = array.length - 1; i >= 0; i--) {
 			const j = Math.floor(Math.random() * (i + 1))
 			;[array[i], array[j]] = [array[j], array[i]]
@@ -150,51 +142,65 @@ class SketchTest extends Sketch {
 		return array
 	}
 
-	initArray(): void {
-		this.rand_arr = this.shuffle(this.movie_name_array)
+	private initializeMovieOrder(): void {
+		this.randomMovieOrder = this.shuffle(this.movieNameArray)
 	}
 
-	initMovie(): void {
-		const movie_name: string = this.rand_arr[this.play_count]
-		this.movie = this.p.createVideo(`movies/${movie_name}`)
+	private initializeMovie(): void {
+		const movieName: string = this.randomMovieOrder[this.playCount]
+		this.movie = this.p.createVideo(`movies/${movieName}`)
 		this.movie.volume(0)
 		this.movie.loop()
 		this.movie.hide()
 
-		this.col = 1
-		this.col_count = 0
-		this.split_time_count = 0
+		this.colorDivisions = 1
+		this.colorCount = 0
+		this.splitTimeCount = 0
 
-		this.movie_width = this.p.width / this.col
-		this.movie_height = this.p.height / this.col
+		this.movieWidth = this.p.width / this.colorDivisions
+		this.movieHeight = this.p.height / this.colorDivisions
 
-		this.rgb_array = []
-		for (let i: number = 0; i < this.col; i++) {
-			this.rgb_array[i] = []
-			this.rgb_array[i][0] = this.p.round(this.p.random(255))
-			this.rgb_array[i][1] = this.p.round(this.p.random(255))
-			this.rgb_array[i][2] = this.p.round(this.p.random(255))
-		}
+		this.rgbArray = Array(this.colorDivisions * this.colorDivisions)
+			.fill(null)
+			.map(() => [
+				this.p.round(this.p.random(255)),
+				this.p.round(this.p.random(255)),
+				this.p.round(this.p.random(255)),
+			])
 	}
 
-	initSplit(): void {
-		this.col *= 2
-		this.col_count++
-		if (this.col_count >= this.col_max) {
-			this.col = 1
-			this.col_count = 0
+	private initSplit(): void {
+		this.colorDivisions *= 2
+		this.colorCount++
+		if (this.colorCount >= this.maxColorDivisions) {
+			this.colorDivisions = 1
+			this.colorCount = 0
 		}
 
-		this.movie_width = this.p.width / this.col
-		this.movie_height = this.p.height / this.col
+		this.movieWidth = this.p.width / this.colorDivisions
+		this.movieHeight = this.p.height / this.colorDivisions
 
-		const num = this.col * this.col
-		for (let i: number = 0; i < num; i++) {
-			this.rgb_array[i] = []
-			this.rgb_array[i][0] = this.p.round(this.p.random(255))
-			this.rgb_array[i][1] = this.p.round(this.p.random(255))
-			this.rgb_array[i][2] = this.p.round(this.p.random(255))
+		this.rgbArray = Array(this.colorDivisions * this.colorDivisions)
+			.fill(null)
+			.map(() => [
+				this.p.round(this.p.random(255)),
+				this.p.round(this.p.random(255)),
+				this.p.round(this.p.random(255)),
+			])
+	}
+
+	private updateMovie(): void {
+		this.playCount++
+		if (this.playMax <= this.playCount) {
+			this.playCount = 0
+			this.initializeMovieOrder()
 		}
+		this.timeCount = 0
+
+		this.movie.stop()
+		this.movie = null
+
+		this.initializeMovie()
 	}
 }
 
