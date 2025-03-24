@@ -90,7 +90,6 @@ class SketchTest extends Sketch {
 
 	setup(): void {
 		super.setup()
-
 		this.p.background(0)
 		this.initializeMovieOrder()
 		this.initializeMovie()
@@ -101,7 +100,6 @@ class SketchTest extends Sketch {
 		if (!this.p) return
 
 		this.p.background(0)
-
 		const numDivisions = this.colorDivisions * this.colorDivisions
 		for (let i = 0; i < numDivisions; i++) {
 			const x = (i % this.colorDivisions) * this.movieWidth
@@ -122,13 +120,13 @@ class SketchTest extends Sketch {
 		}
 
 		this.splitTimeCount++
-		if (this.SPLIT_TIME_MAX < this.splitTimeCount) {
+		if (this.splitTimeCount > this.SPLIT_TIME_MAX) {
 			this.splitTimeCount = 0
 			this.initSplit()
 		}
 
 		this.timeCount++
-		if (this.TIME_MAX < this.timeCount) {
+		if (this.timeCount > this.TIME_MAX) {
 			this.updateMovie()
 		}
 	}
@@ -146,6 +144,23 @@ class SketchTest extends Sketch {
 		this.randomMovieOrder = this.shuffle(this.movieNameArray)
 	}
 
+	// 共通のRGB配列生成処理
+	private generateRgbArray(): number[][] {
+		return Array(this.colorDivisions * this.colorDivisions)
+			.fill(null)
+			.map(() => [
+				this.p.round(this.p.random(255)),
+				this.p.round(this.p.random(255)),
+				this.p.round(this.p.random(255)),
+			])
+	}
+
+	// movieWidth, movieHeightの更新処理
+	private updateDimensions(): void {
+		this.movieWidth = this.p.width / this.colorDivisions
+		this.movieHeight = this.p.height / this.colorDivisions
+	}
+
 	private initializeMovie(): void {
 		const movieName: string = this.randomMovieOrder[this.playCount]
 		this.movie = this.p.createVideo(`movies/${movieName}`)
@@ -157,16 +172,8 @@ class SketchTest extends Sketch {
 		this.colorCount = 0
 		this.splitTimeCount = 0
 
-		this.movieWidth = this.p.width / this.colorDivisions
-		this.movieHeight = this.p.height / this.colorDivisions
-
-		this.rgbArray = Array(this.colorDivisions * this.colorDivisions)
-			.fill(null)
-			.map(() => [
-				this.p.round(this.p.random(255)),
-				this.p.round(this.p.random(255)),
-				this.p.round(this.p.random(255)),
-			])
+		this.updateDimensions()
+		this.rgbArray = this.generateRgbArray()
 	}
 
 	private initSplit(): void {
@@ -177,16 +184,8 @@ class SketchTest extends Sketch {
 			this.colorCount = 0
 		}
 
-		this.movieWidth = this.p.width / this.colorDivisions
-		this.movieHeight = this.p.height / this.colorDivisions
-
-		this.rgbArray = Array(this.colorDivisions * this.colorDivisions)
-			.fill(null)
-			.map(() => [
-				this.p.round(this.p.random(255)),
-				this.p.round(this.p.random(255)),
-				this.p.round(this.p.random(255)),
-			])
+		this.updateDimensions()
+		this.rgbArray = this.generateRgbArray()
 	}
 
 	private updateMovie(): void {
