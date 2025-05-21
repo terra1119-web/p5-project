@@ -40,7 +40,6 @@ const files: readonly string[] = Object.freeze([
 	'sketch-dna',
 	'sketch-rewound',
 	'sketch-triquid',
-	'sketch-winter',
 	'sketch-octagonalTunnel',
 	'sketch-mystery-sphere',
 	'sketch-shader',
@@ -49,7 +48,10 @@ const files: readonly string[] = Object.freeze([
 	'sketch-text-particle',
 	'sketch-geometric-pattern',
 	'sketch-genuary',
+	'sketch-algorithm',
+	'sketch-things-fall',
 	// not yet
+	// 'sketch-winter',
 	// 'sketch-mystery-sphere',
 	// 'sketch-shader',
 	// 'sketch-devil',

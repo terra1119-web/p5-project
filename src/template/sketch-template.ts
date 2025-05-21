@@ -1,5 +1,6 @@
 'use strict'
 import Sketch from '@/class/Sketch'
+import p5 from 'p5'
 
 class SketchTest extends Sketch {
 	// property
@@ -7,7 +8,7 @@ class SketchTest extends Sketch {
 		super({
 			renderer: 'P2D',
 			use2D: true,
-			useMic: false
+			useMic: false,
 		})
 		// initialize
 	}
