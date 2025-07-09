@@ -52,26 +52,21 @@ const files: readonly string[] = Object.freeze([
 	'sketch-things-fall',
 	// not yet
 	// 'sketch-winter',
-	// 'sketch-mystery-sphere',
 	// 'sketch-shader',
-	// 'sketch-devil',
-	// 'sketch-colorful-rings-noise',
-	// 'sketch-spiral-image',
+	'sketch-spiral-image',
 	// 'sketch-acoustic',
-	// 'sketch-particle',
-	// 'sketch-magical-trail-shader'
-	// 'sketch-graduation'
-	// 'sketch-sand'
+	'sketch-particle',
+	// 'sketch-magical-trail-shader',
+	// 'sketch-graduation',
+	'sketch-sand',
 	// 'sketch-auto-paint'
-	// 'sketch-face',
-	// 'sketch-face-emoji',
 	// 'sketch-plasma-shapes',
 	// 'sketch-particle-ink',
-	// 'sketch-kiltWave',
-	// 'sketch-virtual-sea',
-	// 'sketch-color-drop',
-	// 'sketch-motes',
-	// 'sketch-light-line',
+	'sketch-kiltWave',
+	'sketch-virtual-sea',
+	'sketch-color-drop',
+	'sketch-motes',
+	'sketch-light-line',
 ])
 
 const SKETCH_MAX: number = files.length

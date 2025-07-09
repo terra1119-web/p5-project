@@ -2,8 +2,6 @@
 import '@/global'
 import p5 from 'p5'
 import 'p5/lib/addons/p5.sound'
-import { mountFlex } from 'p5.flex'
-mountFlex(p5)
 
 import { CONSTANT } from '@/util/constant'
 import AudioAnalyzer from './AudioAnalyzer'

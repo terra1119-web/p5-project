@@ -26,7 +26,7 @@ class FedorovPattern {
 			'#FF6F61', // Living Coral
 			'#9BB7D4', // Serenity
 			'#F7CAC9', // Rose Quartz
-			'#92A8D1' // Serenity Blue
+			'#92A8D1', // Serenity Blue
 		]
 
 		// バックグラウンドカラー（ダークモード考慮）
@@ -96,7 +96,7 @@ class FedorovPattern {
 			this.p3m1Pattern.bind(this),
 			this.p31mPattern.bind(this),
 			this.p6Pattern.bind(this),
-			this.p6mmPattern.bind(this)
+			this.p6mmPattern.bind(this),
 		]
 
 		// アルファ値を追加して重なり合いの効果を向上
@@ -433,7 +433,7 @@ class SketchTest extends Sketch {
 		super({
 			renderer: 'P2D',
 			use2D: true,
-			useMic: true
+			useMic: true,
 		})
 		// initialize
 		this.patternType = 0
@@ -446,7 +446,7 @@ class SketchTest extends Sketch {
 	setup(): void {
 		super.setup()
 
-		this.patternType = this.p.floor(this.p.random(this.PATTERN_MAX + 1))
+		this.patternType = this.p.floor(this.p.random(this.PATTERN_MAX))
 		console.log(this.patternType)
 		this.p.background(0)
 		this.currentPattern = new FedorovPattern(this.p, this.patternType)
@@ -462,7 +462,7 @@ class SketchTest extends Sketch {
 		// パターン切り替えチェック
 		if (currentTime - this.lastPatternChange > this.patternDuration) {
 			// this.patternType = (this.patternType + 1) % 17
-			this.patternType = this.p.floor(this.p.random(this.PATTERN_MAX + 1))
+			this.patternType = this.p.floor(this.p.random(this.PATTERN_MAX))
 			console.log(this.patternType)
 			this.currentPattern = new FedorovPattern(this.p, this.patternType)
 			this.lastPatternChange = currentTime
