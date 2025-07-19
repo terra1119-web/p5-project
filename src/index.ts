@@ -51,6 +51,7 @@ const files: readonly string[] = Object.freeze([
 	// 'sketch-algorithm',
 	// 'sketch-things-fall',
 	// 'sketch-crystal-ball',
+	'sketch-crystal-wave',
 	// not yet
 	// 'sketch-winter',
 	// 'sketch-shader',
