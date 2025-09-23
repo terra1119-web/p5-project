@@ -134,4 +134,26 @@ export default class Sketch implements SketchType {
 	getVolumeEachBand() {
 		return this.audioAnalyzer.getVolumeEachBand()
 	}
+
+	coverImageToScreenData(img: p5.Image) {
+		// 画面と画像の比率を計算
+		const scaleW = this.p.width / img.width
+		const scaleH = this.p.height / img.height
+		const scale = this.p.max(scaleW, scaleH) // はみ出してもいいので大きい方を採用
+
+		// 新しい幅と高さ
+		const newW = img.width * scale
+		const newH = img.height * scale
+
+		// 中央に配置（画像がはみ出す部分は見切れる）
+		const x = (this.p.width - newW) / 2
+		const y = (this.p.height - newH) / 2
+
+		return {
+			x,
+			y,
+			newW,
+			newH,
+		}
+	}
 }
