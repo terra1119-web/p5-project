@@ -56,6 +56,7 @@ class CrystalWaveSketch extends Sketch {
 		// WebGL設定
 		this.p.noStroke()
 		this.p.pixelDensity(1)
+		this.p.background(0)
 
 		// シェーダーを作成
 		this.crystalShader = this.p.createShader(
@@ -96,7 +97,7 @@ class CrystalWaveSketch extends Sketch {
 
 		// 成長度を音量に応じて更新
 		const volume = this.audioAnalyzer?.getVolume() || 0
-		this.growth = this.p.lerp(this.growth, Math.max(0.5, volume * 3), 0.05)
+		this.growth = this.p.lerp(this.growth, Math.max(0.5, volume * 3), 0.08)
 	}
 
 	draw(): void {
@@ -108,6 +109,7 @@ class CrystalWaveSketch extends Sketch {
 
 		// キャンバスをクリア
 		this.p.clear()
+		this.p.background(0)
 
 		// シェーダーを適用
 		this.p.shader(this.crystalShader)
