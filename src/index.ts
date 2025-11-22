@@ -55,8 +55,10 @@ const files: readonly string[] = Object.freeze([
 	'sketch-escher-infinite',
 	'sketch-accretion',
 	'sketch-posthelios',
-	'sketch-sound',
+	'sketch-raymarching',
 	// not yet
+	// 'sketch-sketchbook',
+	// 'sketch-sound',
 	// 'sketch-acoustic-kaleidoscope',
 	// 'sketch-winter',
 	// 'sketch-shader',

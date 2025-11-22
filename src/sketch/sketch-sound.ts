@@ -195,7 +195,7 @@ class SketchTest extends Sketch {
 		this.img = this.rand_arr[this.play_count]
 		this.resizeData = this.coverImageToScreenData(this.img)
 		this.img.resize(this.resizeData.newW, this.resizeData.newH)
-		this.p.tint(255, 10)
+		this.p.tint(255, 200)
 		this.p.image(this.img, this.resizeData.x, this.resizeData.y)
 		this.p.noTint()
 	}
