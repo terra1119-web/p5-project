@@ -39,8 +39,12 @@ void main() {
   // The texture contains the history of FFT analysis
   // vTexCoord.y corresponds to time (scrolling), vTexCoord.x to frequency
 
-  // Flip Y to match p5 coordinates if needed, but usually standard
-  vec2 uv = vTexCoord;
+  // Mirror the x coordinate around the center (0.5)
+  // This makes 0.5 -> 0.0, and 0.0/1.0 -> 1.0
+  // So low frequencies (0.0 in texture) will be at the center of the screen
+  float mirrorX = abs(vTexCoord.x - 0.5) * 2.0;
+
+  vec2 uv = vec2(mirrorX, vTexCoord.y);
 
   // Sample the texture
   // We assume the data is stored in the red channel (or grayscale)
@@ -48,17 +52,20 @@ void main() {
   float intensity = texColor.r;
 
   // Enhance low values to make silence/noise visible or just contrast
-  intensity = pow(intensity, 0.8);
+  // Lower power makes mid-tones brighter (0.8 -> 0.6)
+  intensity = pow(intensity, 0.6);
 
   // Map intensity to color
-  // Use a beautiful gradient based on intensity and frequency (uv.x)
-  vec3 col = palette(intensity + uv.x * 0.2 + u_time * 0.1);
+  // Use a beautiful gradient based on intensity and frequency (mirrorX)
+  // Multiply intensity to make color shifts more sensitive
+  vec3 col = palette(intensity * 1.5 + mirrorX * 0.2 + u_time * 0.1);
 
   // Mix with the intensity so silence is dark
-  col *= intensity;
+  // Boost brightness by multiplying
+  col *= intensity * 2.0;
 
   // Add some "weaving" effect using sine waves based on position
-  float weave = 0.05 * sin(uv.y * 100.0 + u_time) * sin(uv.x * 50.0);
+  float weave = 0.05 * sin(uv.y * 100.0 + u_time) * sin(mirrorX * 50.0);
   col += weave * intensity;
 
   gl_FragColor = vec4(col, 1.0);
