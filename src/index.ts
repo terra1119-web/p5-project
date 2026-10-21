@@ -10,6 +10,7 @@ const SKETCH_FINISH_EVENT = 'finish'
 
 // 実行するSketch
 const files: readonly string[] = Object.freeze([
+	'sketch-resonant-chimes',
 	'sketch-kintsugi-resonance',
 	'sketch-bioluminescent-coral',
 	'sketch-cyber-circuit',
